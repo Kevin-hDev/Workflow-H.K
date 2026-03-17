@@ -57,20 +57,24 @@ These are the files that should be refactored first and tested most thoroughly.
 
 **How:** `git log --format="%H" | xargs -I{} git diff-tree --no-commit-id -r --name-only {} | sort | uniq -c | sort -rn | head -20`
 
-**IMPORTANT — Hotspot table format:**
-When presenting hotspot files, ALWAYS show both the **current size** and the **total changes**.
-Use `wc -l` on the actual file to get the current line count. Do NOT show only git change count —
-it is misleading (a 179-line file can have 2,269 cumulative git changes and appear massive).
+**MANDATORY — Hotspot output format:**
 
-```
-| File | Current size | Git changes (total) | Observation |
+For each hotspot file, you MUST run `wc -l {file}` to get the ACTUAL current line count.
+Then present the results using THIS EXACT TABLE — no variations, no renaming columns:
+
+<output-format>
+HOTSPOT FILES — most modified in git history
+
+| File | Current size | Commits touching it | Observation |
 |------|-------------|--------------------:|-------------|
-| App.tsx | 179 lines | 2,269 changes | Touched often but kept small — well maintained |
-| lib.rs | 340 lines | 2,018 changes | Was large, has been split into modules |
-```
+| {file_path} | {wc -l result} lines | {commit_count} commits | {why it changes often} |
+| {file_path} | {wc -l result} lines | {commit_count} commits | {observation} |
 
-The "Git changes" column = total lines added + removed across all commits (high = frequently touched).
-The "Current size" column = actual file size right now (what you'll work with).
+"Current size" = actual file size NOW (run wc -l).
+"Commits touching it" = number of commits that modified this file.
+</output-format>
+
+Do NOT omit the "Current size" column. Do NOT rename columns. Do NOT use "Modifications" or "Changements" instead — use the exact column names above.
 
 ### 5 — Abandoned attempts
 
