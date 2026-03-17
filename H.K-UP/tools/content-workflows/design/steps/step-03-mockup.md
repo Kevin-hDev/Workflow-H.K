@@ -314,6 +314,9 @@ Mockups built. Want to review before the final checkup?
   S. Save and run the final validation (step-04)
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Prisme → LOAD `data/modes/prisme.md` + `data/prisme-facettes.csv`
+
 ---
 
 ## Transition

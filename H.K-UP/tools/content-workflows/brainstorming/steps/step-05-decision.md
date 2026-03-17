@@ -167,6 +167,11 @@ Direction confirmed. Would you like one final exploration before we move to the 
   S. Save and proceed to PRD
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Table Ronde → `data/modes/table-ronde.md`
+- Prisme → `data/modes/prisme.md` + `data/prisme-facettes.csv`
+- Conformité → `data/modes/conformite.md`
+
 ---
 
 ## Handoff — PRD Workflow

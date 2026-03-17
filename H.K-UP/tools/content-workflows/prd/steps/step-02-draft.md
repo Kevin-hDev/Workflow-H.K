@@ -319,6 +319,11 @@ PRD draft complete. Would you like to review further before validation?
   S. Save and proceed to validation (step-03)
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Table Ronde → `data/modes/table-ronde.md`
+- Prisme → `data/modes/prisme.md` + `data/prisme-facettes.csv`
+- Conformité → `data/modes/conformite.md`
+
 ---
 
 ## Transition

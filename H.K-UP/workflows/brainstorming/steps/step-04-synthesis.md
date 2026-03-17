@@ -172,6 +172,12 @@ Step 04 complete. Would you like to explore further before deciding?
   S. Save and continue to decision (step-05)
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Table Ronde → `data/modes/table-ronde.md`
+- Prisme → `data/modes/prisme.md` + `data/prisme-facettes.csv`
+- Tribunal → `data/modes/tribunal.md`
+- Conformité → `data/modes/conformite.md`
+
 ---
 
 ## Transition

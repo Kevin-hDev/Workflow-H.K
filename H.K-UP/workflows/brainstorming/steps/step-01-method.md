@@ -144,6 +144,10 @@ Before we start the session, would you like to explore further?
   S. Save and start the session (step-02)
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Table Ronde → `data/modes/table-ronde.md`
+- Prisme → `data/modes/prisme.md` + `data/prisme-facettes.csv`
+
 ---
 
 ## Transition

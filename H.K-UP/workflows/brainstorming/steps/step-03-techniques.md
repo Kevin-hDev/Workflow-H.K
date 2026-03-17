@@ -514,6 +514,10 @@ Technique session done. Would you like to explore further?
   S. Save and continue to synthesis (step-04)
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Table Ronde → `data/modes/table-ronde.md`
+- Prisme → `data/modes/prisme.md` + `data/prisme-facettes.csv`
+
 ---
 
 ## Transition

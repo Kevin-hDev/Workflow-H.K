@@ -122,6 +122,11 @@ Before confirming, would you like to explore further?
   S. Save and confirm the path
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Table Ronde → `data/modes/table-ronde.md`
+- Conformité → `data/modes/conformite.md`
+- Benchmark Vivant → `data/modes/benchmark-vivant.md`
+
 ---
 
 ## Transition

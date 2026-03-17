@@ -226,6 +226,11 @@ Step 01 complete. Security scan results are ready.
   S. Save and continue to step 02 → Table Ronde Duel: The Mask vs Nyx
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Table Ronde → LOAD `data/modes/table-ronde.md`
+- Prisme → LOAD `data/modes/prisme.md` + `data/prisme-facettes.csv`
+- Conformité → LOAD `data/modes/conformite.md`
+
 ---
 
 ## Transition

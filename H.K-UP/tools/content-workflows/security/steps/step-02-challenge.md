@@ -197,6 +197,12 @@ Step 02 complete. The duel is over.
   S. Save and continue to step 03 → Security Audit Report
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Table Ronde → LOAD `data/modes/table-ronde.md`
+- Prisme → LOAD `data/modes/prisme.md` + `data/prisme-facettes.csv`
+- Conformité → LOAD `data/modes/conformite.md`
+- Simulation → LOAD `data/modes/simulation.md`
+
 ---
 
 ## Transition

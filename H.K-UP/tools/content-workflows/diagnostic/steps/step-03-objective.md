@@ -106,6 +106,10 @@ Before we continue, would you like to explore further?
   S. Save and continue to path recommendation
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Prisme → `data/modes/prisme.md` + `data/prisme-facettes.csv`
+- Table Ronde → `data/modes/table-ronde.md`
+
 ---
 
 ## Transition

@@ -370,6 +370,10 @@ Quest {N} complete. Any final analysis?
   S. Continue to next mission or Quest
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Table Ronde → LOAD `data/modes/table-ronde.md`
+- Prisme → LOAD `data/modes/prisme.md` + `data/prisme-facettes.csv`
+
 ---
 
 ## Transition

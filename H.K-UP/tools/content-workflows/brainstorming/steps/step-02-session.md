@@ -377,6 +377,11 @@ Step 02 complete. Would you like to explore further before continuing?
   S. Save and continue to techniques (step-03)
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Table Ronde → `data/modes/table-ronde.md`
+- Prisme → `data/modes/prisme.md` + `data/prisme-facettes.csv`
+- Benchmark Vivant → `data/modes/benchmark-vivant.md`
+
 ---
 
 ## Transition

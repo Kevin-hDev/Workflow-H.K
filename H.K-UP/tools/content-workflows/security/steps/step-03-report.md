@@ -253,6 +253,10 @@ Audit complete. Final reflection before handoff?
   S. Save and proceed to handoff
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Conformité → LOAD `data/modes/conformite.md`
+- Table Ronde → LOAD `data/modes/table-ronde.md`
+
 ---
 
 ## Checkup before handoff

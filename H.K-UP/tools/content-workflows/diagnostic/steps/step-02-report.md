@@ -77,12 +77,14 @@ Before we continue, would you like to explore further?
 - If the user skips the menu entirely → proceed to step-03 immediately
 
 ### Mode 1 — Prisme
+**LOAD `data/modes/prisme.md` AND `data/prisme-facettes.csv` BEFORE executing.** Follow their format exactly.
 Run selected facette families from `data/prisme-facettes.csv`.
 Suggested families for this step: `technique`, `echec`
 Ask the user which families they want to explore.
 Present each facette with its question. Discuss. Mark mode as ✓ when done.
 
 ### Mode 2 — Archéologie
+**LOAD `data/modes/archeologie.md` BEFORE executing.** Follow its format exactly.
 Use `git log`, `git blame`, and `git log --follow` to trace the project's evolution.
 Identify: major phases, rewrites, contributors who left, recurring hotspot files.
 Present findings as a timeline narrative. Mark mode as ✓ when done.

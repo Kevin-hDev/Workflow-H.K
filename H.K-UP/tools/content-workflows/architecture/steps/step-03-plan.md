@@ -233,6 +233,10 @@ Plan ready. Want to stress-test before generating the briefs?
   S. Save and generate hk-up-status.yaml (step-04)
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Table Ronde → LOAD `data/modes/table-ronde.md`
+- Simulation → LOAD `data/modes/simulation.md`
+
 ---
 
 ## Transition

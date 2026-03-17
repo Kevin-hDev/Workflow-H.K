@@ -181,6 +181,11 @@ Step 01 complete. Want to go deeper before designing?
   S. Save and move to architecture design (step-02)
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Prisme → `data/modes/prisme.md` + `data/prisme-facettes.csv`
+- Simulation → `data/modes/simulation.md`
+- Archéologie → `data/modes/archeologie.md`
+
 ---
 
 ## Transition

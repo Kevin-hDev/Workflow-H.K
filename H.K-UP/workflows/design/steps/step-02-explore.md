@@ -229,6 +229,10 @@ Direction confirmed, wireframes validated. Want to check before building mockups
   S. Save and build mockups (step-03)
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Prisme → LOAD `data/modes/prisme.md` + `data/prisme-facettes.csv`
+- Table Ronde → LOAD `data/modes/table-ronde.md`
+
 ---
 
 ## Transition

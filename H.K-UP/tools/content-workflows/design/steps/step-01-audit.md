@@ -222,6 +222,10 @@ Step 01 complete. Want to look at the existing UI from specific angles?
   S. Save and explore visual directions (step-02)
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Prisme → LOAD `data/modes/prisme.md` + `data/prisme-facettes.csv`
+- Simulation → LOAD `data/modes/simulation.md`
+
 ---
 
 ## Transition

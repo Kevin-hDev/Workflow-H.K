@@ -177,6 +177,10 @@ Final checkup passed. Before we close, anything you want to explore?
   S. Proceed to closing summary
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Table Ronde → LOAD `data/modes/table-ronde.md`
+- Conformité → LOAD `data/modes/conformite.md`
+
 ---
 
 ## Transition

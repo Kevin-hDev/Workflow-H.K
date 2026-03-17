@@ -194,6 +194,10 @@ PRD validated. One last chance to explore before the final checkup:
   S. Save and proceed to checkup (step-04)
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Table Ronde → `data/modes/table-ronde.md`
+- Conformité → `data/modes/conformite.md`
+
 ---
 
 ## Transition

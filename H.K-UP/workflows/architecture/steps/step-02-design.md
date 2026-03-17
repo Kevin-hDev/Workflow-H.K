@@ -244,6 +244,10 @@ Architecture designed and checked. Want to stress-test before breaking it down?
   S. Save and move to mission breakdown (step-03)
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Table Ronde → `data/modes/table-ronde.md`
+- Simulation → `data/modes/simulation.md`
+
 ---
 
 ## Transition

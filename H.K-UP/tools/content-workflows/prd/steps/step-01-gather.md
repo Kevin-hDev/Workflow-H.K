@@ -169,6 +169,10 @@ Brief confirmed. Would you like to explore before writing?
   S. Save and draft the PRD (step-02)
 ```
 
+**Before executing any mode above, LOAD its data file:**
+- Prisme → `data/modes/prisme.md` + `data/prisme-facettes.csv`
+- Benchmark Vivant → `data/modes/benchmark-vivant.md`
+
 ---
 
 ## Transition
