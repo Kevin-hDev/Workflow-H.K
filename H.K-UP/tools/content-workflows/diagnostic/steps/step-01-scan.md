@@ -42,8 +42,12 @@ Execute in order. Use available tools (Read, Glob, Grep, Bash) for each.
 ### 2. Stack
 - Detect languages by file extensions (`.ts`, `.py`, `.rs`, `.dart`, etc.)
 - Find dependency files: `package.json`, `Cargo.toml`, `pubspec.yaml`, `requirements.txt`, `go.mod`, etc.
-- Extract: frameworks, main libraries, dependency count
-- Note version numbers for the main framework and runtime
+- **READ each dependency file in full** — extract ALL libraries, not just the framework name
+  - For `Cargo.toml`: list every crate with its purpose (crypto, db, async runtime, etc.)
+  - For `package.json`: list key dependencies with their role
+  - For `requirements.txt`/`pyproject.toml`: list Python packages
+- Note version numbers for the main framework AND key libraries
+- Identify: crypto libraries, database drivers, auth frameworks, testing tools
 
 ### 3. Health
 - Tests: presence of test files (`*.test.*`, `*.spec.*`, `__tests__/`, `tests/`)
@@ -75,6 +79,16 @@ Infer from folder structure and file naming:
 - Microservices / Monorepo
 - Flat structure (everything in one folder)
 - Unknown (note it honestly)
+
+### 8. Coding conventions
+Read 3-5 representative source files and extract:
+- **Naming**: camelCase / snake_case / PascalCase — for files, functions, variables, components
+- **Error handling**: how errors are handled (Result types? try-catch? custom error classes?)
+- **Imports**: organized by type? alphabetical? grouped by domain?
+- **File structure**: consistent patterns (exports at bottom? types at top?)
+- **State management**: what pattern is used (Redux, Zustand, signals, stores?)
+- **Formatting**: indentation (2/4 spaces, tabs), semicolons, quotes style
+- **CLAUDE.md/AGENTS.md conventions**: if present, extract the coding rules already defined
 
 ---
 

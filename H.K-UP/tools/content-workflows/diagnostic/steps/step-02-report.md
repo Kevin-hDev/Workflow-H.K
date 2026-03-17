@@ -33,9 +33,11 @@ Here's what I found:
   Type:          {project_type}
   Size:          ~{loc_count} lines ({size_class})
   Stack:         {languages} · {main_framework} {framework_version}
+  Key libraries: {list of important libs: crypto, db, auth, testing, etc.}
   Dependencies:  {dep_count} packages
   Health:        {health_summary}
   Architecture:  {architecture_pattern}
+  Conventions:   {naming_style} · {error_handling_pattern} · {formatting}
   Git:           {project_age} old · {total_commits} commits · {contributors} contributor(s)
   Last commit:   {last_commit_date}
 
