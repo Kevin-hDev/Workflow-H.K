@@ -1,6 +1,6 @@
 {
   "name": "hkup-workflow",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "H.K-UP — Workflow for taking over and improving existing projects with AI",
   "bin": {
     "hk-up": "./cli.js"
@@ -8,7 +8,8 @@
   "files": [
     "cli.js",
     "lib/",
-    "data/"
+    "data/",
+    "skills/"
   ],
   "engines": {
     "node": ">=18.0.0"

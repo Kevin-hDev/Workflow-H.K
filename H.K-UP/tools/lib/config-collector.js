@@ -85,6 +85,49 @@ function createWorkflowDirs(workflowsRoot, workflows) {
 }
 
 /**
+ * Copy a directory recursively from source to destination.
+ *
+ * @param {string} src - Source directory.
+ * @param {string} dest - Destination directory.
+ */
+function copyDirRecursive(src, dest) {
+  ensureDir(dest);
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    if (entry.isDirectory()) {
+      copyDirRecursive(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
+/**
+ * Copy skill SKILL.md files into the project's .claude/skills/ directory.
+ * This is where Claude Code discovers skills.
+ *
+ * @param {string} packageRoot - Root of the npm package (where skills/ lives).
+ * @param {string} targetDir   - Project root.
+ */
+function installSkills(packageRoot, targetDir) {
+  const skillsSrc = path.join(packageRoot, '..', 'skills');
+  const skillsDest = path.join(targetDir, '.claude', 'skills');
+
+  if (!fs.existsSync(skillsSrc)) return;
+
+  const skillDirs = fs.readdirSync(skillsSrc, { withFileTypes: true });
+  for (const dir of skillDirs) {
+    if (dir.isDirectory() && dir.name.startsWith('hkup-')) {
+      const srcSkill = path.join(skillsSrc, dir.name);
+      const destSkill = path.join(skillsDest, dir.name);
+      copyDirRecursive(srcSkill, destSkill);
+    }
+  }
+}
+
+/**
  * Create per-workflow output sub-directories inside the output folder.
  *
  * @param {string}   outputRoot - Absolute path to the output folder.
@@ -134,7 +177,10 @@ async function collectAndSave(answers, targetDir) {
   // ── 2. Create output folder ───────────────────────────────────────────────
   createOutputDirs(outputRoot, answers.workflows || ['diagnostic']);
 
-  // ── 3. Write .hkup-config.json ────────────────────────────────────────────
+  // ── 3. Install skills into .claude/skills/ ───────────────────────────────
+  installSkills(__dirname, targetDir);
+
+  // ── 4. Write .hkup-config.json ────────────────────────────────────────────
   const config = buildConfig(answers);
   writeJsonFile(configPath, config);
 }
