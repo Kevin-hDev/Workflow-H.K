@@ -236,17 +236,15 @@ async function install(options = {}) {
       targetDir
     );
 
-    // Install complementary tools if selected (each independently)
+    // Set up complementary tools if selected (each independently)
     if (repomix) {
-      spin.message('Installing Repomix…');
+      spin.message('Verifying Repomix availability…');
+      // Repomix works via npx — no permanent install needed.
+      // Just verify npx can reach it.
       try {
-        execSync('npm install -g repomix', { stdio: 'pipe', cwd: targetDir });
+        execSync('npx repomix --version', { stdio: 'pipe', timeout: 30000 });
       } catch {
-        try {
-          execSync('npm install --save-dev repomix', { stdio: 'pipe', cwd: targetDir });
-        } catch {
-          // Non-blocking — repomix is optional
-        }
+        // npx will download it on first use — this is fine
       }
     }
 
@@ -255,21 +253,22 @@ async function install(options = {}) {
       const agentOsHome = path.join(require('node:os').homedir(), 'agent-os');
       const agentOsInstalled = fs.existsSync(agentOsHome);
 
-      if (agentOsInstalled) {
-        // Agent OS is already cloned — run the project install script
+      if (!agentOsInstalled) {
+        // Clone Agent OS to ~/agent-os
         try {
-          execSync(`${path.join(agentOsHome, 'scripts', 'project-install.sh')}`, { stdio: 'pipe', cwd: targetDir });
-        } catch {
-          // Non-blocking — agent-os install script may fail on some systems
-        }
-      } else {
-        // Clone Agent OS to ~/agent-os then run project install
-        try {
-          execSync('git clone https://github.com/buildermethods/agent-os.git ' + agentOsHome, { stdio: 'pipe' });
+          execSync('git clone https://github.com/buildermethods/agent-os.git ' + agentOsHome, { stdio: 'pipe', timeout: 60000 });
           execSync('rm -rf ' + path.join(agentOsHome, '.git'), { stdio: 'pipe' });
-          execSync(`${path.join(agentOsHome, 'scripts', 'project-install.sh')}`, { stdio: 'pipe', cwd: targetDir });
         } catch {
           // Non-blocking — agent-os is optional
+        }
+      }
+
+      // Run project install script if ~/agent-os exists
+      if (fs.existsSync(path.join(agentOsHome, 'scripts', 'project-install.sh'))) {
+        try {
+          execSync(`bash ${path.join(agentOsHome, 'scripts', 'project-install.sh')}`, { stdio: 'pipe', cwd: targetDir, timeout: 30000 });
+        } catch {
+          // Non-blocking — agent-os project install may fail
         }
       }
     }
