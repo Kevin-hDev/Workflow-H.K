@@ -55,11 +55,6 @@
       "description": "Intégration Agent OS pour l'extraction automatique des standards de codage du projet existant",
       "default": false
     },
-    "repomix": {
-      "type": "boolean",
-      "description": "Intégration Repomix pour la génération de contexte projet",
-      "default": false
-    },
     "user_name": {
       "type": "string",
       "description": "Nom utilisé par les agents pour s'adresser à l'utilisateur",

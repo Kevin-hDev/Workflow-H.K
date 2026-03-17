@@ -72,14 +72,12 @@ For your first project, select all. The Diagnostic workflow is mandatory.
 ```
   Optional tools:
 
-  □ Agent OS — Automatic extraction of existing coding standards.
-               Recommended for large projects.
-  □ Repomix  — Package the codebase for AI analysis.
-               Reduces tokens by ~70%.
+  Install Agent OS? (auto-extract coding standards from your codebase)
+  ● Yes / ○ No
 ```
 
-Both tools are optional but highly recommended for projects over 10,000 lines.
-Repomix in particular cuts the AI token cost significantly on large codebases.
+Agent OS is optional but recommended — it extracts coding conventions from your
+existing codebase so agents follow your patterns from the start.
 
 ### Step 4 — Configuration
 
@@ -204,8 +202,8 @@ Scanning project...
 If Agent OS is installed, L'Eclaireur uses it to extract the coding standards
 embedded in your existing code (naming conventions, formatting patterns, etc.).
 
-If Repomix is installed, L'Eclaireur uses the compressed representation of your
-codebase to analyze it efficiently.
+If Agent OS is installed, L'Eclaireur also extracts your coding standards
+automatically using the `discover-standards` command.
 
 ### The Report
 

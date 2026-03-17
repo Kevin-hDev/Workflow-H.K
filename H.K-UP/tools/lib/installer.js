@@ -93,19 +93,14 @@ async function stepWorkflows(skipPrompts) {
 // ─── Step 3: Complementary tools ─────────────────────────────────────────────
 
 async function stepTools(skipPrompts) {
-  if (skipPrompts) return { agentOs: false, repomix: false };
+  if (skipPrompts) return { agentOs: false };
 
-  const selected = await p.multiselect({
-    message: 'Complementary tools (optional — SPACE to select, ENTER to confirm)',
-    options: [
-      { value: 'agent-os', label: 'Agent OS',  hint: 'Auto-extract coding standards from existing code' },
-      { value: 'repomix',  label: 'Repomix',   hint: 'Package codebase for AI analysis (~70% token reduction)' },
-    ],
-    initialValues: [],
-    required: false,
+  const installAgentOs = await p.confirm({
+    message: 'Install Agent OS? (auto-extract coding standards from your codebase)',
+    initialValue: true,
   });
 
-  return { agentOs: selected.includes('agent-os'), repomix: selected.includes('repomix') };
+  return { agentOs: installAgentOs };
 }
 
 // ─── Step 4: Configuration ────────────────────────────────────────────────────
@@ -219,7 +214,7 @@ async function install(options = {}) {
 
   const { targetDir, folderName }                     = await stepDirectory(options, skipPrompts);
   const workflows                                     = await stepWorkflows(skipPrompts);
-  const { agentOs, repomix }                          = await stepTools(skipPrompts);
+  const { agentOs }                                    = await stepTools(skipPrompts);
   const { userName, commLang, docLang, outputFolder } = await stepConfig(skipPrompts);
   const selectedIDEs                                  = await stepIDEs(skipPrompts);
   const setupMode                                     = await stepSetupMode(skipPrompts);
@@ -232,22 +227,11 @@ async function install(options = {}) {
   try {
     // Skills are copied alongside workflows into _hkup/skills/
     await collectAndSave(
-      { targetDir, folderName, workflows, agentOs, repomix, userName, commLang, docLang, outputFolder, selectedIDEs, setupMode },
+      { targetDir, folderName, workflows, agentOs, userName, commLang, docLang, outputFolder, selectedIDEs, setupMode },
       targetDir
     );
 
-    // Set up complementary tools if selected (each independently)
-    if (repomix) {
-      spin.message('Verifying Repomix availability…');
-      // Repomix works via npx — no permanent install needed.
-      // Just verify npx can reach it.
-      try {
-        execSync('npx repomix --version', { stdio: 'pipe', timeout: 30000 });
-      } catch {
-        // npx will download it on first use — this is fine
-      }
-    }
-
+    // Set up Agent OS if selected
     if (agentOs) {
       spin.message('Setting up Agent OS…');
       const agentOsHome = path.join(require('node:os').homedir(), 'agent-os');
@@ -285,7 +269,7 @@ async function install(options = {}) {
   }
 
   await showPostInstall(
-    { folderName, outputFolder, workflows, agentOs, repomix, ideResults },
+    { folderName, outputFolder, workflows, agentOs, ideResults },
     targetDir
   );
 }

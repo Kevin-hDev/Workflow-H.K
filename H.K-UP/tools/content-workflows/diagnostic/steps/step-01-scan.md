@@ -30,28 +30,19 @@ The user will see the results in step-02 — not here.
 
 ---
 
-## Pre-scan: Complementary tools
+## Pre-scan: Agent OS (optional)
 
-Before scanning manually, check if complementary tools are available:
-
-**Repomix** — check if installed: `which repomix || npx repomix --version`
-- If available: run `npx repomix -o {output_folder}/repomix-output.xml --quiet`
-- Read `{output_folder}/repomix-output.xml` — it contains the entire codebase in a single file
-- Use this as the PRIMARY source for the scan below (structure, stack, patterns, LOC)
-- If NOT available: scan manually using tools (default behavior below)
-
-**Agent OS** — check if installed: `test -d ~/agent-os && echo "installed"`
-- If available: run `~/agent-os/scripts/project-install.sh` (if not already done during installation)
-- Then run `agent-os discover` to extract coding standards
-- Store the output as `{agent_os_standards}` for use in step-02 and step-05
-- If NOT available: skip — coding standards will be inferred from the code directly
+**Agent OS** — check if `~/agent-os/` directory exists.
+- If available: read `~/agent-os/commands/agent-os/discover-standards.md` and follow
+  its process to extract coding standards from the project.
+- Store the extracted standards as `{agent_os_standards}` for use in step-02 and step-05.
+- If NOT available: skip — coding standards will be inferred from the code directly.
 
 ---
 
 ## Scan sequence
 
 Execute in order. Use available tools (Read, Glob, Grep, Bash) for each.
-If Repomix output is available, read it first and extract the information below from it.
 
 ### 1. Structure
 - Map the root directory tree (2-3 levels deep)
