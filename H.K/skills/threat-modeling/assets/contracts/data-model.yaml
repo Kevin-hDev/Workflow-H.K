@@ -1,0 +1,626 @@
+# Data Model Contract — threat-modeling v1.1.0
+# Authoritative schema definitions for all phase data contracts
+# Reference: SKILL.md S3, WORKFLOW.md S3
+schema_version: "1.1.0"
+description: "Complete YAML schema definitions for all phase data contracts"
+
+# =============================================================================
+# Entity Types
+# =============================================================================
+entities:
+  Module:
+    id_format: "M-{Seq:03d}"
+    phase: 1
+    description: "Code modules/components discovered during project understanding"
+    fields:
+      - name: id
+        type: string
+        pattern: "^M-\\d{3}$"
+        required: true
+      - name: name
+        type: string
+        required: true
+      - name: path
+        type: string
+        required: true
+      - name: type
+        type: string
+        enum: [process, data_store, external, library, service]
+        required: true
+      - name: security_level
+        type: string
+        enum: [critical, high, medium, low]
+        required: true
+      - name: description
+        type: string
+        required: false
+
+  Finding:
+    id_format: "F-P{N}-{Seq:03d}"
+    phase: "1-3"
+    description: "Factual security observation from phases 1-3. NOT a vulnerability judgment."
+    semantic: "A factual observation that MAY have security implications. Objective facts about architecture, data flows, or boundaries."
+    fields:
+      - name: id
+        type: string
+        pattern: "^F-P[1-3]-\\d{3}$"
+        required: true
+      - name: phase
+        type: integer
+        enum: [1, 2, 3]
+        required: true
+      - name: title
+        type: string
+        required: true
+      - name: severity
+        type: string
+        enum: [CRITICAL, HIGH, MEDIUM, LOW, INFO]
+        required: true
+      - name: description
+        type: string
+        required: true
+      - name: file
+        type: string
+        required: false
+      - name: line
+        type: integer
+        required: false
+
+  Gap:
+    id_format: "GAP-{Seq:03d}"
+    phase: 4
+    description: "Security control deficiency identified in P4 after analyzing findings against 18 security domains"
+    semantic: "A missing or inadequate security control. Represents deficiency, not observation."
+    transition_rule: "Findings from P1-P3 feed into P4. P4 evaluates findings against 18 security domains and produces Gaps where controls are deficient."
+    fields:
+      - name: id
+        type: string
+        pattern: "^GAP-\\d{3}$"
+        required: true
+      - name: domain
+        type: string
+        enum: [AUTHN, AUTHZ, INPUT, CRYPTO, SESSION, ERROR, LOG, COMM, DATA, CONFIG, FILE, MEMORY, API, SUPPLY, DEPLOY, COMPLIANCE, PRIVACY, AI_ML]
+        required: true
+      - name: title
+        type: string
+        required: true
+      - name: severity
+        type: string
+        enum: [CRITICAL, HIGH, MEDIUM, LOW]
+        required: true
+      - name: finding_refs
+        type: list
+        items: string
+        description: "References to Finding IDs (F-P{N}-{Seq})"
+        required: true
+      - name: description
+        type: string
+        required: true
+
+  Threat:
+    id_format: "T-{STRIDE}-{ElementID}-{Seq}"
+    phase: 5
+    description: "STRIDE threat identified against a DFD element"
+    fields:
+      - name: id
+        type: string
+        pattern: "^T-[STRIDE]-[A-Z]+-?\\d+-\\d+$"
+        required: true
+      - name: stride_category
+        type: string
+        enum: [S, T, R, I, D, E]
+        required: true
+      - name: element_id
+        type: string
+        description: "DFD element ID (EI-NNN, P-NNN, DS-NNN, DF-NNN)"
+        required: true
+      - name: cwe_refs
+        type: list
+        items: string
+        required: true
+      - name: capec_refs
+        type: list
+        items: string
+        required: true
+      - name: description
+        type: string
+        required: true
+      - name: severity
+        type: string
+        enum: [CRITICAL, HIGH, MEDIUM, LOW]
+        required: true
+
+  ValidatedRisk:
+    id_format: "VR-{Seq:03d}"
+    phase: 6
+    description: "Verified risk after validation of P5 threats"
+    fields:
+      - name: id
+        type: string
+        pattern: "^VR-\\d{3}$"
+        required: true
+      - name: threat_refs
+        type: list
+        items: string
+        description: "References to Threat IDs from P5"
+        required: true
+      - name: validation_status
+        type: string
+        enum: [verified, theoretical, pending, excluded]
+        required: true
+      - name: severity
+        type: string
+        enum: [CRITICAL, HIGH, MEDIUM, LOW]
+        required: true
+      - name: cvss
+        type: float
+        description: "CVSS v3.1 score (0.0-10.0)"
+        required: true
+      - name: poc_ref
+        type: string
+        description: "Reference to POC ID if verified"
+        required: false
+
+  Mitigation:
+    id_format: "MIT-{Seq:03d}"
+    phase: 7
+    description: "Remediation measure for validated risks"
+    fields:
+      - name: id
+        type: string
+        pattern: "^MIT-\\d{3}$"
+        required: true
+      - name: risk_refs
+        type: list
+        items: string
+        description: "References to ValidatedRisk IDs (VR-NNN)"
+        required: true
+      - name: priority
+        type: string
+        enum: [P0, P1, P2, P3]
+        description: "P0=immediate, P1=7 days, P2=30 days, P3=backlog"
+        required: true
+      - name: title
+        type: string
+        required: true
+      - name: description
+        type: string
+        required: true
+      - name: effort
+        type: string
+        enum: [low, medium, high]
+        required: false
+
+  POC:
+    id_format: "POC-{Seq:03d}"
+    phase: 6
+    description: "Proof of concept for a validated risk"
+    fields:
+      - name: id
+        type: string
+        pattern: "^POC-\\d{3}$"
+        required: true
+      - name: vr_ref
+        type: string
+        description: "Reference to ValidatedRisk ID"
+        required: true
+      - name: type
+        type: string
+        enum: [exploit, demonstration, theoretical]
+        required: true
+      - name: description
+        type: string
+        required: true
+      - name: steps
+        type: list
+        items: string
+        required: true
+
+  AttackPath:
+    id_format: "AP-{Seq:03d}"
+    phase: 6
+    description: "Single attack vector for a validated risk"
+    fields:
+      - name: id
+        type: string
+        pattern: "^AP-\\d{3}$"
+        required: true
+      - name: vr_ref
+        type: string
+        description: "Reference to ValidatedRisk ID"
+        required: true
+      - name: steps
+        type: list
+        items: string
+        required: true
+      - name: complexity
+        type: string
+        enum: [low, medium, high]
+        required: true
+
+  AttackChain:
+    id_format: "AC-{Seq:03d}"
+    phase: 6
+    description: "Multi-step attack sequence combining multiple attack paths"
+    fields:
+      - name: id
+        type: string
+        pattern: "^AC-\\d{3}$"
+        required: true
+      - name: attack_path_refs
+        type: list
+        items: string
+        description: "References to AttackPath IDs (AP-NNN)"
+        required: true
+      - name: total_severity
+        type: string
+        enum: [CRITICAL, HIGH, MEDIUM, LOW]
+        required: true
+
+  TestCase:
+    id_format: "TC-{Seq:03d}"
+    phase: 8
+    description: "Penetration test case derived from validated risks"
+    fields:
+      - name: id
+        type: string
+        pattern: "^TC-\\d{3}$"
+        required: true
+      - name: vr_ref
+        type: string
+        description: "Reference to ValidatedRisk ID"
+        required: true
+      - name: test_type
+        type: string
+        enum: [automated, manual, hybrid]
+        required: true
+      - name: description
+        type: string
+        required: true
+      - name: expected_result
+        type: string
+        required: true
+
+  DetailedRiskRpt:
+    id_format: "VR-{Seq:03d}"
+    phase: "8R"
+    description: "Per-VR detailed analysis report (optional, triggered by --detailed flag)"
+    fields:
+      - name: vr_id
+        type: string
+        pattern: "^VR-\\d{3}$"
+        required: true
+      - name: detailed_analysis
+        type: string
+        required: true
+      - name: recommendations
+        type: list
+        items: string
+        required: true
+
+# =============================================================================
+# DFD Element Types
+# =============================================================================
+dfd_elements:
+  ExternalInteractor:
+    prefix: "EI"
+    format: "EI-{NNN}"
+    description: "External entity that interacts with the system"
+    stride_applicable: [S, R]
+  Process:
+    prefix: "P"
+    format: "P-{NNN}"
+    description: "Processing unit within the system"
+    stride_applicable: [S, T, R, I, D, E]
+  DataStore:
+    prefix: "DS"
+    format: "DS-{NNN}"
+    description: "Data storage component"
+    stride_applicable: [T, R, I, D]
+  DataFlow:
+    prefix: "DF"
+    format: "DF-{NNN}"
+    description: "Data movement between elements"
+    stride_applicable: [T, I, D]
+  TrustBoundary:
+    prefix: "TB"
+    format: "TB-{NNN}"
+    description: "Security boundary separating trust zones"
+
+# =============================================================================
+# STRIDE Categories
+# =============================================================================
+stride_categories:
+  S:
+    name: "Spoofing"
+    cwes: [CWE-287, CWE-290, CWE-307]
+    capecs: [CAPEC-151, CAPEC-194, CAPEC-600]
+  T:
+    name: "Tampering"
+    cwes: [CWE-20, CWE-77, CWE-78, CWE-89]
+    capecs: [CAPEC-66, CAPEC-88, CAPEC-248]
+  R:
+    name: "Repudiation"
+    cwes: [CWE-117, CWE-223, CWE-778]
+    capecs: [CAPEC-93]
+  I:
+    name: "Information Disclosure"
+    cwes: [CWE-200, CWE-209, CWE-311]
+    capecs: [CAPEC-116, CAPEC-157]
+  D:
+    name: "Denial of Service"
+    cwes: [CWE-400, CWE-770, CWE-918]
+    capecs: [CAPEC-125, CAPEC-227]
+  E:
+    name: "Elevation of Privilege"
+    cwes: [CWE-269, CWE-284, CWE-862]
+    capecs: [CAPEC-122, CAPEC-233]
+
+# =============================================================================
+# STRIDE per Element Matrix
+# =============================================================================
+stride_per_element:
+  Process: [S, T, R, I, D, E]
+  DataStore: [T, R, I, D]
+  DataFlow: [T, I, D]
+  ExternalInteractor_source: [S, R]
+
+# =============================================================================
+# Phase Data Contracts
+# =============================================================================
+phase_contracts:
+  P0:
+    file: "P0_detection.yaml"
+    description: "Stack detection, DATA loading, sensitive component inventory"
+    required_fields:
+      - detected_stack.languages
+      - detected_stack.config_files_found
+      - sensitive_components
+      - loaded_data
+    validation:
+      - "languages list must be non-empty"
+      - "config_files_found list must be non-empty"
+      - "loaded_data must contain offensive, defensive, shared sections"
+    common_header:
+      schema_version: "1.1.0"
+      phase: 0
+      generated_at: "ISO8601"
+
+  P1:
+    file: "P1_project_context.yaml"
+    description: "Project understanding, module inventory, entry points"
+    input_ref: "P0_detection.yaml"
+    required_fields:
+      - module_inventory
+      - entry_point_inventory
+      - discovery_checklist
+    validation:
+      - "discovery_checklist.coverage must equal 100%"
+      - "module_inventory must be non-empty"
+    common_header:
+      schema_version: "1.1.0"
+      phase: 1
+      generated_at: "ISO8601"
+      input_ref: "P0_detection.yaml"
+
+  P2:
+    file: "P2_dfd_elements.yaml"
+    description: "Data Flow Diagram elements, interface inventory, data flow traces"
+    input_ref: "P1_project_context.yaml"
+    required_fields:
+      - interface_inventory
+      - data_flow_traces
+      - dfd_elements
+    validation:
+      - "l1_coverage.coverage_percentage must equal 100"
+      - "dfd_elements must contain at least one Process"
+    common_header:
+      schema_version: "1.1.0"
+      phase: 2
+      generated_at: "ISO8601"
+      input_ref: "P1_project_context.yaml"
+
+  P3:
+    file: "P3_boundary_context.yaml"
+    description: "Trust boundary evaluation, cross-boundary flows"
+    input_ref: "P2_dfd_elements.yaml"
+    required_fields:
+      - boundaries
+      - interfaces
+      - cross_boundary_flows
+    validation:
+      - "boundaries list must be non-empty"
+    common_header:
+      schema_version: "1.1.0"
+      phase: 3
+      generated_at: "ISO8601"
+      input_ref: "P2_dfd_elements.yaml"
+
+  P4:
+    file: "P4_security_gaps.yaml"
+    description: "Security design review against 18 domains, gap identification"
+    input_ref: "P3_boundary_context.yaml"
+    required_fields:
+      - gaps
+      - design_matrix
+      - findings
+    validation:
+      - "design_matrix must assess all 18 security domains"
+      - "domains: AUTHN, AUTHZ, INPUT, CRYPTO, SESSION, ERROR, LOG, COMM, DATA, CONFIG, FILE, MEMORY, API, SUPPLY, DEPLOY, COMPLIANCE, PRIVACY, AI_ML"
+    common_header:
+      schema_version: "1.1.0"
+      phase: 4
+      generated_at: "ISO8601"
+      input_ref: "P3_boundary_context.yaml"
+
+  P5:
+    file: "P5_threat_inventory.yaml"
+    description: "STRIDE threat analysis per DFD element"
+    input_ref: "P4_security_gaps.yaml"
+    required_fields:
+      - threats
+      - summary.by_stride
+      - summary.by_element
+      - summary.by_risk
+      - summary.total
+    validation:
+      - "threat_inventory.summary.total must be > 0"
+      - "each threat must have valid STRIDE category"
+      - "each threat must reference a valid DFD element"
+    common_header:
+      schema_version: "1.1.0"
+      phase: 5
+      generated_at: "ISO8601"
+      input_ref: "P4_security_gaps.yaml"
+
+  P6:
+    file: "P6_validated_risks.yaml"
+    description: "Risk validation, POC details, attack paths, attack chains"
+    input_ref: "P5_threat_inventory.yaml"
+    required_fields:
+      - risk_summary
+      - risk_details
+      - poc_details
+      - attack_paths
+    validation:
+      - "Count conservation: P5.total == verified + theoretical + pending + excluded"
+      - "every risk_detail must reference a P5 threat"
+      - "risk_summary totals must balance"
+    count_conservation: "P5.threat_inventory.summary.total == P6.risk_summary.total_verified + P6.risk_summary.total_theoretical + P6.risk_summary.total_pending + P6.risk_summary.total_excluded"
+    common_header:
+      schema_version: "1.1.0"
+      phase: 6
+      generated_at: "ISO8601"
+      input_ref: "P5_threat_inventory.yaml"
+
+  P7:
+    file: "P7_mitigation_plan.yaml"
+    description: "Mitigation planning with priority roadmap"
+    input_ref: "P6_validated_risks.yaml"
+    required_fields:
+      - mitigations
+      - roadmap
+    validation:
+      - "every VR-xxx must have at least one MIT-xxx"
+      - "roadmap must contain immediate, short_term, medium_term, long_term"
+    roadmap_priorities:
+      immediate: "P0 - Fix now"
+      short_term: "P1 - 7 days"
+      medium_term: "P2 - 30 days"
+      long_term: "P3 - Backlog"
+    common_header:
+      schema_version: "1.1.0"
+      phase: 7
+      generated_at: "ISO8601"
+      input_ref: "P6_validated_risks.yaml"
+
+  P8:
+    file: "P8_report_manifest.yaml"
+    description: "Report generation manifest, statistics, test cases"
+    input_ref: "P7_mitigation_plan.yaml"
+    required_fields:
+      - generated_reports
+      - statistics
+    validation:
+      - "all required reports must be listed in generated_reports"
+      - "threat_model_output.yaml must be produced"
+    common_header:
+      schema_version: "1.1.0"
+      phase: 8
+      generated_at: "ISO8601"
+      input_ref: "P7_mitigation_plan.yaml"
+
+  P8R:
+    file: "P8R_manifest.yaml"
+    description: "Optional detailed per-VR analysis reports manifest"
+    input_ref: "P6_validated_risks.yaml + P7_mitigation_plan.yaml + P8_report_manifest.yaml"
+    required_fields:
+      - reports
+      - cross_reference_integrity
+    validation:
+      - "count conservation (optional)"
+      - "each report must reference a valid VR-xxx"
+    common_header:
+      schema_version: "1.1.0"
+      phase: "8R"
+      generated_at: "ISO8601"
+
+# =============================================================================
+# Data Flow Chain (strict, no gaps)
+# =============================================================================
+data_flow_chain:
+  - from: P0
+    file: P0_detection.yaml
+    to: P1
+  - from: P1
+    file: P1_project_context.yaml
+    to: P2
+  - from: P2
+    file: P2_dfd_elements.yaml
+    to: P3
+  - from: P3
+    file: P3_boundary_context.yaml
+    to: P4
+  - from: P4
+    file: P4_security_gaps.yaml
+    to: P5
+  - from: P5
+    file: P5_threat_inventory.yaml
+    to: P6
+  - from: P6
+    file: P6_validated_risks.yaml
+    to: P7
+  - from: P7
+    file: P7_mitigation_plan.yaml
+    to: P8
+  - from: P6_P7_P8
+    file: "P6+P7+P8 YAML"
+    to: P8R
+    optional: true
+
+# =============================================================================
+# Session Metadata Schema
+# =============================================================================
+session_meta:
+  file: "_session_meta.yaml"
+  location: ".phase_working/{SESSION_ID}/"
+  fields:
+    - schema_version: "1.1.0"
+    - session_id: "{PROJECT}_{YYYYMMDD_HHMMSS}"
+    - project_name: "string"
+    - project_path: "string (absolute)"
+    - started_at: "ISO8601"
+    - language: "string (en|zh|ja|ko|es|fr|de|pt|ru)"
+    - skill_version: "1.1.0"
+    - current_state: "string (FSM state)"
+    - detected_stack: "object (filled after P0)"
+    - loaded_data: "object (filled after P0)"
+    - phases: "object (P0-P8 status tracking)"
+
+# =============================================================================
+# Chain Output Schema
+# =============================================================================
+chain_output:
+  file: "threat_model_output.yaml"
+  location: "audit/Risk_Assessment_Report/chain/"
+  description: "Bridge to adversary-simulation skill P0"
+  required_fields:
+    - schema_version
+    - source_skill
+    - generated_at
+    - project_name
+    - project_path
+    - detected_stack
+    - threat_surfaces
+    - critical_components
+    - stride_findings
+    - recommended_attack_vectors
+    - risk_ratings
+
+# =============================================================================
+# Validation Exit Codes
+# =============================================================================
+validation_exit_codes:
+  0: "Pass - proceed to next phase"
+  1: "Missing data - fix YAML and revalidate"
+  2: "Schema validation failed - fix structure and revalidate"

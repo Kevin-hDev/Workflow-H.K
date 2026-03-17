@@ -1,0 +1,28 @@
+# BMAD-HARDENED is a separate project — do not include in this repo
+BMAD-HARDENED/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build
+dist/
+build/
+
+# npm
+*.tgz

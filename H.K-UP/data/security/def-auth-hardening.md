@@ -1,0 +1,176 @@
+---
+type: security-data
+category: defense-patterns
+tags: [auth, session, jwt, oauth, api]
+loaded_by: Nyx (INDEX_THEN_SELECTIVE only)
+---
+
+# Defense Patterns — Authentication & Session Hardening
+
+> Load this file when the project has user authentication, session management,
+> JWT tokens, OAuth flows, or API key management.
+
+---
+
+## JWT Security
+
+### Common JWT pitfalls
+
+| Pitfall | Risk | Fix |
+|---------|------|-----|
+| `alg: none` accepted | Critical — signature bypassed | Reject tokens with `alg: none` server-side |
+| Algorithm confusion (RS256 → HS256) | Critical — public key used as HMAC secret | Explicitly specify allowed algorithms |
+| No expiry (`exp` claim missing) | High — token valid forever | Always set `exp`, typically 15min–1h |
+| Secret weak or hardcoded | Critical | Minimum 256-bit random secret, from env/keystore |
+| Payload not validated | High | Validate all claims (`sub`, `iss`, `aud`, `exp`) |
+
+### Secure JWT implementation checklist
+
+```
+JWT Security Checklist
+
+  Signing:
+  [ ] Algorithm explicitly set (HS256 or RS256 — never none)
+  [ ] Secret/key sourced from environment variable or keystore (never hardcoded)
+  [ ] Secret is ≥ 32 bytes random for HS256
+
+  Claims:
+  [ ] exp set (max 1h for access tokens, 7–30 days for refresh tokens)
+  [ ] iss (issuer) set and validated
+  [ ] aud (audience) set and validated
+  [ ] sub (subject) contains a non-guessable user identifier
+
+  Validation (server-side):
+  [ ] Signature verified before reading payload
+  [ ] All claims validated (exp, iss, aud)
+  [ ] Algorithm allowlist enforced (reject unexpected algorithms)
+  [ ] Token revocation mechanism (blocklist for sensitive operations)
+```
+
+---
+
+## Session Management
+
+### Secure session configuration
+
+| Setting | Secure value | Why |
+|---------|-------------|-----|
+| `httpOnly` | `true` | Prevents JavaScript access (XSS mitigation) |
+| `secure` | `true` | HTTPS only |
+| `sameSite` | `strict` or `lax` | CSRF mitigation |
+| Session ID entropy | ≥ 128 bits | Prevents brute force |
+| Session lifetime | 15–60 min (idle timeout) | Reduces exposure window |
+| Session rotation on login | Yes | Prevents session fixation |
+| Session invalidation on logout | Yes | Truly ends the session server-side |
+
+### Session fixation prevention
+
+```
+On login:
+1. Verify credentials
+2. Invalidate the existing session (old session ID)
+3. Generate a new session ID (CSPRNG, ≥ 128 bits)
+4. Bind the new session to the authenticated user
+5. Issue the new session ID in the Set-Cookie response
+```
+
+---
+
+## OAuth 2.0 / OIDC
+
+### PKCE (Proof Key for Code Exchange) — mandatory for public clients
+
+```
+Authorization code flow with PKCE:
+1. Client generates: code_verifier = random(32 bytes)
+2. Client computes: code_challenge = BASE64URL(SHA256(code_verifier))
+3. Client sends code_challenge in the authorization request
+4. Authorization server stores code_challenge
+5. Client sends code_verifier in the token request
+6. Server verifies: SHA256(code_verifier) == stored code_challenge
+```
+
+**Why:** Prevents authorization code interception — the code alone is useless without the verifier.
+
+### Common OAuth pitfalls
+
+| Pitfall | Fix |
+|---------|-----|
+| No `state` parameter | Always generate and verify `state` (CSRF protection) |
+| Redirect URI not validated | Exact match validation — no wildcards |
+| Token stored in localStorage | Store in httpOnly cookie or in-memory |
+| No token expiry validation | Always check `exp` before using the token |
+| Implicit flow used | Use Authorization Code + PKCE instead |
+
+---
+
+## API Key Management
+
+### API key best practices
+
+```
+Generation:
+[ ] CSPRNG only (crypto.randomBytes, OsRng, SecureRandom)
+[ ] Minimum 32 bytes (256 bits) of entropy
+[ ] Never sequential or predictable
+
+Storage:
+[ ] Hashed in the database (SHA-256 or bcrypt — not plaintext)
+[ ] Prefix stored separately for identification (e.g., "hk_live_" prefix visible, rest hashed)
+[ ] Never stored in logs
+
+Transmission:
+[ ] Via Authorization header (Bearer scheme) or custom header
+[ ] Never in URL query parameters (leaked in server logs and browser history)
+[ ] HTTPS only
+
+Validation:
+[ ] Constant-time comparison when verifying (prevents timing attacks)
+[ ] Rate limiting per API key
+[ ] Scope validation (key is authorized for the requested operation)
+[ ] Expiry and rotation support
+```
+
+---
+
+## Password Hashing
+
+### Algorithm selection
+
+| Algorithm | Status | Parameters |
+|-----------|--------|-----------|
+| bcrypt | Recommended | cost factor ≥ 12 |
+| Argon2id | Recommended | m=64MB, t=3, p=4 (OWASP recommendation) |
+| scrypt | Acceptable | N=32768, r=8, p=1 |
+| PBKDF2-SHA256 | Acceptable | ≥ 600,000 iterations |
+| MD5, SHA-1, SHA-256 (unsalted) | Prohibited | No iteration count, GPU-crackable |
+
+### Implementation checklist
+
+```
+Password Handling Checklist:
+[ ] Password hashed with bcrypt/Argon2id before storage
+[ ] Password comparison done by the hashing library (never manual == comparison)
+[ ] Salt generated by the library (never reused)
+[ ] Plaintext password zeroed from memory after hashing
+[ ] Password not logged at any level
+[ ] Minimum length enforced (≥ 8 chars, ideally ≥ 12)
+[ ] Breach password list check (HaveIBeenPwned API or local list)
+```
+
+---
+
+## Brute Force & Rate Limiting
+
+```
+Rate Limiting by Endpoint:
+- Login endpoint: 5 attempts per 15 minutes per IP + per account
+- Password reset: 3 requests per hour per email
+- API endpoints: per-key rate limits with sliding window
+- 2FA verification: 3 attempts then lock
+
+Lockout strategy:
+- Soft lockout: exponential backoff (5s, 30s, 5min, 30min)
+- Hard lockout: after N attempts, require email verification to unlock
+- Always notify user of lockout (email alert)
+```

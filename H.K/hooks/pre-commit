@@ -1,0 +1,195 @@
+#!/usr/bin/env bash
+# H.K Pre-Commit Hook — Universal code quality gate
+# Blocks commits that violate code quality rules.
+# Install: cp hooks/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+
+set -euo pipefail
+
+LIMIT=250
+block=0
+warn=0
+
+# Code file extensions (documentation and config files are excluded)
+CODE_EXTENSIONS="ts|tsx|js|jsx|rs|go|py|rb|java|kt|swift|c|cpp|h|hpp|cs|php|vue|svelte"
+
+# Files staged for commit
+STAGED=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null || true)
+
+if [ -z "$STAGED" ]; then
+    exit 0
+fi
+
+# ── 1. BLOCKING: Code files > 250 lines ──────────────────────────────────────
+# Only checks source code files. Excludes: .md, .txt, .rst, .json, .yaml, .toml,
+# .lock, .csv, .html, .css, .svg, .sql, generated files, docs/, *-output/
+oversized=""
+while IFS= read -r file; do
+    if echo "$file" | grep -qE "\.($CODE_EXTENSIONS)$"; then
+        if echo "$file" | grep -qvE "(\.test\.|\.spec\.|__tests__|node_modules|dist/|build/|vendor/)"; then
+            lines=$(wc -l < "$file" 2>/dev/null || echo 0)
+            if [ "$lines" -gt "$LIMIT" ]; then
+                oversized="$oversized\n  $lines  $file"
+            fi
+        fi
+    fi
+done <<< "$STAGED"
+
+if [ -n "$oversized" ]; then
+    echo "BLOCKED: Code files > ${LIMIT} lines (target 50-150):"
+    echo -e "$oversized"
+    block=1
+fi
+
+# ── 2. BLOCKING: Secrets in code ─────────────────────────────────────────────
+secrets=""
+while IFS= read -r file; do
+    if echo "$file" | grep -qE "\.($CODE_EXTENSIONS)$"; then
+        found=$(grep -nE \
+            -e 'AKIA[0-9A-Z]{16}' \
+            -e 'sk-[a-zA-Z0-9]{20,}' \
+            -e 'ghp_[a-zA-Z0-9]{36}' \
+            -e 'glpat-[a-zA-Z0-9\-]{20}' \
+            -e 'xox[bpors]-[a-zA-Z0-9\-]{10,}' \
+            -e 'eyJ[a-zA-Z0-9\-_]{20,}\.' \
+            -e '-----BEGIN (RSA |EC |DSA )?PRIVATE KEY-----' \
+            -e 'password\s*[:=]\s*["\x27][^"\x27]{4,}["\x27]' \
+            -e 'api[_-]?key\s*[:=]\s*["\x27][^"\x27]{8,}["\x27]' \
+            -e 'secret\s*[:=]\s*["\x27][^"\x27]{8,}["\x27]' \
+            "$file" 2>/dev/null || true)
+        if [ -n "$found" ]; then
+            secrets="$secrets\n  $file:\n$found"
+        fi
+    fi
+done <<< "$STAGED"
+
+if [ -n "$secrets" ]; then
+    echo "BLOCKED: Potential secrets detected in code:"
+    echo -e "$secrets"
+    echo "  → Use environment variables or a keystore instead."
+    block=1
+fi
+
+# ── 3. BLOCKING: .env and credential files ───────────────────────────────────
+env_files=""
+while IFS= read -r file; do
+    if echo "$file" | grep -qE '(\.env$|\.env\.|credentials\.json|\.pem$|\.key$|id_rsa|\.keystore$)'; then
+        env_files="$env_files\n  $file"
+    fi
+done <<< "$STAGED"
+
+if [ -n "$env_files" ]; then
+    echo "BLOCKED: Sensitive files should never be committed:"
+    echo -e "$env_files"
+    echo "  → Add them to .gitignore"
+    block=1
+fi
+
+# ── 4. BLOCKING: Unresolved merge conflicts ──────────────────────────────────
+conflicts=""
+while IFS= read -r file; do
+    if [ -f "$file" ]; then
+        found=$(grep -lE '^(<<<<<<<|=======|>>>>>>>)' "$file" 2>/dev/null || true)
+        if [ -n "$found" ]; then
+            conflicts="$conflicts\n  $file"
+        fi
+    fi
+done <<< "$STAGED"
+
+if [ -n "$conflicts" ]; then
+    echo "BLOCKED: Unresolved merge conflicts:"
+    echo -e "$conflicts"
+    block=1
+fi
+
+# ── 5. WARNING: Debug statements left in code ────────────────────────────────
+debug_found=""
+while IFS= read -r file; do
+    if echo "$file" | grep -qE "\.($CODE_EXTENSIONS)$"; then
+        found=$(grep -nE \
+            -e 'console\.(log|debug|info)\(' \
+            -e '\bprint\(' \
+            -e '\bprintln!\(' \
+            -e '\bdbg!\(' \
+            -e '\bfmt\.Print' \
+            -e '\bpdb\.set_trace' \
+            -e '\bdebugger;' \
+            "$file" 2>/dev/null | grep -v '// keep' | grep -v '# keep' | head -5 || true)
+        if [ -n "$found" ]; then
+            debug_found="$debug_found\n  $file:\n$found"
+        fi
+    fi
+done <<< "$STAGED"
+
+if [ -n "$debug_found" ]; then
+    echo "WARNING: Debug statements found (add '// keep' to ignore):"
+    echo -e "$debug_found"
+    warn=1
+fi
+
+# ── 6. WARNING: TODO/FIXME/HACK markers ─────────────────────────────────────
+todos=""
+while IFS= read -r file; do
+    if echo "$file" | grep -qE "\.($CODE_EXTENSIONS)$"; then
+        found=$(grep -nE '(TODO|FIXME|HACK|XXX|TEMP):?' "$file" 2>/dev/null | head -5 || true)
+        if [ -n "$found" ]; then
+            todos="$todos\n  $file:\n$found"
+        fi
+    fi
+done <<< "$STAGED"
+
+if [ -n "$todos" ]; then
+    echo "WARNING: TODO/FIXME markers found:"
+    echo -e "$todos"
+    warn=1
+fi
+
+# ── 7. LINT/TYPECHECK (if available) ─────────────────────────────────────────
+if [ -f ".hk/hk-state.json" ]; then
+    # Use H.K detected commands
+    lint_cmd=$(python3 -c "import json; d=json.load(open('.hk/hk-state.json')); bs=d.get('variables',{}).get('build_systems',[]); print(bs[0].get('lint_cmd','') if bs else '')" 2>/dev/null || true)
+    typecheck_cmd=$(python3 -c "import json; d=json.load(open('.hk/hk-state.json')); bs=d.get('variables',{}).get('build_systems',[]); print(bs[0].get('typecheck_cmd','') if bs else '')" 2>/dev/null || true)
+elif [ -f "package.json" ]; then
+    lint_cmd=$(node -e "const p=require('./package.json'); console.log(p.scripts?.lint ? 'npm run lint' : '')" 2>/dev/null || true)
+    typecheck_cmd=$(node -e "const p=require('./package.json'); console.log(p.scripts?.typecheck || p.scripts?.['type-check'] ? 'npm run typecheck' : '')" 2>/dev/null || true)
+elif [ -f "Cargo.toml" ]; then
+    lint_cmd="cargo clippy --quiet 2>&1"
+    typecheck_cmd="cargo check --quiet 2>&1"
+elif [ -f "go.mod" ]; then
+    lint_cmd="go vet ./... 2>&1"
+    typecheck_cmd=""
+elif [ -f "pyproject.toml" ] || [ -f "setup.py" ]; then
+    lint_cmd=$(command -v ruff >/dev/null && echo "ruff check ." || true)
+    typecheck_cmd=$(command -v mypy >/dev/null && echo "mypy ." || true)
+else
+    lint_cmd=""
+    typecheck_cmd=""
+fi
+
+if [ -n "$lint_cmd" ]; then
+    echo "Running lint..."
+    if ! eval "$lint_cmd" >/dev/null 2>&1; then
+        echo "BLOCKED: Lint failed. Run: $lint_cmd"
+        block=1
+    fi
+fi
+
+if [ -n "$typecheck_cmd" ]; then
+    echo "Running typecheck..."
+    if ! eval "$typecheck_cmd" >/dev/null 2>&1; then
+        echo "BLOCKED: Typecheck failed. Run: $typecheck_cmd"
+        block=1
+    fi
+fi
+
+# ── Verdict ──────────────────────────────────────────────────────────────────
+echo ""
+if [ "$block" -gt 0 ]; then
+    echo "Pre-commit BLOCKED. Fix the issues above before committing."
+    exit 1
+fi
+
+if [ "$warn" -gt 0 ]; then
+    echo "Pre-commit PASSED with warnings."
+fi
+
+exit 0

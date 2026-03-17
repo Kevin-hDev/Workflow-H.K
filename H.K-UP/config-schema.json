@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "hkup-config-schema",
+  "title": "H.K-UP Configuration",
+  "description": "Schéma de validation pour .hkup-config.json",
+  "type": "object",
+  "required": ["version", "ai"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Version du schéma de configuration",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "ai": {
+      "type": "string",
+      "description": "IDE / assistant IA utilisé",
+      "enum": [
+        "claude-code",
+        "cursor",
+        "gemini-cli",
+        "copilot",
+        "codex-cli",
+        "windsurf",
+        "zed",
+        "crush",
+        "mistral-vibe",
+        "kimi-code",
+        "droids",
+        "other"
+      ]
+    },
+    "workflows_installed": {
+      "type": "array",
+      "description": "Liste des workflows installés",
+      "items": {
+        "type": "string",
+        "enum": [
+          "diagnostic",
+          "brainstorming",
+          "prd",
+          "architecture",
+          "design",
+          "dev",
+          "review",
+          "security",
+          "finalisation"
+        ]
+      },
+      "uniqueItems": true,
+      "default": []
+    },
+    "agent_os": {
+      "type": "boolean",
+      "description": "Intégration Agent OS pour l'extraction automatique des standards de codage du projet existant",
+      "default": false
+    },
+    "repomix": {
+      "type": "boolean",
+      "description": "Intégration Repomix pour la génération de contexte projet",
+      "default": false
+    },
+    "user_name": {
+      "type": "string",
+      "description": "Nom utilisé par les agents pour s'adresser à l'utilisateur",
+      "minLength": 1,
+      "maxLength": 64,
+      "default": "User"
+    },
+    "communication_language": {
+      "type": "string",
+      "description": "Langue des échanges avec les agents (ex: English, French)",
+      "minLength": 2,
+      "maxLength": 32,
+      "default": "English"
+    },
+    "document_output_language": {
+      "type": "string",
+      "description": "Langue des documents générés (ex: English, French)",
+      "minLength": 2,
+      "maxLength": 32,
+      "default": "English"
+    },
+    "output_folder": {
+      "type": "string",
+      "description": "Chemin relatif (depuis la racine projet) du dossier de sortie",
+      "minLength": 1,
+      "maxLength": 128,
+      "default": "_hkup-output"
+    }
+  }
+}

@@ -1,0 +1,81 @@
+code: hkup
+name: "H.K-UP"
+version: "1.0.0"
+description: "Workflow complet pour reprendre et améliorer des projets existants avec l'IA"
+
+# ─── Variables configurables ────────────────────────────────────────────────
+
+user_name:
+  prompt: "What should agents call you? (Use your name or a team name)"
+  default: "User"
+  result: "{value}"
+
+communication_language:
+  prompt: "What language should agents use when chatting with you?"
+  default: "English"
+  result: "{value}"
+
+document_output_language:
+  prompt: "What language should output documents be written in?"
+  default: "English"
+  result: "{value}"
+
+output_folder:
+  prompt: "Where should output files be saved? (relative to project root)"
+  default: "_hkup-output"
+  result: "{project-root}/{value}"
+
+# ─── Paths internes ──────────────────────────────────────────────────────────
+
+paths:
+  agents:       "{module-root}/agents"
+  workflows:    "{module-root}/workflows"
+  data:         "{module-root}/data"
+  templates:    "{module-root}/templates"
+  skills:       "{module-root}/skills"
+  tools:        "{module-root}/tools"
+
+# ─── Workflows disponibles ───────────────────────────────────────────────────
+
+workflows:
+  - id: diagnostic
+    path: "{paths.workflows}/diagnostic"
+    description: "Scan du projet existant et rapport d'état"
+  - id: brainstorming
+    path: "{paths.workflows}/brainstorming"
+    description: "Idéation et orientation stratégique"
+  - id: prd
+    path: "{paths.workflows}/prd"
+    description: "Product Requirements Document"
+  - id: architecture
+    path: "{paths.workflows}/architecture"
+    description: "Conception et plan technique"
+  - id: design
+    path: "{paths.workflows}/design"
+    description: "Audit UI/UX et spécifications"
+  - id: dev
+    path: "{paths.workflows}/dev"
+    description: "Implémentation du code"
+  - id: review
+    path: "{paths.workflows}/review"
+    description: "Revue de code et qualité"
+  - id: security
+    path: "{paths.workflows}/security"
+    description: "Audit sécurité et hardening"
+  - id: finalisation
+    path: "{paths.workflows}/finalisation"
+    description: "Handoff, changelog et documentation finale"
+
+# ─── Répertoires créés à l'installation ─────────────────────────────────────
+
+directories:
+  - "{output_folder}"
+  - "{output_folder}/diagnostic"
+  - "{output_folder}/brainstorming"
+  - "{output_folder}/prd"
+  - "{output_folder}/architecture"
+  - "{output_folder}/design"
+  - "{output_folder}/dev"
+  - "{output_folder}/review"
+  - "{output_folder}/security"
+  - "{output_folder}/finalisation"

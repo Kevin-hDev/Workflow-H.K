@@ -1,0 +1,91 @@
+# ide-platforms.yaml — Supported IDE definitions for H.K-UP
+#
+# Each entry describes where H.K-UP config files should be placed
+# for a given AI-assisted development environment.
+#
+# Fields:
+#   name        — Display name shown to the user
+#   config_dir  — Primary config directory (relative to project root)
+#   files       — List of files to generate
+#     source    — Source key used to select the template to generate
+#     target    — Destination path (relative to project root)
+
+platforms:
+  claude-code:
+    name: "Claude Code"
+    config_dir: ".claude"
+    files:
+      - source: "CLAUDE.md"
+        target: "CLAUDE.md"
+      - source: "skills/"
+        target: ".claude/skills/hkup/"
+
+  cursor:
+    name: "Cursor"
+    config_dir: ".cursor/rules"
+    files:
+      - source: "rules.md"
+        target: ".cursor/rules/hkup.md"
+
+  gemini-cli:
+    name: "Gemini CLI"
+    config_dir: "."
+    files:
+      - source: "GEMINI.md"
+        target: "GEMINI.md"
+
+  copilot:
+    name: "GitHub Copilot"
+    config_dir: ".github"
+    files:
+      - source: "copilot-instructions.md"
+        target: ".github/copilot-instructions.md"
+
+  codex-cli:
+    name: "Codex CLI (OpenAI)"
+    config_dir: "."
+    files:
+      - source: "AGENTS.md"
+        target: "AGENTS.md"
+
+  windsurf:
+    name: "Windsurf"
+    config_dir: "."
+    files:
+      - source: "AGENTS.md"
+        target: "AGENTS.md"
+
+  zed:
+    name: "Zed"
+    config_dir: "."
+    files:
+      - source: "AGENTS.md"
+        target: "AGENTS.md"
+
+  crush:
+    name: "Crush (ex-OpenCode)"
+    config_dir: "."
+    files:
+      - source: "crush-config.json"
+        target: ".crush.json"
+
+  mistral-vibe:
+    name: "Mistral Vibe"
+    config_dir: ".vibe"
+    files:
+      - source: "vibe-config.toml"
+        target: ".vibe/config.toml"
+
+  kimi-code:
+    name: "Kimi Code"
+    config_dir: "."
+    files:
+      - source: "kimi-config.md"
+        target: ".kimi/config.md"
+
+  droids:
+    name: "Droids (Factory AI)"
+    config_dir: "."
+    files:
+      - source: "droids-config.md"
+        target: ".factory/config.md"

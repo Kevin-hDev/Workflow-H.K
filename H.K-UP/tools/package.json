@@ -1,0 +1,38 @@
+{
+  "name": "hkup-workflow",
+  "version": "1.0.0",
+  "description": "H.K-UP — Workflow for taking over and improving existing projects with AI",
+  "bin": {
+    "hk-up": "./cli.js"
+  },
+  "files": [
+    "cli.js",
+    "lib/",
+    "data/"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.0.0",
+    "@clack/core": "^1.0.0",
+    "commander": "^14.0.0",
+    "picocolors": "^1.1.0",
+    "js-yaml": "^4.1.0"
+  },
+  "author": "Kevin Huynh",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kevin-hDev/H.K-UP"
+  },
+  "keywords": [
+    "ai",
+    "workflow",
+    "brownfield",
+    "code-review",
+    "security-audit",
+    "claude",
+    "agents"
+  ]
+}
