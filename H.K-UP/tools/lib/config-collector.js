@@ -177,7 +177,24 @@ async function collectAndSave(answers, targetDir) {
   // ── 2. Create output folder ───────────────────────────────────────────────
   createOutputDirs(outputRoot, answers.workflows || ['diagnostic']);
 
-  // ── 3. Install skills into .claude/skills/ ───────────────────────────────
+  // ── 3. Copy content files (agents, workflows, data, templates) ───────────
+  const packageRoot = path.join(__dirname, '..');
+  const contentMap = {
+    'content-agents': 'agents',
+    'content-workflows': 'workflows',
+    'content-data': 'data',
+    'content-templates': 'templates',
+  };
+
+  for (const [srcName, destName] of Object.entries(contentMap)) {
+    const srcDir = path.join(packageRoot, srcName);
+    const destDir = path.join(hkupRoot, destName);
+    if (fs.existsSync(srcDir)) {
+      copyDirRecursive(srcDir, destDir);
+    }
+  }
+
+  // ── 4. Install skills into .claude/skills/ ──────────────────────────────
   installSkills(__dirname, targetDir);
 
   // ── 4. Write .hkup-config.json ────────────────────────────────────────────

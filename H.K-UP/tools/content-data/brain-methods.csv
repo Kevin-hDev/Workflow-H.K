@@ -1,0 +1,9 @@
+id,name,focus,description,recommended_for
+1,Design Thinking,user,"Empathize → Define → Ideate → Prototype → Test","Redesign the experience"
+2,Story Mapping,user,"Map the user journeys from end to end","Restructure the flows"
+3,Lean Canvas,business,"Validate the business model on one page","Challenge viability"
+4,Blue Ocean,business,"Differentiate by creating an unoccupied market space","Modernize and reposition"
+5,Impact Mapping,strategy,"Objective → Actors → Behaviors → Features","Evolve with intention"
+6,SWOT,strategy,"Strengths / Weaknesses / Opportunities / Threats","Audit or modernize"
+7,Double Diamond,exploration,"Explore then converge (twice): Discover → Define → Develop → Deliver","Unknown direction"
+8,Opportunity Tree,exploration,"Sort ideas and prioritize by impact","Add features"

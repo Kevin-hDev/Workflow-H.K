@@ -1,0 +1,11 @@
+id,name,category,description,when_to_use
+1,User Journey Mapping,research,"Map the complete user journey step by step","Understand the current experience before any modification"
+2,Competitive UI Audit,research,"Analyze the UI of 3-5 direct competitors to identify standards","Position yourself and discover domain conventions"
+3,Heuristic Evaluation,audit,"Evaluate the interface against Nielsen's 10 heuristics","Detect usability issues without user testing"
+4,Accessibility Audit WCAG,validation,"Verify compliance with WCAG 2.1 criteria (A, AA, AAA)","Before delivery or when accessibility is required"
+5,Atomic Design,structure,"Organize components into atoms, molecules, organisms, templates, pages","Design a modular and reusable design system"
+6,Design Tokens,implementation,"Define the fundamental variables: colors, typography, spacing, shadows","Centralize design values for consistency and maintainability"
+7,Mood Board,exploration,"Gather visual references to define the ambiance before coding","Align the team on the visual direction without over-specifying"
+8,Progressive Disclosure,pattern,"Reveal information progressively according to the user's need","Simplify complex interfaces without removing options"
+9,Card Sorting,research,"Have users sort content to validate the information architecture","Define or validate navigation and categorization"
+10,Wireframe Low-Fidelity,prototyping,"Sketch page structures without visual detail","Quickly validate the layout before investing in design"
