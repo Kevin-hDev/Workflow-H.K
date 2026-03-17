@@ -235,6 +235,25 @@ async function install(options = {}) {
       targetDir
     );
 
+    // Install complementary tools if selected
+    const toolsToInstall = [];
+    if (agentOs) toolsToInstall.push('agent-os');
+    if (repomix) toolsToInstall.push('repomix');
+
+    if (toolsToInstall.length > 0) {
+      spin.message(`Installing ${toolsToInstall.join(' + ')}…`);
+      try {
+        execSync(`npm install -g ${toolsToInstall.join(' ')}`, { stdio: 'pipe', cwd: targetDir });
+      } catch {
+        spin.message('Global install failed, trying local…');
+        try {
+          execSync(`npm install --save-dev ${toolsToInstall.join(' ')}`, { stdio: 'pipe', cwd: targetDir });
+        } catch {
+          // Non-blocking — tools are optional, continue installation
+        }
+      }
+    }
+
     if (selectedIDEs.length > 0) {
       spin.message('Configuring IDE integrations…');
       ideResults = await integrate(selectedIDEs, targetDir, folderName);

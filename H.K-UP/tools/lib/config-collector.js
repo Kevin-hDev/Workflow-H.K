@@ -22,7 +22,7 @@ const CONFIG_VERSION = '1.0.0';
 const CONFIG_FILE = '.hkup-config.json';
 
 // Sub-directories created inside the _hkup/ installation folder.
-const HKUP_SUBDIRS = ['agents', 'workflows', 'data', 'data/security', 'data/modes', 'templates', 'skills'];
+const HKUP_SUBDIRS = ['agents', 'workflows', 'data', 'data/security', 'data/modes', 'templates'];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
