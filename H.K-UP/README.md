@@ -35,10 +35,9 @@ The CLI walks you through 6 steps:
 
 1. **Directory** — choose where to install (defaults to current folder)
 2. **Workflows** — select which agent workflows to include (Diagnostic is always installed)
-3. **Tools** — optionally add Agent OS (auto-extract coding standards from your codebase)
-4. **Configuration** — set your name, conversation language, document language, output folder
-5. **IDE integration** — select your IDE (Claude Code, Cursor, Gemini CLI, and 8 more)
-6. **Advanced setup** — accept defaults (recommended) or customize each workflow
+3. **Configuration** — set your name, conversation language, document language, output folder
+4. **IDE integration** — select your IDE (Claude Code, Cursor, Gemini CLI, and 8 more)
+5. **Advanced setup** — accept defaults (recommended) or customize each workflow
 
 When installation completes:
 

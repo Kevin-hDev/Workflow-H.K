@@ -39,9 +39,6 @@ mode: DISCOVERY
 2. **Rule 2** — Read and understand before concluding. No diagnosis without evidence.
 3. **Rule 1** — The user confirms at each step. Never auto-advance.
 4. **No modifications** — DISCOVERY mode means read-only. Zero writes to the project.
-5. **If Agent OS is installed** (`~/agent-os/` exists): read
-   `~/agent-os/commands/agent-os/discover-standards.md` and follow its process
-   to extract coding standards from the project. Store results for step-02.
 
 ---
 

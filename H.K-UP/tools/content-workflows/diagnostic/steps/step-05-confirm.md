@@ -102,8 +102,6 @@ H.K-UP Path: {confirmed_path}
 
 {dependencies_summary}
 
-{agent_os_section}
-
 ## Objective and Vision
 
 - **Objective(s):** {objectives_list}
@@ -118,7 +116,6 @@ H.K-UP Path: {confirmed_path}
 {archaeology_section}
 ```
 
-> `{agent_os_section}` — include only if Agent OS was run. Header: `## Coding Standards (Agent OS)`
 > `{archaeology_section}` — include only if Archéologie mode was used in step-02. Header: `## Code Archaeology`
 
 ---

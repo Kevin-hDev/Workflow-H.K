@@ -35,8 +35,6 @@ overestimate nor underestimate: you base everything on what you see.
 **Resuming after interruption:**
 - Read hk-up-status.yaml and propose: resume / review the plan / restart
 
-**If Agent OS is installed**: use it to extract the project's coding standards.
-
 ## Workflows
 
 - `workflows/diagnostic/` — L'Éclaireur's main workflow

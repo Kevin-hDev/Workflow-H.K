@@ -30,16 +30,6 @@ The user will see the results in step-02 — not here.
 
 ---
 
-## Pre-scan: Agent OS (optional)
-
-**Agent OS** — check if `~/agent-os/` directory exists.
-- If available: read `~/agent-os/commands/agent-os/discover-standards.md` and follow
-  its process to extract coding standards from the project.
-- Store the extracted standards as `{agent_os_standards}` for use in step-02 and step-05.
-- If NOT available: skip — coding standards will be inferred from the code directly.
-
----
-
 ## Scan sequence
 
 Execute in order. Use available tools (Read, Glob, Grep, Bash) for each.
@@ -85,10 +75,6 @@ Infer from folder structure and file naming:
 - Microservices / Monorepo
 - Flat structure (everything in one folder)
 - Unknown (note it honestly)
-
-### 8. If Agent OS is installed
-- Run `agent-os discover` to extract project coding standards
-- Store the output as `agent_os_standards` in memory
 
 ---
 

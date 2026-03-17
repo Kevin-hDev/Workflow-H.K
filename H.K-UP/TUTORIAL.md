@@ -67,19 +67,7 @@ Enter the path to your existing project. The `_hkup` folder will be created insi
 
 For your first project, select all. The Diagnostic workflow is mandatory.
 
-### Step 3 — Optional Tools
-
-```
-  Optional tools:
-
-  Install Agent OS? (auto-extract coding standards from your codebase)
-  ● Yes / ○ No
-```
-
-Agent OS is optional but recommended — it extracts coding conventions from your
-existing codebase so agents follow your patterns from the start.
-
-### Step 4 — Configuration
+### Step 3 — Configuration
 
 ```
   What should agents call you?       [default: git username]
@@ -91,7 +79,7 @@ existing codebase so agents follow your patterns from the start.
 Agents will address you by your chosen name throughout every conversation.
 The output folder is where all deliverables (PRD, architecture.md, etc.) are saved.
 
-### Step 5 — IDE Integration
+### Step 4 — IDE Integration
 
 ```
   Integrate with:
@@ -113,7 +101,7 @@ The output folder is where all deliverables (PRD, architecture.md, etc.) are sav
 Select the IDE you use. H.K-UP installs its configuration files in the correct
 location for each IDE automatically.
 
-### Step 6 — Advanced Setup
+### Step 5 — Advanced Setup
 
 ```
   > Express Setup (accept defaults — recommended)
@@ -198,12 +186,6 @@ Scanning project...
   Dependencies: 3 outdated packages, 1 known vulnerability
   Size classification: MEDIUM
 ```
-
-If Agent OS is installed, L'Eclaireur uses it to extract the coding standards
-embedded in your existing code (naming conventions, formatting patterns, etc.).
-
-If Agent OS is installed, L'Eclaireur also extracts your coding standards
-automatically using the `discover-standards` command.
 
 ### The Report
 

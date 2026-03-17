@@ -1,17 +1,16 @@
 'use strict';
 
 /**
- * installer.js — Main installation flow for H.K-UP (steps 1–4)
+ * installer.js — Main installation flow for H.K-UP
  *
  * Steps:
  *   1. Target directory selection
  *   2. Workflow selection
- *   3. Complementary tools
- *   4. User configuration
+ *   3. User configuration
+ *   4. IDE integration
+ *   5. Setup mode
  */
 
-const path = require('node:path');
-const fs = require('node:fs');
 const { execSync } = require('node:child_process');
 const p = require('./prompts');
 const { collectAndSave } = require('./config-collector');
@@ -90,20 +89,7 @@ async function stepWorkflows(skipPrompts) {
   return selected;
 }
 
-// ─── Step 3: Complementary tools ─────────────────────────────────────────────
-
-async function stepTools(skipPrompts) {
-  if (skipPrompts) return { agentOs: false };
-
-  const installAgentOs = await p.confirm({
-    message: 'Install Agent OS? (auto-extract coding standards from your codebase)',
-    initialValue: true,
-  });
-
-  return { agentOs: installAgentOs };
-}
-
-// ─── Step 4: Configuration ────────────────────────────────────────────────────
+// ─── Step 3: Configuration ────────────────────────────────────────────────────
 
 async function stepConfig(skipPrompts) {
   const defaultUserName = resolveDefaultUserName();
@@ -154,7 +140,7 @@ async function stepConfig(skipPrompts) {
   };
 }
 
-// ─── Step 5: IDE selection ────────────────────────────────────────────────────
+// ─── Step 4: IDE selection ────────────────────────────────────────────────────
 
 async function stepIDEs(skipPrompts) {
   if (skipPrompts) return ['claude-code'];
@@ -181,7 +167,7 @@ async function stepIDEs(skipPrompts) {
   return selected;
 }
 
-// ─── Step 6: Advanced setup mode ─────────────────────────────────────────────
+// ─── Step 5: Advanced setup mode ─────────────────────────────────────────────
 
 async function stepSetupMode(skipPrompts) {
   if (skipPrompts) return 'express';
@@ -214,7 +200,6 @@ async function install(options = {}) {
 
   const { targetDir, folderName }                     = await stepDirectory(options, skipPrompts);
   const workflows                                     = await stepWorkflows(skipPrompts);
-  const { agentOs }                                    = await stepTools(skipPrompts);
   const { userName, commLang, docLang, outputFolder } = await stepConfig(skipPrompts);
   const selectedIDEs                                  = await stepIDEs(skipPrompts);
   const setupMode                                     = await stepSetupMode(skipPrompts);
@@ -227,35 +212,9 @@ async function install(options = {}) {
   try {
     // Skills are copied alongside workflows into _hkup/skills/
     await collectAndSave(
-      { targetDir, folderName, workflows, agentOs, userName, commLang, docLang, outputFolder, selectedIDEs, setupMode },
+      { targetDir, folderName, workflows, userName, commLang, docLang, outputFolder, selectedIDEs, setupMode },
       targetDir
     );
-
-    // Set up Agent OS if selected
-    if (agentOs) {
-      spin.message('Setting up Agent OS…');
-      const agentOsHome = path.join(require('node:os').homedir(), 'agent-os');
-      const agentOsInstalled = fs.existsSync(agentOsHome);
-
-      if (!agentOsInstalled) {
-        // Clone Agent OS to ~/agent-os
-        try {
-          execSync('git clone https://github.com/buildermethods/agent-os.git ' + agentOsHome, { stdio: 'pipe', timeout: 60000 });
-          execSync('rm -rf ' + path.join(agentOsHome, '.git'), { stdio: 'pipe' });
-        } catch {
-          // Non-blocking — agent-os is optional
-        }
-      }
-
-      // Run project install script if ~/agent-os exists
-      if (fs.existsSync(path.join(agentOsHome, 'scripts', 'project-install.sh'))) {
-        try {
-          execSync(`bash ${path.join(agentOsHome, 'scripts', 'project-install.sh')}`, { stdio: 'pipe', cwd: targetDir, timeout: 30000 });
-        } catch {
-          // Non-blocking — agent-os project install may fail
-        }
-      }
-    }
 
     if (selectedIDEs.length > 0) {
       spin.message('Configuring IDE integrations…');
@@ -269,7 +228,7 @@ async function install(options = {}) {
   }
 
   await showPostInstall(
-    { folderName, outputFolder, workflows, agentOs, ideResults },
+    { folderName, outputFolder, workflows, ideResults },
     targetDir
   );
 }

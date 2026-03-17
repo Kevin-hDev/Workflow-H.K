@@ -40,18 +40,6 @@ function formatWorkflows(workflows) {
 }
 
 /**
- * Build a summary of complementary tools that were installed.
- *
- * @param {boolean} agentOs
- * @returns {string}
- */
-function formatTools(agentOs) {
-  const lines = [];
-  if (agentOs) lines.push('  + Agent OS  — auto-extract coding standards');
-  return lines.length ? lines.join('\n') : '  (none)';
-}
-
-/**
  * Build a summary of IDE integrations that were set up.
  *
  * @param {Array<{ name: string, files: string[] }>} ideResults
@@ -107,7 +95,6 @@ function buildNextSteps(targetDir, folderName, outputFolder) {
  * @param {string}   config.folderName    - H.K-UP folder name (e.g. "_hkup")
  * @param {string}   config.outputFolder  - Output folder name (e.g. "_hkup-output")
  * @param {string[]} config.workflows     - Installed workflow IDs
- * @param {boolean}  config.agentOs       - Whether Agent OS was installed
  * @param {Array}   [config.ideResults]   - Results from ide-integrator.integrate()
  * @param {string} targetDir              - Absolute path to the project root
  */
@@ -116,15 +103,11 @@ async function showPostInstall(config, targetDir) {
     folderName   = '_hkup',
     outputFolder = '_hkup-output',
     workflows    = ['diagnostic'],
-    agentOs      = false,
     ideResults   = [],
   } = config;
 
   // ── Installed workflows ──
   p.note(formatWorkflows(workflows), 'Workflows installed');
-
-  // ── Complementary tools ──
-  p.note(formatTools(agentOs), 'Complementary tools');
 
   // ── IDE integrations ──
   p.note(formatIDEs(ideResults), 'IDE integrations');

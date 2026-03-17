@@ -49,7 +49,6 @@ function buildConfig(answers) {
     version: CONFIG_VERSION,
     ai: 'claude-code',
     workflows_installed: answers.workflows || ['diagnostic'],
-    agent_os: Boolean(answers.agentOs),
     user_name: answers.userName || 'User',
     communication_language: answers.commLang || 'English',
     document_output_language: answers.docLang || 'English',
