@@ -37,7 +37,7 @@ async function stepDirectory(options, skipPrompts) {
   if (skipPrompts) return { targetDir: defaultDir, folderName: defaultFolder };
 
   const targetDir = await p.text({
-    message: 'Installation directory',
+    message: 'Installation directory (press Enter to use current)',
     placeholder: defaultDir,
     defaultValue: defaultDir,
     validate: (v) => (!v || !v.trim() ? 'Directory path cannot be empty.' : undefined),
@@ -59,7 +59,14 @@ async function stepDirectory(options, skipPrompts) {
 // ─── Step 2: Workflows ────────────────────────────────────────────────────────
 
 async function stepWorkflows(skipPrompts) {
-  if (skipPrompts) return ['diagnostic'];
+  if (skipPrompts) return [...ALL_WORKFLOWS];
+
+  const installAll = await p.confirm({
+    message: 'Install all workflows? (recommended)',
+    initialValue: true,
+  });
+
+  if (installAll) return [...ALL_WORKFLOWS];
 
   const selected = await p.multiselect({
     message: 'Which workflows to install? (SPACE to select, ENTER to confirm)',
@@ -73,13 +80,11 @@ async function stepWorkflows(skipPrompts) {
       { value: 'review',        label: 'Review (Gardien)' },
       { value: 'security',      label: 'Security Audit (Nyx)' },
       { value: 'finalisation',  label: 'Finalisation (Stratege)' },
-      { value: 'all',           label: '— Select everything —' },
     ],
     initialValues: ['diagnostic'],
     required: true,
   });
 
-  if (selected.includes('all')) return [...ALL_WORKFLOWS];
   if (!selected.includes('diagnostic')) return ['diagnostic', ...selected];
   return selected;
 }

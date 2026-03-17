@@ -13,6 +13,8 @@
  */
 
 const clack = require('@clack/prompts');
+const core = require('@clack/core');
+const color = require('picocolors');
 
 // ─── Cancellation helper ─────────────────────────────────────────────────────
 
@@ -63,18 +65,62 @@ function outro(message) {
 // ─── text ─────────────────────────────────────────────────────────────────────
 
 /**
- * Ask for a single line of text input.
+ * Ask for a single line of text input with Tab-to-fill-placeholder support.
+ *
+ * Uses @clack/core TextPrompt directly to enable TAB key filling the placeholder
+ * into the input field — a feature removed in @clack/prompts v1.0.0.
  *
  * @param {object} opts
  * @param {string}   opts.message       - Prompt label.
- * @param {string}  [opts.placeholder]  - Placeholder shown in grey.
+ * @param {string}  [opts.placeholder]  - Placeholder shown in grey (defaults to defaultValue).
  * @param {string}  [opts.defaultValue] - Value used when user submits empty.
  * @param {Function}[opts.validate]     - Sync validation; return error string or undefined.
  * @param {string}  [opts.cancelMessage]
  * @returns {Promise<string>}
  */
 async function text({ message, placeholder, defaultValue, validate, cancelMessage } = {}) {
-  const result = await clack.text({ message, placeholder, defaultValue, validate });
+  const ph = placeholder === undefined ? defaultValue : placeholder;
+
+  const prompt = new core.TextPrompt({
+    defaultValue,
+    validate,
+    render() {
+      const title = `${color.gray('◆')}  ${message}`;
+      let valueDisplay;
+
+      if (this.state === 'error') {
+        valueDisplay = color.yellow(this.userInputWithCursor);
+      } else if (this.userInput) {
+        valueDisplay = this.userInputWithCursor;
+      } else if (ph) {
+        valueDisplay = `${color.inverse(color.hidden('_'))}${color.dim(ph)}`;
+      } else {
+        valueDisplay = color.inverse(color.hidden('_'));
+      }
+
+      const bar = color.gray('│');
+
+      if (this.state === 'submit') {
+        return `${color.gray('◇')}  ${message}\n${bar}  ${color.dim(this.value || defaultValue || '')}`;
+      }
+      if (this.state === 'cancel') {
+        return `${color.gray('◇')}  ${message}\n${bar}  ${color.strikethrough(color.dim(this.userInput || ''))}`;
+      }
+      if (this.state === 'error') {
+        return `${color.yellow('▲')}  ${message}\n${bar}  ${valueDisplay}\n${color.yellow('│')}  ${color.yellow(this.error)}`;
+      }
+      return `${title}\n${bar}  ${valueDisplay}\n${bar}`;
+    },
+  });
+
+  // TAB key fills the placeholder into the input
+  prompt.on('key', (char) => {
+    if (char === '\t' && ph && !prompt.userInput) {
+      prompt._setUserInput(ph, true);
+    }
+  });
+
+  const result = await prompt.prompt();
   return assertNotCancelled(result, cancelMessage);
 }
 
@@ -159,6 +205,24 @@ function note(message, title) {
   clack.note(message, title);
 }
 
+// ─── path ───────────────────────────────────────────────────────────────────
+
+/**
+ * Ask for a file system path with TAB auto-completion.
+ *
+ * @param {object} opts
+ * @param {string}   opts.message       - Prompt label.
+ * @param {string}  [opts.initialValue] - Starting path value.
+ * @param {boolean} [opts.directory=false] - Only allow directories.
+ * @param {Function}[opts.validate]     - Sync validation; return error string or undefined.
+ * @param {string}  [opts.cancelMessage]
+ * @returns {Promise<string>}
+ */
+async function path({ message, initialValue, directory = false, validate, cancelMessage } = {}) {
+  const result = await clack.path({ message, initialValue, directory, validate });
+  return assertNotCancelled(result, cancelMessage);
+}
+
 // ─── Exports ─────────────────────────────────────────────────────────────────
 
 module.exports = {
@@ -167,6 +231,7 @@ module.exports = {
   outro,
   // Prompts
   text,
+  path,
   confirm,
   select,
   multiselect,
