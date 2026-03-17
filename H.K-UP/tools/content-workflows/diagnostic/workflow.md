@@ -39,7 +39,11 @@ mode: DISCOVERY
 2. **Rule 2** — Read and understand before concluding. No diagnosis without evidence.
 3. **Rule 1** — The user confirms at each step. Never auto-advance.
 4. **No modifications** — DISCOVERY mode means read-only. Zero writes to the project.
-5. **If Agent OS is installed:** use `agent-os discover` to extract coding standards
+5. **If Repomix is installed:** run `npx repomix -o {output_folder}/repomix-output.xml --quiet`
+   before step-01. Read the output file instead of scanning files individually.
+   This reduces token usage significantly, especially on large projects.
+   If Repomix is NOT installed, scan files manually (default behavior).
+6. **If Agent OS is installed:** use `agent-os discover` to extract coding standards
    before running step-01. Store results for step-02.
 
 ---

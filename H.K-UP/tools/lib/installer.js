@@ -11,6 +11,7 @@
  */
 
 const path = require('node:path');
+const fs = require('node:fs');
 const { execSync } = require('node:child_process');
 const p = require('./prompts');
 const { collectAndSave } = require('./config-collector');
@@ -235,21 +236,40 @@ async function install(options = {}) {
       targetDir
     );
 
-    // Install complementary tools if selected
-    const toolsToInstall = [];
-    if (agentOs) toolsToInstall.push('agent-os');
-    if (repomix) toolsToInstall.push('repomix');
-
-    if (toolsToInstall.length > 0) {
-      spin.message(`Installing ${toolsToInstall.join(' + ')}…`);
+    // Install complementary tools if selected (each independently)
+    if (repomix) {
+      spin.message('Installing Repomix…');
       try {
-        execSync(`npm install -g ${toolsToInstall.join(' ')}`, { stdio: 'pipe', cwd: targetDir });
+        execSync('npm install -g repomix', { stdio: 'pipe', cwd: targetDir });
       } catch {
-        spin.message('Global install failed, trying local…');
         try {
-          execSync(`npm install --save-dev ${toolsToInstall.join(' ')}`, { stdio: 'pipe', cwd: targetDir });
+          execSync('npm install --save-dev repomix', { stdio: 'pipe', cwd: targetDir });
         } catch {
-          // Non-blocking — tools are optional, continue installation
+          // Non-blocking — repomix is optional
+        }
+      }
+    }
+
+    if (agentOs) {
+      spin.message('Setting up Agent OS…');
+      const agentOsHome = path.join(require('node:os').homedir(), 'agent-os');
+      const agentOsInstalled = fs.existsSync(agentOsHome);
+
+      if (agentOsInstalled) {
+        // Agent OS is already cloned — run the project install script
+        try {
+          execSync(`${path.join(agentOsHome, 'scripts', 'project-install.sh')}`, { stdio: 'pipe', cwd: targetDir });
+        } catch {
+          // Non-blocking — agent-os install script may fail on some systems
+        }
+      } else {
+        // Clone Agent OS to ~/agent-os then run project install
+        try {
+          execSync('git clone https://github.com/buildermethods/agent-os.git ' + agentOsHome, { stdio: 'pipe' });
+          execSync('rm -rf ' + path.join(agentOsHome, '.git'), { stdio: 'pipe' });
+          execSync(`${path.join(agentOsHome, 'scripts', 'project-install.sh')}`, { stdio: 'pipe', cwd: targetDir });
+        } catch {
+          // Non-blocking — agent-os is optional
         }
       }
     }
