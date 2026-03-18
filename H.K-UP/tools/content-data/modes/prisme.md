@@ -97,44 +97,33 @@ All questions sourced from `data/prisme-facettes.csv`:
 
 ### Step 1 — Present the selection menu
 
-```
+<output-format>
 Which Prisme families would you like to explore?
 
-  USER — See through different user eyes
-    End User | Admin | Newcomer | Power User | Frustrated User
+  1. USER       — See through different user eyes
+  2. TECHNIQUE  — Analyze technical qualities
+  3. BUSINESS   — Assess business impact
+  4. SECURITE   — Evaluate security angles
+  5. TEMPS      — Consider time horizons
+  6. ECHEC      — Anticipate failures
+  7. INVERSION  — Think backwards
 
-  TECHNIQUE — Analyze technical qualities
-    Performance | Scalability | Maintainability | Testability | Portability
-
-  BUSINESS — Assess business impact
-    Cost | Time-to-market | ROI | Business risk | Competition
-
-  SECURITE — Evaluate security angles
-    External attacker | Insider | Compliance | Privacy | Supply chain
-
-  TEMPS — Consider time horizons
-    Short term (1-3 months) | Medium term (6 months) | Long term (2 years) | Legacy
-
-  ECHEC — Anticipate failures
-    Pre-mortem | Worst case | Domino effect | Point of no return
-
-  INVERSION — Think backwards
-    Anti-brainstorm | Remove constraints | Competitor view
-
-  Choose families (e.g., user, technique) or specific facettes (e.g., End User, Performance):
-```
+  Type a number (e.g. 2), multiple numbers (e.g. 2, 6), or a family name:
+</output-format>
 
 **Selection options:**
-- Full family: `user` → runs all 5 user facettes
-- Multiple families: `user, echec` → runs all 9 facettes in sequence
-- Specific facettes: `End User, Performance, Pre-mortem` → runs only those 3
+- Single number: `2` → runs all 5 TECHNIQUE facettes
+- Multiple numbers: `2, 6` → runs all 9 facettes in sequence
+- Family name: `technique` → same as number 2
 - Everything: `all` → runs all 31 facettes (warn the user this is extensive)
+- The user can also type a specific facette name (e.g. "Pre-mortem") to run only that one
 
 ### Step 2 — Run each facette
 
-For each selected facette, present this block:
+For each selected facette, present this block using the EXACT format below.
+No variations. No renaming sections. No skipping fields.
 
-```
+<output-format>
 PRISME — {facette_name} ({family})
 
 Question: {question from prisme-facettes.csv}
@@ -145,7 +134,7 @@ Analysis:
 {Reference concrete elements from the project/decision when possible}
 
 Key insight: {one-sentence takeaway — the most actionable finding}
-```
+</output-format>
 
 After presenting the block:
 - Wait for user response (they may agree, challenge, ask follow-up, or skip)
@@ -154,28 +143,64 @@ After presenting the block:
 
 ### Step 3 — Between facettes
 
-After each facette discussion, ask:
-```
-Continue to {next_facette_name}? (or type 'done' to close the Prisme)
-```
+After each facette, show a progress tracker so the user knows where they are,
+what's coming next, and can make an informed choice.
 
-The user can stop at any point. Never auto-continue through all facettes without checking.
+Present this EXACT layout after each facette — no variations, no simplification.
+Each remaining facette MUST include its description from prisme-facettes.csv so the user
+can decide whether to explore it without having to ask.
+
+<output-format>
+  {FAMILY} ({completed}/{total})
+
+  {for each facette, show status + number + name + description:}
+  ✓  {completed_facette}
+  →  {next_number}. {next_facette} — {description from csv}
+  ○  {remaining_number}. {remaining_facette} — {description from csv}
+
+  ─────────────────────────────────────────
+  {next_number}    Continue to {next_facette}
+  {skip_number}    Jump to {skip_facette}
+  done   Close the Prisme and see the summary (or "terminé")
+</output-format>
+
+**Example after completing Performance and Scalability in TECHNIQUE:**
+
+<output-format>
+  TECHNIQUE (2/5)
+
+  ✓  Performance
+  ✓  Scalability
+  →  3. Maintainability — Can a new dev understand and modify the code easily?
+  ○  4. Testability — Can each module be tested in isolation?
+  ○  5. Portability — Can it run on another OS without redesign?
+
+  ─────────────────────────────────────────
+  3     Continue to Maintainability
+  4     Jump to Testability
+  done  Close the Prisme and see the summary
+</output-format>
+
+**Rules:**
+- The user types a NUMBER to jump to any remaining facette, or `done` to close.
+- The description helps the user decide without having to ask "what is that?".
+- If only one facette remains, show only that number + `done`.
 
 ### Step 4 — Prisme summary
 
-After the last selected facette (or when user says done):
+After the last selected facette (or when user says done), present this EXACT format:
 
-```
+<output-format>
 PRISME SUMMARY
 
-  Facettes explored: {count}
+  Facettes explored: {count}/{total_selected}
   {facette_1}: {one-line finding}
   {facette_2}: {one-line finding}
   ...
 
-  Cross-cutting insight: {if applicable — a pattern that emerged across multiple facettes}
+  Cross-cutting insight: {a pattern that emerged across multiple facettes}
   Recommended next action: {based on the most critical finding}
-```
+</output-format>
 
 ---
 
@@ -200,7 +225,7 @@ Step files may suggest which families are most relevant. Always respect those su
 
 Each Prisme session is appended to the current step's deliverable:
 
-```markdown
+<output-format>
 ### Prisme (validated)
 
 - Facettes explored: {count}
@@ -213,4 +238,4 @@ Each Prisme session is appended to the current step's deliverable:
 
 **Cross-cutting insight:** {if applicable}
 **Recommended action:** {most critical finding → action}
-```
+</output-format>

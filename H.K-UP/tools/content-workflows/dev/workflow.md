@@ -22,16 +22,51 @@ Commit atomically. Hand off to Le Gardien when done.
 **NEW CONVERSATION for each mission. This is non-negotiable.**
 Le Chirurgien does not carry context across missions. Each mission starts fresh.
 
-**Receives:**
-- `{output_folder}/missions/mission-{quest_num}-{mission_num}.md` — the mission brief
-- `{output_folder}/architecture.md` — architectural decisions (ADRs)
-- `{output_folder}/plan.md` — full execution plan and dependencies
-- `{output_folder}/spec-design.md` — design specification (if the mission involves UI)
-- `{output_folder}/hk-up-status.yaml` — the progression registry
+### Pre-flight — input file confirmation
+
+⛔ STOP — Do NOT read file contents yet. List filenames only.
+
+Search for the expected input files in `{output_folder}/`:
+- `hk-up-status.yaml` — check `{output_folder}/hk-up-status.yaml`
+- `missions/` directory — check `{output_folder}/missions/mission-*.md` (list all briefs found)
+- If the subdirectory structure is not found, glob fallback: `*mission-*`, `*hk-up-status*`
+
+Present what was found:
+
+<output-format>
+Le Chirurgien — Pre-flight check
+
+  Files found:
+  ✓/✗ hk-up-status.yaml — required
+  ✓/✗ missions/ directory — required
+    Briefs available: mission-{X}-{Y}.md, ...
+
+  ⚠ mission brief is required. Run /hkup-create-mission first.
+
+  Do you have any additional files or context to provide?
+
+  1. Load everything and start
+  2. Add a file or context first
+</output-format>
+
+⛔ STOP CONDITION: Do NOT proceed until the user confirms with option 1.
+If the user picks 2: accept the file path or context, add it to the input list, then re-present.
+
+### Mission selection
+
+Determine the mission to execute:
+- If a mission ID was provided (e.g., "1.1", "2.3"): use it directly
+- If no ID provided: read `hk-up-status.yaml`, find the FIRST mission with status `ready`
+- If no ready missions: inform the user to run `/hkup-create-mission` first
+
+Load the mission brief: `{output_folder}/missions/mission-{X}-{Y}.md`
+
+⛔ The brief is AUTO-SUFFICIENT. Do NOT load architecture.md, prd.md, or project-context.md.
+Everything the dev needs is IN the brief (Dev Notes section).
 
 **Before starting:**
-Read `hk-up-status.yaml` to confirm this mission's status is `in-progress`.
-If it is not `in-progress`, do not start — ask the user to confirm the mission is ready.
+Read `hk-up-status.yaml` to confirm the selected mission's status is `ready` or `in-progress`.
+If it is neither, do not start — ask the user to confirm the mission is ready.
 
 ---
 
@@ -88,3 +123,5 @@ This workflow instance is complete when:
 - [ ] One atomic commit per task exists in git history
 - [ ] `hk-up-status.yaml` has been updated to `review`
 - [ ] Explicit handoff to Le Gardien has been announced
+
+**Rule 14:** Launch the next workflow in a NEW session. Run `/clear` or start a new conversation.

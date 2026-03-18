@@ -67,7 +67,7 @@ For each relevant dimension, use these query templates:
 ### Step 1 — Scope selection
 
 Ask what to benchmark:
-```
+<output-format>
 Benchmark Vivant — What would you like to compare?
 
   1. Stack practices    — Current approach vs 2026 standards in {stack}
@@ -76,8 +76,8 @@ Benchmark Vivant — What would you like to compare?
   4. Competitor features — What are {competitors} doing that we aren't?
   5. All of the above   — Full industry benchmark
 
-Choose an area (or specify a specific library/feature to research):
-```
+Choose a number (or specify a specific library/feature to research):
+</output-format>
 
 ### Step 2 — Web research
 
@@ -85,7 +85,8 @@ For each selected dimension, run 2-4 targeted web searches.
 Summarize findings in plain terms — not raw search results.
 
 **Presenting each finding:**
-```
+
+<output-format>
 BENCHMARK — {dimension_name}
 
   Query: "{exact search query used}"
@@ -100,12 +101,12 @@ BENCHMARK — {dimension_name}
   Gap: {none | minor | significant | critical}
   Impact: {what this gap costs in practice — performance, security, maintainability}
   Adoption effort: {low (< 1 day) | medium (1-5 days) | high (> 1 week)}
-```
+</output-format>
 
 ### Step 3 — Gap synthesis
 
 After all dimensions are researched:
-```
+<output-format>
 BENCHMARK SUMMARY — Gap Analysis
 
   Dimension         | Gap      | Impact       | Effort
@@ -118,25 +119,28 @@ BENCHMARK SUMMARY — Gap Analysis
   Lowest-priority:      {dimension + reason — not worth the effort now}
 
   Recommendation: {Le Stratège's suggested next step, framed as an option not a directive}
-```
+</output-format>
 
 ### Step 4 — User decision
 
-After the synthesis, ask:
-```
-Given these gaps, would you like to:
-  A. Adjust the project direction to address {highest_value_gap}
-  B. Document as known gaps for a future phase
-  C. Ignore (the project's context makes these gaps acceptable)
+After the synthesis, present the decision menu:
 
-Or: ask about a specific finding in more detail.
-```
+<output-format>
+Given these gaps, what would you like to do?
+
+  1. Adjust the plan based on these gaps
+  2. Run another dimension
+  3. Ask about a specific finding
+  4. Close the Benchmark
+
+  Close keywords: "done" / "terminé", "close" / "on ferme"
+</output-format>
 
 ---
 
 ## Saving output
 
-```markdown
+<output-format>
 ### Benchmark Vivant (validated)
 
 - Agent: Le Stratège
@@ -150,8 +154,8 @@ Or: ask about a specific finding in more detail.
 | {dim_2} | ... | ... | ... |
 
 **Highest-value update:** {finding}
-**User decision:** {A | B | C — and what was decided}
-```
+**User decision:** {1 | 2 | 3 | 4 — and what was decided}
+</output-format>
 
 The full benchmark findings are also saved as a section in `prd.md`
 (under "State of the Art Reference") if a PRD is in progress.

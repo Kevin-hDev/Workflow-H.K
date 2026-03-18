@@ -7,7 +7,7 @@ agent: stratege
 
 # Step 03 — Brainstorming Techniques
 
-> **CRITICAL — Rule 1:** This step is OPTIONAL. If the user says "skip", go straight to step-04.
+> **CRITICAL — Rule 1:** This step is OPTIONAL. If the user types S, go straight to step-04.
 > **CRITICAL — Rule 9:** These first 10 lines are your priority.
 > **CRITICAL:** Techniques are chainable — re-show the menu after each one with ✓ marks.
 > **CRITICAL:** Each technique must be RUN interactively, not just mentioned.
@@ -36,7 +36,7 @@ before synthesis in step-04.
 
 Present this menu:
 
-```
+<output-format>
 Want to explore deeper? Choose one or more techniques:
 
   FIND DIRECTION
@@ -71,7 +71,7 @@ Want to explore deeper? Choose one or more techniques:
 
   ─────────────────────────────────────────
   Choose one or more numbers (e.g. 5, 12, 15), or S to skip:
-```
+</output-format>
 
 ---
 
@@ -489,7 +489,7 @@ After: "Dream Mockup revealed: {the key experience moments, the 'wow' factor}"
 Re-show the menu with ✓ marks on completed techniques.
 When user selects S:
 
-```
+<output-format>
 Techniques session complete.
 
 Techniques used: {list with ✓}
@@ -497,13 +497,13 @@ Key additional insights:
 - {insight_1}
 - {insight_2}
 - {insight_3}
-```
+</output-format>
 
 ---
 
 ## Reflection modes menu
 
-```
+<output-format>
 Technique session done. Would you like to explore further?
 
   REFLECTION MODES
@@ -512,7 +512,7 @@ Technique session done. Would you like to explore further?
 
   ─────────────────────────────────────────
   S. Save and continue to synthesis (step-04)
-```
+</output-format>
 
 **Before executing any mode above, LOAD its data file:**
 - Table Ronde → `data/modes/table-ronde.md`
@@ -522,7 +522,7 @@ Technique session done. Would you like to explore further?
 
 ## Transition
 
-```
+<output-format>
 Step 03 complete.
 
 Techniques applied: {list}
@@ -530,7 +530,7 @@ Additional ideas collected: {count}
 
 → Step 04 — I'll now organize all ideas into a structured synthesis
   and check coverage against your objective.
-```
+</output-format>
 
 Update `hk-up-status.yaml`: `4-2-creation-synthese → step-03: done`
 Proceed to **step-04-synthesis.md**

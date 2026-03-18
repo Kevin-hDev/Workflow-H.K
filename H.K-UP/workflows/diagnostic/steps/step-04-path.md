@@ -71,7 +71,7 @@ Example: Evolve + Redesign, MEDIUM project → Standard (Evolve baseline) + Desi
 
 Present the recommendation:
 
-```
+<output-format>
 Based on your project (SIZE: {size_class}) and your objective ({objectives}),
 I recommend: **{path_name}**
 
@@ -83,8 +83,10 @@ What this includes:
 
 {optional_escalade_note}
 
-Does this work for you? Or would you like to adjust?
-```
+  ─────────────────────────────────────────
+  1. Confirm this path
+  2. Adjust — tell me what to change
+</output-format>
 
 ---
 
@@ -93,16 +95,14 @@ Does this work for you? Or would you like to adjust?
 If ambition signals were detected in step-03, or if the user's vision implies
 more scope than the recommended path covers:
 
-```
+<output-format>
 Note: Based on what you described, this could grow beyond the standard scope
 for a {size_class} project. I could recommend:
 
   1. Stay on {recommended_path} — faster, more focused
   2. Escalate to {higher_path} — more thorough, covers your full vision
   3. Let's discuss it (Table Ronde with Le Stratège)
-
-What do you prefer?
-```
+</output-format>
 
 ---
 
@@ -110,7 +110,7 @@ What do you prefer?
 
 After presenting the recommendation:
 
-```
+<output-format>
 Before confirming, would you like to explore further?
 
   REFLECTION MODES
@@ -120,7 +120,7 @@ Before confirming, would you like to explore further?
 
   ─────────────────────────────────────────
   S. Save and confirm the path
-```
+</output-format>
 
 **Before executing any mode above, LOAD its data file:**
 - Table Ronde → `data/modes/table-ronde.md`
@@ -133,14 +133,14 @@ Before confirming, would you like to explore further?
 
 After the user confirms:
 
-```
+<output-format>
 Step 04 complete.
 
 Confirmed path: {confirmed_path}
 Estimated scope: ~{mission_count} missions
 
 → Step 05 — Final confirmation and project-context.md creation.
-```
+</output-format>
 
 Update `hk-up-status.yaml`: `3-2-objectif-parcours → step-04: done`
 Proceed to **step-05-confirm.md**

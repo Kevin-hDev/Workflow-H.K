@@ -45,7 +45,7 @@ If no debt has been identified yet, run the diagnostic workflow first before act
 
 Each debt follows this exact structure. The user does NOT skip the verdict.
 
-```
+<output-format>
 TRIBUNAL — Trial {N}
 
   ──────────────────────────────────────────────────────────
@@ -86,13 +86,17 @@ TRIBUNAL — Trial {N}
   ⚖️  USER — Verdict
   ──────────────────────────────────────────────────────────
 
-  {FIX | ACCEPT | DEFER}
-```
+  1. GUILTY     — The debt must be fixed
+  2. NOT GUILTY — The debt earned its place
+  3. DEFER      — Need more investigation
+  4. COMMUTE    — Fix it, but lower priority
+</output-format>
 
 **Verdict meanings:**
-- **FIX** — Add to remediation plan. Assign to Le Chirurgien in the next dev mission.
-- **ACCEPT** — Consciously accepted. Documented in `debt-verdict.md` as accepted risk with reason.
+- **GUILTY** — Add to remediation plan. Assign to Le Chirurgien in the next dev mission.
+- **NOT GUILTY** — Consciously accepted. Documented in `debt-verdict.md` as accepted risk with reason.
 - **DEFER** — Not now. Documented with a target milestone or trigger condition.
+- **COMMUTE** — Fix it, but at lower priority than other GUILTY verdicts.
 
 ---
 
@@ -116,7 +120,7 @@ Not all debt is tried. Prioritize:
 
 List all debt items before starting trials:
 
-```
+<output-format>
 TRIBUNAL DE LA DETTE — Docket
 
   {N} debts identified for trial:
@@ -128,8 +132,12 @@ TRIBUNAL DE LA DETTE — Docket
   [...]
 
   Proposed trial order: Critical first, then Major, then Minor.
-  Would you like to adjust the order or skip any items?
-```
+
+  ─────────────────────────────────────────
+  1. Start the trials in this order
+  2. Adjust the order
+  3. Skip an item
+</output-format>
 
 Wait for user confirmation before starting the first trial.
 
@@ -138,28 +146,37 @@ Wait for user confirmation before starting the first trial.
 Use the trial format above. After each verdict:
 - Record the verdict
 - Re-show the remaining docket with the tried item marked
-- Ask: "Continue to the next trial, or end the session?"
+- Present the transition menu:
+
+<output-format>
+  ─────────────────────────────────────────
+  1. Continue to Trial {N+1}
+  2. End the Tribunal and see the summary
+
+  Close keywords: "done" / "terminé"
+</output-format>
 
 ### Step 3 — Tribunal summary
 
 After all selected trials are complete:
 
-```
+<output-format>
 TRIBUNAL SUMMARY
 
   Trials completed: {count}
-  FIX:    {count} — entering remediation plan
-  ACCEPT: {count} — documented as accepted risk
-  DEFER:  {count} — documented with target milestone
+  GUILTY:     {count} — entering remediation plan
+  NOT GUILTY: {count} — documented as accepted risk
+  DEFER:      {count} — documented with target milestone
+  COMMUTE:    {count} — fix at lower priority
 
-  Total estimated fix effort: {sum of FIX costs}
+  Total estimated fix effort: {sum of GUILTY + COMMUTE costs}
 
-  Remediation plan (FIX verdicts):
+  Remediation plan (GUILTY verdicts):
   Priority | Debt | Cost | Suggested milestone
   ────────────────────────────────────────────
   1 | {debt} | {cost} | {milestone}
   [...]
-```
+</output-format>
 
 ---
 
@@ -167,20 +184,20 @@ TRIBUNAL SUMMARY
 
 ### 1 — Step deliverable (appended section)
 
-```markdown
+<output-format>
 ### Tribunal de la Dette (validated)
 
 - Trials completed: {count}
-- Verdicts: {count} FIX | {count} ACCEPT | {count} DEFER
+- Verdicts: {count} GUILTY | {count} NOT GUILTY | {count} DEFER | {count} COMMUTE
 
 | # | Debt | Verdict | Reason |
 |---|------|---------|--------|
-| 1 | {debt_1} | FIX | {reason} |
-| 2 | {debt_2} | ACCEPT | {reason} |
+| 1 | {debt_1} | GUILTY | {reason} |
+| 2 | {debt_2} | NOT GUILTY | {reason} |
 
 **Total fix effort:** {estimate}
 **Verdict file:** `{output_folder}/debt-verdict.md`
-```
+</output-format>
 
 ### 2 — debt-verdict.md (using templates/debt-report.md)
 

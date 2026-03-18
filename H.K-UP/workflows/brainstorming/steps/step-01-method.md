@@ -9,7 +9,7 @@ agent: stratege
 
 > **CRITICAL — Rule 1:** The user chooses the method. Never push toward a specific one.
 > **CRITICAL — Rule 9:** These first 10 lines are your priority.
-> **CRITICAL:** If user types 'recommend', use the mapping table below — never guess.
+> **CRITICAL:** If user picks option 9 (recommend), use the mapping table below — never guess.
 > **CRITICAL:** After selection, explain the method's phases before moving to step-02.
 > **CRITICAL — Rule 3:** Offer the reflection modes menu after method is confirmed.
 
@@ -36,7 +36,7 @@ Present the 8 methods clearly. Collect the selection. Explain what to expect.
 
 Present this menu:
 
-```
+<output-format>
 Before we brainstorm, let's choose our approach.
 Each method guides the session differently:
 
@@ -57,14 +57,16 @@ Each method guides the session differently:
   8. Opportunity Tree  — Sort ideas and prioritize by impact
 
   ─────────────────────────────────────────
-  Choose a number, or type 'recommend' for a suggestion based on your objective:
-```
+  9. Recommend         — Suggest the best method for my objective
+
+  Choose a number:
+</output-format>
 
 ---
 
-## Handling 'recommend'
+## Handling option 9 (recommend)
 
-If the user types 'recommend', use the confirmed objective from L'Éclaireur to map:
+If the user picks 9, use the confirmed objective from L'Éclaireur to map:
 
 | Objective | Recommended method |
 |-----------|-------------------|
@@ -78,13 +80,15 @@ If the user types 'recommend', use the confirmed objective from L'Éclaireur to 
 
 Present the recommendation with a brief explanation:
 
-```
+<output-format>
 Based on your objective [{objective}], I recommend: {method_name}
 
 Why: {one sentence explanation}
 
-Would you like to go with this, or choose a different method?
-```
+  ─────────────────────────────────────────
+  1. Go with {method_name}
+  2. Choose a different method (show the menu again)
+</output-format>
 
 The user still confirms. Never auto-start without confirmation.
 
@@ -133,7 +137,7 @@ during the session. Keep it concise (3-5 lines max):
 
 After the method is confirmed and explained:
 
-```
+<output-format>
 Before we start the session, would you like to explore further?
 
   REFLECTION MODES
@@ -142,7 +146,7 @@ Before we start the session, would you like to explore further?
 
   ─────────────────────────────────────────
   S. Save and start the session (step-02)
-```
+</output-format>
 
 **Before executing any mode above, LOAD its data file:**
 - Table Ronde → `data/modes/table-ronde.md`
@@ -152,7 +156,7 @@ Before we start the session, would you like to explore further?
 
 ## Transition
 
-```
+<output-format>
 Step 01 complete.
 
 Chosen method: {method_name}
@@ -160,7 +164,7 @@ Objective: {confirmed_objective}
 
 → Step 02 — We'll now run the {method_name} session.
   I'll guide you through each phase with questions and suggestions.
-```
+</output-format>
 
 Update `hk-up-status.yaml`: `4-1-methode-directrice → step-01: done`
 Proceed to **step-02-session.md**

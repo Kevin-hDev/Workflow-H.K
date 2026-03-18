@@ -30,7 +30,7 @@ Read the project's existing `README.md` (at the project root, not the output fol
 
 If it exists: propose specific updates based on what changed during the parcours.
 
-```
+<output-format>
 README.md updates I propose:
 
   1. {section_to_update} — reason: {why this changed}
@@ -39,16 +39,20 @@ README.md updates I propose:
   2. {section_to_add} — reason: {what's missing}
      Draft: {new content}
 
-  Shall I apply these updates?
-```
+  1. Yes — apply these updates
+  2. No — skip README update
+</output-format>
 
 Wait for user confirmation before writing. Apply only what the user approves.
 
 If README.md does not exist, ask:
-```
+<output-format>
 No README.md found. Would you like me to create one?
   It will document: project purpose, stack, setup instructions, and what was built.
-```
+
+  1. Yes — create README.md
+  2. No — skip
+</output-format>
 
 ### CHANGELOG.md
 
@@ -108,7 +112,7 @@ in the output folder, not in CLAUDE.md.
 
 Present the complete parcours summary:
 
-```
+<output-format>
 H.K-UP PARCOURS COMPLETE — {project_name}
 
   ──────────────────────────────────────────────────────────────────
@@ -169,13 +173,13 @@ H.K-UP PARCOURS COMPLETE — {project_name}
 
   3. {recommendation_3}
      Why: {based on what was discovered during this parcours}
-```
+</output-format>
 
 ---
 
 ## Phase 3 — Next steps offer
 
-```
+<output-format>
   ──────────────────────────────────────────────────────────────────
   WHAT WOULD YOU LIKE TO DO?
   ──────────────────────────────────────────────────────────────────
@@ -189,12 +193,12 @@ H.K-UP PARCOURS COMPLETE — {project_name}
 
   3. We're done — close
      → Formal farewell
-```
+</output-format>
 
 Wait for the user's choice.
 
 **If Option 1 (new parcours):**
-```
+<output-format>
 Starting a new session.
 
   I'll launch L'Éclaireur. It will detect the completed parcours in hk-up-status.yaml
@@ -202,14 +206,14 @@ Starting a new session.
 
 → Load: workflows/diagnostic/workflow.md
   L'Éclaireur will skip the scan (project is known) and jump to the objective menu.
-```
+</output-format>
 
 **If Option 2 (export):**
-```
+<output-format>
 Deliverables in {output_folder}/:
 
   {list each file with full path, one-line description, and approximate size}
-```
+</output-format>
 
 **If Option 3 (close):**
 Proceed to Phase 4.
@@ -239,7 +243,7 @@ phases:
 
 ## Phase 5 — Formal closure
 
-```
+<output-format>
 Thank you for working with H.K-UP.
 
   {project_name} is in a better place than when we started.
@@ -257,7 +261,7 @@ Thank you for working with H.K-UP.
   — Le Stratège, on behalf of the H.K-UP team
     L'Éclaireur · Le Stratège · L'Architecte · Le Designer
     Le Chirurgien · Le Gardien · Nyx · The Mask · Zero
-```
+</output-format>
 
 ---
 

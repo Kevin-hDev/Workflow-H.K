@@ -21,7 +21,6 @@ The Conformité mode analyzes legal and compliance exposure for the project — 
 
 Any agent can activate this mode. The analysis adapts to the project's type, domain, and target geography.
 
----
 
 ## 3 severity levels
 
@@ -63,57 +62,41 @@ Every finding is assigned a severity level:
 ### 2 — Terms of Service and Legal Notices
 
 **Scope:** Any project accessible by end users.
-
-**Creator risks:** Without ToS, the creator has no contractual protection. Users can claim anything.
-
+**Creator risks:** Without ToS, no contractual protection.
 **Concrete actions (MANDATORY for commercial):**
-- Write `/terms` page: usage rules, prohibited behavior, account termination conditions
-- Write `/legal` page (for EU): creator identity, business address, registration number
+- Write `/terms` page: usage rules, prohibited behavior, termination conditions
+- Write `/legal` page (for EU): creator identity, address, registration number
 
 ---
 
 ### 3 — Liability
 
-**Scope:** Projects that give advice, process financial data, affect health, or make decisions.
-
-**Creator risks:** If the product gives wrong advice and a user is harmed, liability depends on disclaimers.
-
+**Scope:** Projects giving advice, processing financial data, affecting health, or making decisions.
 **Concrete actions (RECOMMENDED):**
 - Add disclaimers where the product gives advice (health, financial, legal)
 - Document what the product does NOT guarantee
-- Add error reporting and audit logs for decision-making systems
+- Add audit logs for decision-making systems
 
 ---
 
 ### 4 — Intellectual Property
 
 **Scope:** Projects using open-source libraries, AI-generated content, third-party assets.
-
-**What to check:**
-- License compatibility (GPL vs MIT vs proprietary — can they be combined?)
-- AI-generated code ownership (varies by tool and jurisdiction)
-- Images, fonts, icons — are they licensed for commercial use?
-
+**What to check:** License compatibility (GPL vs MIT vs proprietary), AI-generated code ownership, asset licenses.
 **Concrete actions (MANDATORY):**
-- Add a `LICENSES` or `NOTICE` file if required by open-source licenses used
-- Check all open-source dependencies for license compatibility via `license-checker` or equivalent
-- Replace any unlicensed assets (fonts, icons, images)
+- Add `LICENSES`/`NOTICE` file if required by dependencies
+- Check dependencies for license compatibility (`license-checker` or equivalent)
+- Replace any unlicensed assets
 
 ---
 
 ### 5 — Accessibility
 
 **Scope:** Any user-facing interface.
-
-**Creator risks:** ADA (US), EN 301 549 (EU), AODA (Canada) — legal claims possible.
-
-**User risks:** People with disabilities cannot use the product.
-
-**What to check:** WCAG 2.1 AA compliance minimum for commercial projects.
-
+**Creator risks:** ADA (US), EN 301 549 (EU), AODA (Canada).
+**What to check:** WCAG 2.1 AA minimum for commercial projects.
 **Concrete actions (RECOMMENDED):**
-- Run an automated accessibility audit (Lighthouse, axe-core)
-- Fix Critical and Serious violations
+- Run automated audit (Lighthouse, axe-core), fix Critical/Serious violations
 - Add keyboard navigation for all interactive elements
 - Add alt text to all images
 
@@ -122,13 +105,7 @@ Every finding is assigned a severity level:
 ### 6 — Commerce
 
 **Scope:** Projects that sell products, subscriptions, or services.
-
-**What to check:**
-- VAT/tax collection (especially cross-border EU VAT)
-- Right of withdrawal (EU: 14-day cooling-off period for digital products)
-- Invoice generation (legally required in many jurisdictions)
-- Consumer protection disclosures (price, delivery time, return policy)
-
+**What to check:** VAT/tax collection, right of withdrawal (EU 14-day), invoice generation, consumer protection disclosures.
 **Concrete actions (MANDATORY for EU commerce):**
 - Display total price including VAT before purchase
 - Provide a withdrawal form and process
@@ -139,61 +116,42 @@ Every finding is assigned a severity level:
 ### 7 — AI and Algorithms
 
 **Scope:** Projects using AI, ML models, or automated decision-making.
-
-**Creator risks:** EU AI Act (2024+), algorithmic transparency requirements, bias liability.
-
-**What to check:**
-- Is the system making decisions that affect people's rights or opportunities? (high-risk under EU AI Act)
-- Is there human oversight for critical decisions?
-- Are users informed when interacting with AI?
-
+**Creator risks:** EU AI Act (2024+), transparency requirements, bias liability.
 **Concrete actions (MANDATORY for EU):**
 - Disclose when users interact with AI (chatbots, recommendations, decisions)
-- For high-risk AI: document the model, its limitations, and the human oversight process
+- For high-risk AI: document model, limitations, human oversight process
 - Add a way for users to contest automated decisions
 
 ---
 
 ### 8 — Hosting and Data Location
 
-**Scope:** Projects storing personal data about EU, US, or other regulated users.
-
-**What to check:**
-- Where is the data stored? (EU data must stay in EU or in approved countries under GDPR)
-- Are cross-border data transfers covered by Standard Contractual Clauses (SCCs)?
-
+**Scope:** Projects storing personal data about EU/US/regulated users.
+**What to check:** Data storage location (EU data in EU), cross-border SCCs.
 **Concrete actions (RECOMMENDED):**
-- Document data storage location in the privacy policy
-- If using US cloud services for EU users: verify they have GDPR-compliant terms + SCCs
+- Document storage location in privacy policy
+- If US cloud for EU users: verify GDPR-compliant terms + SCCs
 
 ---
 
 ### 9 — Minors
 
-**Scope:** Any project that might be used by people under 13 (US) or 16 (EU).
-
-**What to check:**
-- Is there age verification?
-- Is parental consent obtained for under-13 users?
-- Are there features that should be restricted for minors?
-
+**Scope:** Any project that might be used by under-13 (US) or under-16 (EU).
 **Concrete actions (MANDATORY if minors may use the product):**
-- Add an age gate or age verification
+- Add age gate or verification
 - Remove targeted advertising for minors
-- Add parental consent flow for accounts under 13
+- Add parental consent flow for under-13 accounts
 
 ---
 
 ### 10 — Security Breach Notification
 
 **Scope:** Any project storing personal data.
-
-**Creator risks:** GDPR requires notification to the supervisory authority within 72 hours of discovering a breach. CCPA requires notification to affected users.
-
+**Creator risks:** GDPR 72h notification to authority, CCPA notification to users.
 **Concrete actions (MANDATORY):**
-- Document the breach notification procedure (who notifies, who decides, what timeline)
-- Identify the relevant supervisory authority for the project's primary geography
-- Prepare a breach notification template (what to say to users)
+- Document breach notification procedure (who, when, what)
+- Identify relevant supervisory authority
+- Prepare breach notification template
 
 ---
 
@@ -202,7 +160,7 @@ Every finding is assigned a severity level:
 ### Step 1 — Scope the analysis
 
 Identify the project's profile:
-```
+<output-format>
 Conformité — Let me identify the applicable domains.
 
   Project type: {web app | mobile app | API | e-commerce | SaaS | tool | other}
@@ -214,24 +172,18 @@ Conformité — Let me identify the applicable domains.
   Open source components: {yes | no}
 
   I'll now run targeted web searches for the regulations that apply to this profile.
-```
+</output-format>
 
 ### Step 2 — Web research
 
 Run searches for the applicable domains. Use Rule 8 (precise queries):
-
-```
-"{jurisdiction} {data_type} privacy law {current_year}"
-"{jurisdiction} e-commerce consumer protection requirements {current_year}"
-"EU AI Act compliance checklist {current_year}"
-"{open_source_license} commercial use requirements"
-```
+`"{jurisdiction} {data_type} privacy law {year}"`, `"EU AI Act compliance checklist {year}"`, `"{license} commercial use requirements"`.
 
 ### Step 3 — Present findings by domain
 
 For each applicable domain, present findings:
 
-```
+<output-format>
 CONFORMITÉ — {domain_name}
 
   Applicable to this project: {yes | partially | no}
@@ -247,13 +199,13 @@ CONFORMITÉ — {domain_name}
      Action: {concrete action}
   🟢 OPTIONAL: {specific finding}
      Action: {concrete action}
-```
+</output-format>
 
 Skip domains that do not apply to this project.
 
 ### Step 4 — Summary and prioritization
 
-```
+<output-format>
 CONFORMITÉ SUMMARY
 
   Domains analyzed: {count}
@@ -265,13 +217,19 @@ CONFORMITÉ SUMMARY
   1. {action} — domain: {domain} — effort: {estimate}
   2. {action} — domain: {domain} — effort: {estimate}
   3. {action} — domain: {domain} — effort: {estimate}
-```
+
+  ─────────────────────────────────────────
+  1. Save the compliance report and continue
+  2. Explore another domain
+
+  Close keywords: "done" / "terminé", "close" / "on ferme"
+</output-format>
 
 ---
 
 ## Saving output
 
-```markdown
+<output-format>
 ### Conformité (validated)
 
 - Agent: {agent who ran the mode}
@@ -289,4 +247,4 @@ CONFORMITÉ SUMMARY
 
 **MANDATORY items not yet addressed:** {count}
 **Recommended next action:** {highest-risk item + concrete implementation step}
-```
+</output-format>

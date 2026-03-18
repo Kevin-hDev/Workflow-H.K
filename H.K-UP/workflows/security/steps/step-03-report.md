@@ -39,7 +39,7 @@ Before writing, gather all findings from memory:
 
 **Verify completeness before writing:**
 
-```
+<output-format>
 Pre-report checkup
 
   From step-01:
@@ -58,7 +58,7 @@ Pre-report checkup
 
   → {If complete}: Proceed to write security-audit.md
   → {If gaps}: Resolve before writing
-```
+</output-format>
 
 ---
 
@@ -213,7 +213,7 @@ Write to `{output_folder}/security-audit.md`.
 
 Present the written report to the user.
 
-```
+<output-format>
 Security audit report written: {output_folder}/security-audit.md
 
 Summary:
@@ -223,15 +223,15 @@ Summary:
   Deferred:          {count}
 
 Remediation plan has {count} items:
-  Priority 1 (BLOCK):    {count}
-  Priority 2 (Duel FIX): {count}
+  Priority 1 (BLOCK):      {count}
+  Priority 2 (Duel FIX):   {count}
   Priority 3 (High DREAD): {count}
 
-Do you want to:
+What would you like to do?
   1. Review the full report before confirming
   2. Adjust any verdict (change FIX / ACCEPT / DEFER)
   3. Confirm and proceed to handoff
-```
+</output-format>
 
 Wait for user confirmation before handoff.
 
@@ -241,7 +241,7 @@ Wait for user confirmation before handoff.
 
 After user confirmation:
 
-```
+<output-format>
 Audit complete. Final reflection before handoff?
 
   REFLECTION MODES
@@ -251,7 +251,7 @@ Audit complete. Final reflection before handoff?
 
   ─────────────────────────────────────────────────────────
   S. Save and proceed to handoff
-```
+</output-format>
 
 **Before executing any mode above, LOAD its data file:**
 - Conformité → LOAD `data/modes/conformite.md`
@@ -261,7 +261,7 @@ Audit complete. Final reflection before handoff?
 
 ## Checkup before handoff
 
-```
+<output-format>
 Pre-handoff checkup
 
   security-audit.md written:              {Yes | No}
@@ -273,7 +273,7 @@ Pre-handoff checkup
 
   → {If all Yes}: Handoff confirmed. Proceed.
   → {If any No}: Resolve before handoff.
-```
+</output-format>
 
 ---
 
@@ -281,7 +281,7 @@ Pre-handoff checkup
 
 **Full path:**
 
-```
+<output-format>
 Security Workflow done. ✓
 
   security-audit.md written: {output_folder}/security-audit.md
@@ -294,11 +294,11 @@ Security Workflow done. ✓
   Priority 3 items are added to the backlog for user triage.
 
   Transmitting: security-audit.md + updated plan.md
-```
+</output-format>
 
 **Audit path:**
 
-```
+<output-format>
 Security Workflow done. ✓
 
   security-audit.md written: {output_folder}/security-audit.md
@@ -307,7 +307,7 @@ Security Workflow done. ✓
 → Finalization Workflow
   The audit report is the primary deliverable for this path.
   Transmitting: security-audit.md for final documentation and handoff.
-```
+</output-format>
 
 Update `hk-up-status.yaml`:
 - `step-03-report → done`

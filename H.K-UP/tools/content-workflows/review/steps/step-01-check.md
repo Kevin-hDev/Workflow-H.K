@@ -56,7 +56,7 @@ For each task marked `[x]` in the brief:
 - Verify a test exists for this task (mandatory per Rule 5)
 - Check that the brief's "Files to create/modify" table matches reality
 
-```
+<output-format>
 Plan Check — Mission {quest_num}.{mission_num}
 
   Task 1: [x] {title}
@@ -68,7 +68,7 @@ Plan Check — Mission {quest_num}.{mission_num}
     Test:        {found} ✓ | ✗
 
   Result: ✓ PASS | ✗ ISSUES — {list}
-```
+</output-format>
 
 ### Control Point 2: Logic correct?
 
@@ -81,7 +81,7 @@ Questions to ask for each changed function/module:
 - Are boundary conditions handled (empty, zero, null, max)?
 - Does the test actually verify meaningful behavior (anti-fraud check)?
 
-```
+<output-format>
 Logic Check — Mission {quest_num}.{mission_num}
 
   {file_1}:
@@ -91,11 +91,11 @@ Logic Check — Mission {quest_num}.{mission_num}
     {function/module}: ✓ | ⚠ {specific issue}
 
   Result: ✓ PASS | ✗ ISSUES — {list}
-```
+</output-format>
 
 ### Control Point 3: Integration OK?
 
-```
+<output-format>
 Integration Check — Mission {quest_num}.{mission_num}
 
   Imports resolve:     ✓ | ✗ {what's broken}
@@ -105,11 +105,11 @@ Integration Check — Mission {quest_num}.{mission_num}
   API contracts:       ✓ | N/A (no API change)
 
   Result: ✓ PASS | ✗ ISSUES — {list}
-```
+</output-format>
 
 ### Constructive summary
 
-```
+<output-format>
 CONSTRUCTIVE REVIEW — Mission {quest_num}.{mission_num}
 
   Plan followed:   ✓ PASS | ✗ {issues}
@@ -117,7 +117,7 @@ CONSTRUCTIVE REVIEW — Mission {quest_num}.{mission_num}
   Integration OK:  ✓ PASS | ✗ {issues}
 
   Overall: ✓ PASS | ✗ {count} issues found
-```
+</output-format>
 
 ---
 
@@ -138,11 +138,11 @@ For each such function:
 - HTML output: is it escaped or sanitized?
 - File paths: is `..` traversal prevented?
 
-```
+<output-format>
   Unvalidated inputs:
     {file:line} — {function receives external input without validation} ⚠
     {file:line} — ✓ all inputs validated before use
-```
+</output-format>
 
 ### Check 2: Silent failures
 
@@ -155,22 +155,22 @@ Red flags:
 - Optional chaining `?.` used where a missing value should be an error
 - Default values that mask errors (`?? ""`, `?? 0` hiding null/undefined propagation)
 
-```
+<output-format>
   Silent failures:
     {file:line} — catch block swallows exception without re-throwing ⚠
     {file:line} — ✓ errors propagate correctly (fail closed)
-```
+</output-format>
 
 ### Check 3: Secret handling
 
-```
+<output-format>
   Secret handling:
     {file:line} — hardcoded credential or token ⚠ (CRITICAL)
     {file:line} — secret compared with == instead of constant-time comparison ⚠
     {file:line} — token generated with Math.random() or equivalent ⚠
     {file:line} — secret value passed to logger or console ⚠
     {file:line} — ✓ secrets sourced from env/keystore, compared correctly, not logged
-```
+</output-format>
 
 ### Check 4: Edge cases
 
@@ -187,11 +187,11 @@ For each edge case identified:
 - Is there a test covering it?
 - Does the code handle it correctly?
 
-```
+<output-format>
   Edge cases:
     {scenario}: ✓ covered by test {test_name}
     {scenario}: ✗ not handled — {what happens and why it matters}
-```
+</output-format>
 
 ### Check 5: Exposed internals
 
@@ -205,15 +205,15 @@ Red flags:
 - Internal identifiers (user IDs, session tokens) logged at a level accessible to clients
 - Debug endpoints left in production paths
 
-```
+<output-format>
   Exposed internals:
     {file:line} — stack trace returned in API error response ⚠
     {file:line} — ✓ error messages are generic, no internal info exposed
-```
+</output-format>
 
 ### Adversarial summary
 
-```
+<output-format>
 ADVERSARIAL REVIEW — Mission {quest_num}.{mission_num}
 
   1. Unvalidated inputs:  ✓ PASS | ✗ {count} finding(s)
@@ -223,7 +223,7 @@ ADVERSARIAL REVIEW — Mission {quest_num}.{mission_num}
   5. Exposed internals:   ✓ PASS | ✗ {count} finding(s)
 
   Overall: ✓ PASS | ✗ {total_count} findings
-```
+</output-format>
 
 ---
 
@@ -239,7 +239,7 @@ Run the test suite to confirm:
 
 Mark done:
 
-```
+<output-format>
 Review complete. Mission {quest_num}.{mission_num} → done.
 
   Constructive: ✓ PASS
@@ -247,7 +247,7 @@ Review complete. Mission {quest_num}.{mission_num} → done.
   Tests:        {pass}/{total} — all passing ✓
 
 hk-up-status.yaml updated: mission → done
-```
+</output-format>
 
 Append to the mission brief:
 
@@ -277,7 +277,7 @@ Confirm all tests pass (including the new tests for the fixes).
 
 Then mark done:
 
-```
+<output-format>
 Review complete with corrections. Mission {quest_num}.{mission_num} → done.
 
   Constructive: ✓ PASS {(after corrections)}
@@ -291,7 +291,7 @@ Review complete with corrections. Mission {quest_num}.{mission_num} → done.
   Tests: {pass}/{total} — all passing ✓
 
 hk-up-status.yaml updated: mission → done
-```
+</output-format>
 
 Append to the mission brief:
 
@@ -309,7 +309,7 @@ Result: done
 If a finding reveals a design problem that cannot be fixed at the code level
 (architectural inconsistency, ADR violation, scope that exceeds the mission):
 
-```
+<output-format>
 ⚠ Architectural issue detected — escalating to L'Architecte.
 
 Finding: {description}
@@ -317,7 +317,7 @@ Why this can't be fixed in this mission: {reason}
 What L'Architecte needs to decide: {specific question}
 
 Mission {quest_num}.{mission_num} is held at `review` until L'Architecte responds.
-```
+</output-format>
 
 Do NOT mark `done` when escalating. The mission stays at `review`.
 
@@ -329,7 +329,7 @@ Run this check only after the final mission of a Quest/phase is marked `done`.
 
 **Method:** same format as all H.K-UP checkups (data/checkup-system.md).
 
-```
+<output-format>
 Phase Checkup — Quest {N}: {quest_name}
 
   Planned objectives                    Covered by missions?
@@ -346,7 +346,7 @@ Phase Checkup — Quest {N}: {quest_name}
 
   → {If 100% and no inconsistency}: Quest {N} done.
   → {If gaps}: {action to take before marking Quest done}
-```
+</output-format>
 
 If the Quest is complete, update `hk-up-status.yaml`:
 - Quest/phase → `done`
@@ -358,7 +358,7 @@ If the Quest is complete, update `hk-up-status.yaml`:
 
 Offered only after the phase checkup (not after individual missions — the review is atomic).
 
-```
+<output-format>
 Quest {N} complete. Any final analysis?
 
   REFLECTION MODES
@@ -368,7 +368,7 @@ Quest {N} complete. Any final analysis?
 
   ─────────────────────────────────────────
   S. Continue to next mission or Quest
-```
+</output-format>
 
 **Before executing any mode above, LOAD its data file:**
 - Table Ronde → LOAD `data/modes/table-ronde.md`
@@ -380,21 +380,21 @@ Quest {N} complete. Any final analysis?
 
 Per mission:
 
-```
+<output-format>
 Mission {quest_num}.{mission_num}: done ✓
 {Corrections: N applied | No corrections needed}
 
 → {Next mission in Quest | Quest complete → notify user, proceed to Quest {N+1}}
-```
+</output-format>
 
 After Quest complete:
 
-```
+<output-format>
 Quest {N} — {quest_name}: done ✓
 Missions completed: {count}
 Corrections applied across Quest: {total_count}
 
 → Notify user — ready for Quest {N+1} or finalization workflow
-```
+</output-format>
 
 Update `hk-up-status.yaml` accordingly.

@@ -158,7 +158,7 @@ outside the domain (a product known for exceptional UX).
 
 Present in this exact format:
 
-```
+<output-format>
 UI AUDIT — {project_name}
 
 SCREENS INVENTORY
@@ -200,8 +200,9 @@ COMPETITIVE LANDSCAPE
 ACCESSIBILITY BASELINE
   {current state: any ARIA, semantic HTML, color contrast issues spotted?}
 
-Do you confirm these findings? Anything to add before I explore visual directions?
-```
+  1. Confirm — move to visual directions
+  2. Adjust — correct or add something first
+</output-format>
 
 Wait for user confirmation. Adjust if they correct or add anything.
 
@@ -209,7 +210,7 @@ Wait for user confirmation. Adjust if they correct or add anything.
 
 ## Reflection modes menu
 
-```
+<output-format>
 Step 01 complete. Want to look at the existing UI from specific angles?
 
   REFLECTION MODES
@@ -220,7 +221,7 @@ Step 01 complete. Want to look at the existing UI from specific angles?
 
   ─────────────────────────────────────────
   S. Save and explore visual directions (step-02)
-```
+</output-format>
 
 **Before executing any mode above, LOAD its data file:**
 - Prisme → LOAD `data/modes/prisme.md` + `data/prisme-facettes.csv`
@@ -230,7 +231,7 @@ Step 01 complete. Want to look at the existing UI from specific angles?
 
 ## Transition
 
-```
+<output-format>
 Step 01 complete.
 
 Screens audited: {count}
@@ -241,7 +242,7 @@ Competitive references: {count}
 → Step 02 — I'll now explore 3+ visual directions.
   Each direction will be a distinct mood with palette, typography, and vibe.
   You'll choose before I produce any mockup.
-```
+</output-format>
 
 Update `hk-up-status.yaml`: `7-1-audit-exploration → step-01: done`
 Proceed to **step-02-explore.md**

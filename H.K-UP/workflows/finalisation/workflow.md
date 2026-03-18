@@ -57,6 +57,37 @@ is fully implemented. Update project documentation. Formally close the H.K-UP pa
    Run /hkup-{command} first, or check {output_folder}/ for the file.
    ```
 
+### Pre-flight — input file confirmation
+
+⛔ STOP — Do NOT read file contents yet. List filenames only.
+
+Search for the expected input files in `{output_folder}/`:
+- `project-context.md` — check `{output_folder}/diagnostic/project-context.md` or `{output_folder}/project-context.md`
+- `prd.md` — check `{output_folder}/prd/prd.md` or `{output_folder}/prd.md` (required for Standard/Full)
+- `plan.md` — check `{output_folder}/architecture/plan.md` or `{output_folder}/plan.md`
+- `hk-up-status.yaml` — check `{output_folder}/hk-up-status.yaml`
+- If the subdirectory structure is not found, glob fallback: `*project-context*`, `*prd*`, `*plan*`, `*hk-up-status*`
+
+Present what was found:
+
+<output-format>
+♟️ Le Stratège — Pre-flight check
+
+  Files found:
+  ✓/✗ project-context.md — required (from diagnostic)
+  ✓/✗ prd.md — required for Standard/Full
+  ✓/✗ plan.md — required (from architecture)
+  ✓/✗ hk-up-status.yaml — required
+
+  Do you have any additional files or context to provide?
+
+  1. Load everything and start
+  2. Add a file or context first
+</output-format>
+
+⛔ STOP CONDITION: Do NOT proceed to step-01 until the user confirms with option 1.
+If the user picks 2: accept the file path or context, add it to the input list, then re-present.
+
 **Reference document by parcours:**
 
 | Parcours | Checkup reference | What is verified |
@@ -113,3 +144,5 @@ This workflow (and the entire H.K-UP parcours) is complete when:
 - [ ] `hk-up-status.yaml` marked `completed` (step-02)
 - [ ] Closing summary presented to the user (step-02)
 - [ ] Explicit next steps offered (step-02)
+
+**Rule 14:** Launch the next workflow in a NEW session. Run `/clear` or start a new conversation.

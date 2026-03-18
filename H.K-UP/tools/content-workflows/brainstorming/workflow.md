@@ -42,6 +42,37 @@ mode: PLANNING
    Run /hkup-start first, or check {output_folder}/ for the file.
    ```
 
+### Pre-flight — input file confirmation
+
+⛔ STOP — Do NOT read file contents yet. List filenames only.
+
+Search for the expected input files in `{output_folder}/`:
+- `project-context.md` — check `{output_folder}/diagnostic/project-context.md` or `{output_folder}/project-context.md`
+- `hk-up-status.yaml` — check `{output_folder}/hk-up-status.yaml`
+- If the subdirectory structure is not found, glob fallback: `*project-context*`, `*hk-up-status*`
+
+Present what was found:
+
+<output-format>
+♟️ Le Stratège — Pre-flight check
+
+  Files found:
+  ✓/✗ project-context.md — required (from L'Éclaireur diagnostic)
+  ✓/✗ hk-up-status.yaml — required
+
+  ⚠ project-context.md is required. Run /hkup-start first to create it.
+
+  Do you have any additional files or context to provide?
+
+  1. Load everything and start
+  2. Add a file or context first
+</output-format>
+
+⛔ STOP CONDITION: Do NOT proceed to step-01 until the user confirms with option 1.
+If the user picks 2: accept the file path or context, add it to the input list, then re-present.
+
+---
+
 **Web search — Benchmark Vivant:**
 Before starting, search for the current state of the art:
 - Query format: `"{stack} {domain} best practices {current_year}"`
@@ -98,3 +129,5 @@ This workflow is complete when:
 - [ ] User has confirmed the direction (step-05)
 - [ ] `hk-up-status.yaml` has been updated
 - [ ] Explicit handoff to Le Stratège's PRD workflow has been announced (Rule 10)
+
+**Rule 14:** Launch the next workflow in a NEW session. Run `/clear` or start a new conversation.

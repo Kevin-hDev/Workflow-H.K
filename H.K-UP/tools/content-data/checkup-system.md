@@ -29,7 +29,7 @@ that nothing was missed.
 
 Every checkup — regardless of level or context — uses this format:
 
-```
+<output-format>
 CHECKUP — {source_document} vs {target_document}
 
   Source item                              Coverage in target   Status
@@ -43,7 +43,7 @@ CHECKUP — {source_document} vs {target_document}
   Must Have coverage:   {n}/{total} — {percent}%
   Should Have coverage: {n}/{total} — {percent}%   (non-blocking)
   Could Have coverage:  {n}/{total} — {percent}%   (non-blocking)
-```
+</output-format>
 
 **Status legend:**
 - ✓ Covered — fully addressed in the target document
@@ -87,7 +87,9 @@ CHECKUP — {source_document} vs {target_document}
 Here's a draft to cover it:
   {draft content based on the missing item}
 
-Does this cover the gap? Adjust as needed, then I'll add it to {target_document}.
+  1. Add as-is to {target_document}
+  2. Modify before adding
+  3. Skip this item
 ```
 
 After adding: re-run the checkup. Do not proceed until the table shows 100% Must Have.
@@ -111,7 +113,9 @@ After adding: re-run the checkup. Do not proceed until the table shows 100% Must
 Current:   {what exists}
 Missing:   {what is incomplete}
 
-Add these?
+  1. Add all partial items
+  2. Review each one individually
+  3. Skip partial items
 ```
 
 ---
@@ -220,7 +224,7 @@ Should Have: {n}/{total} — {percent}% (non-blocking)
 
 After a checkup passes, append to the current step's deliverable:
 
-```markdown
+<output-format>
 ## Checkup — {source} vs {target} (passed)
 
 | Item | Coverage | Status |
@@ -230,4 +234,4 @@ After a checkup passes, append to the current step's deliverable:
 
 Must Have: {n}/{n} — 100% ✓
 Should Have: {n}/{total} — {percent}%
-```
+</output-format>

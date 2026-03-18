@@ -284,7 +284,7 @@ For each mockup, either:
 - Use Playwright MCP to screenshot the HTML file and show the result
 - Or describe the screen in detail if screenshots are unavailable
 
-```
+<output-format>
 Here is the mockup for {screen_name}:
 
 {screenshot or detailed description}
@@ -295,7 +295,10 @@ Notable details:
   - {responsive behavior}
 
 Validated? Or adjustments needed?
-```
+
+  1. Validate
+  2. Adjust
+</output-format>
 
 Wait for confirmation per mockup. Do not build the next mockup until the current one is validated.
 
@@ -303,7 +306,7 @@ Wait for confirmation per mockup. Do not build the next mockup until the current
 
 ## Reflection modes menu
 
-```
+<output-format>
 Mockups built. Want to review before the final checkup?
 
   REFLECTION MODES
@@ -312,7 +315,7 @@ Mockups built. Want to review before the final checkup?
 
   ─────────────────────────────────────────
   S. Save and run the final validation (step-04)
-```
+</output-format>
 
 **Before executing any mode above, LOAD its data file:**
 - Prisme → LOAD `data/modes/prisme.md` + `data/prisme-facettes.csv`
@@ -321,7 +324,7 @@ Mockups built. Want to review before the final checkup?
 
 ## Transition
 
-```
+<output-format>
 Step 03 complete.
 
 Design tokens defined: {count} CSS variables
@@ -331,7 +334,7 @@ Components documented: {count}
 
 → Step 04 — Final checkup: every UI feature from the PRD
   must have a corresponding mockup. Blocking gate.
-```
+</output-format>
 
 Update `hk-up-status.yaml`: `7-2-mockups-specs → step-03: done`
 Proceed to **step-04-validate.md**

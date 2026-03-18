@@ -32,18 +32,18 @@ Run the complete test suite one last time:
 
 Compare against the baseline recorded in step-01:
 
-```
+<output-format>
 FINAL VERIFICATION — Mission {quest_num}.{mission_num}
 
   Baseline (before changes): {baseline_pass}/{baseline_total} passing
   Final (after all tasks):   {final_pass}/{final_total} passing
   New tests added:           +{new_count}
   Regressions:               {count}
-```
+</output-format>
 
 **If regressions > 0:**
 
-```
+<output-format>
 ⚠ REGRESSION DETECTED — Cannot mark [review].
 
 Tests that broke:
@@ -51,7 +51,7 @@ Tests that broke:
   - {test_name_2}: {expected} → {actual}
 
 Returning to step-02 to fix before proceeding.
-```
+</output-format>
 
 Return to **step-02-implement.md**. Do NOT update the status until all tests pass.
 
@@ -119,7 +119,7 @@ Append the completion report to the mission brief file
 
 Announce the handoff:
 
-```
+<output-format>
 Mission {quest_num}.{mission_num} — {title} ready for review.
 
   Tasks: {count}/{count} complete ✓
@@ -137,13 +137,13 @@ Mission {quest_num}.{mission_num} — {title} ready for review.
     - git diff of all changes since mission start:
       git diff {first_commit_hash}^..HEAD
     - Test results: {final_pass}/{final_total} passing
-```
+</output-format>
 
 ---
 
 ## Transition
 
-```
+<output-format>
 Step 03 complete. Dev workflow instance done.
 
 Mission {quest_num}.{mission_num}: review
@@ -151,6 +151,6 @@ Commits: {list of hashes and messages}
 Tests: {final_pass}/{final_total} ✓
 
 → Le Gardien — Review Workflow
-```
+</output-format>
 
 No `hk-up-status.yaml` update at this step beyond the `review` mark already set in Phase 3.

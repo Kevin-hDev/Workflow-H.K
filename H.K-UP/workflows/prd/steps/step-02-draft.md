@@ -62,7 +62,13 @@ Write sections in this exact order. Present each before continuing.
 {confirmed direction statement from brainstorming — exact wording}
 ```
 
-Present to user. Wait for "ok" or adjustments. Then continue.
+Present to user with numbered choice:
+
+<output-format>
+  ─────────────────────────────────────────
+  1. Approve this section
+  2. Adjust before continuing
+</output-format>
 
 ---
 
@@ -307,7 +313,7 @@ status: draft
 
 ## Reflection modes menu
 
-```
+<output-format>
 PRD draft complete. Would you like to review further before validation?
 
   REFLECTION MODES
@@ -317,7 +323,7 @@ PRD draft complete. Would you like to review further before validation?
 
   ─────────────────────────────────────────
   S. Save and proceed to validation (step-03)
-```
+</output-format>
 
 **Before executing any mode above, LOAD its data file:**
 - Table Ronde → `data/modes/table-ronde.md`
@@ -328,7 +334,7 @@ PRD draft complete. Would you like to review further before validation?
 
 ## Transition
 
-```
+<output-format>
 Step 02 complete.
 
 prd.md saved (draft).
@@ -338,7 +344,7 @@ Out of scope: {count} items documented
 
 → Step 03 — We'll now review the PRD together and confirm
   every section before the final checkup.
-```
+</output-format>
 
 Update `hk-up-status.yaml`: `5-1-prd-draft → step-02: done`
 Proceed to **step-03-validate.md**

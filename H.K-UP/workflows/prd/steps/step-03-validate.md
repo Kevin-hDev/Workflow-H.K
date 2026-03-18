@@ -37,7 +37,7 @@ No section is left unreviewed. The result is a user-confirmed PRD.
 
 Maintain and display this tracker at the start of each section review:
 
-```
+<output-format>
 PRD Validation — {project_name}
 
   Section 1  — Overview                  {✓ / ← / pending}
@@ -57,7 +57,7 @@ PRD Validation — {project_name}
   Section 11 — Risks                     {✓ / ← / pending}
 
   ← = currently reviewing
-```
+</output-format>
 
 ---
 
@@ -67,15 +67,15 @@ PRD Validation — {project_name}
 
 Present the section content. Ask:
 
-```
+<output-format>
 Section {N} — {Section Name}
 
 {section content from prd.md}
 
 ──────────────────────────────────────────
-Does this accurately capture what you want? Any changes?
-(Press Enter to confirm, or tell me what to change)
-```
+  1. Confirm
+  2. Change — describe what to modify
+</output-format>
 
 On confirmation → mark ✓. On change → edit, re-present, re-ask.
 
@@ -87,7 +87,7 @@ Review each feature individually within Section 3.
 
 For each feature:
 
-```
+<output-format>
 Section 3 — Must Have Features  ← reviewing
 
   F{N}: {Feature Name}
@@ -105,9 +105,9 @@ Section 3 — Must Have Features  ← reviewing
   Priority: Must Have | Source: {source}
 
 ──────────────────────────────────────────
-Does this accurately capture what you want?
-(Press Enter to confirm, or tell me what to change)
-```
+  1. Confirm
+  2. Change — describe what to modify
+</output-format>
 
 Mark each feature ✓ individually. Move to the next feature only after confirmation.
 Do not show all Must Have features at once.
@@ -159,7 +159,7 @@ Allow targeted edits by feature number. Confirm the full section before moving o
 
 Once every section shows ✓:
 
-```
+<output-format>
 All sections validated.
 
   Section 1  — Overview                  ✓
@@ -175,7 +175,7 @@ All sections validated.
   Section 11 — Risks                     ✓
 
 Total features: {count} (Must: {n}, Should: {n}, Could: {n})
-```
+</output-format>
 
 Update prd.md frontmatter: `status: draft` → `status: validated`
 
@@ -183,7 +183,7 @@ Update prd.md frontmatter: `status: draft` → `status: validated`
 
 ## Reflection modes menu
 
-```
+<output-format>
 PRD validated. One last chance to explore before the final checkup:
 
   REFLECTION MODES
@@ -192,7 +192,7 @@ PRD validated. One last chance to explore before the final checkup:
 
   ─────────────────────────────────────────
   S. Save and proceed to checkup (step-04)
-```
+</output-format>
 
 **Before executing any mode above, LOAD its data file:**
 - Table Ronde → `data/modes/table-ronde.md`
@@ -202,7 +202,7 @@ PRD validated. One last chance to explore before the final checkup:
 
 ## Transition
 
-```
+<output-format>
 Step 03 complete.
 
 prd.md status updated: draft → validated.
@@ -211,7 +211,7 @@ All {N} sections confirmed by user.
 → Step 04 — Final blocking checkup:
   I'll verify that every Must Have from your confirmed direction
   is present in the PRD before handing off to L'Architecte.
-```
+</output-format>
 
 Update `hk-up-status.yaml`: `5-2-prd-validation → step-03: done`
 Proceed to **step-04-checkup.md**

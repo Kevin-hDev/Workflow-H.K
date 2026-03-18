@@ -10,16 +10,15 @@ agent: architecte
 > **CRITICAL — Rule 9:** These first 10 lines are your priority.
 > **CRITICAL — Rule 6:** 2-3 tasks per Mission MAX. If a Mission exceeds 3 tasks, split it immediately.
 > **CRITICAL:** Dependencies must be explicit — every Mission knows what it depends on.
-> **CRITICAL:** Generate one Mission brief file per Mission in `{output_folder}/missions/`.
-> **CRITICAL — Rule 1:** Present the full plan to the user before generating any Mission brief.
+> **CRITICAL — Rule 1:** Present the full plan to the user and wait for confirmation before saving.
 
 ---
 
 ## Goal
 
 Turn the validated architecture into an executable plan. Group changes into Quests (thematic
-blocks). Break each Quest into Missions of 2-3 tasks MAX. Map dependencies. Generate one
-Mission brief per Mission. Save the plan as `{output_folder}/plan.md`.
+blocks). Break each Quest into Missions of 2-3 tasks MAX. Map dependencies. Save the plan as
+`{output_folder}/plan.md`. Mission briefs will be generated separately via /hkup-create-mission.
 
 ---
 
@@ -78,9 +77,9 @@ Build a dependency graph after listing all Missions. This graph becomes the exec
 
 ## Phase 4 — Present the plan for confirmation
 
-Before generating any Mission brief, present the full plan:
+Present the full plan for confirmation:
 
-```
+<output-format>
 EXECUTION PLAN — {project_name}
 
   Quest 1: {quest_name}
@@ -104,68 +103,17 @@ EXECUTION PLAN — {project_name}
 
   Total: {N} Quests, {M} Missions, {T} tasks
 
-Any adjustments before I write the Mission briefs?
-```
+Any adjustments before I save the plan?
+
+  1. Confirm
+  2. Adjust
+</output-format>
 
 Wait for confirmation. Adjust if the user wants to reorder, merge, or split Quests/Missions.
 
 ---
 
-## Phase 5 — Generate Mission briefs
-
-Once the plan is confirmed, create one brief per Mission using this template:
-
-```markdown
-# Mission {quest_num}.{mission_num} — {title}
-
-## Context
-
-{What Le Chirurgien needs to know before starting:
-  - What architectural change this Mission implements
-  - Which ADR(s) it relates to
-  - What was in place before (from step-01 analysis)
-  - What the target state is after this Mission}
-
-Project root: `{project_root}`
-
-## Tasks
-
-- [ ] Task 1: {precise task — include the specific file(s) or module(s) involved}
-- [ ] Task 2: {precise task}
-- [ ] Task 3: {precise task — if needed. Beyond 3: split into sub-missions.}
-
-## Files to create / modify
-
-| File | Action | Description |
-|------|--------|-------------|
-| `{file_1_path}` | create / modify | {what changes and why} |
-| `{file_2_path}` | create / modify | {what changes and why} |
-
-## References
-
-- **Read**: {files to read before starting — architecture.md, specific source files}
-- **Draw inspiration from**: {relevant patterns from the existing codebase to follow}
-
-## Constraints
-
-- {constraint specific to this Mission — naming convention, interface contract, etc.}
-- No file > 250 lines
-- Tests mandatory for all business logic
-- Follow strangler fig: old code stays functional until this Mission is validated
-
-## When you are done
-
-Update `hk-up-status.yaml`:
-mission-{quest_num}-{mission_num}: review
-
-File: `{output_folder}/hk-up-status.yaml`
-```
-
-Save each brief as: `{output_folder}/missions/mission-{quest_num}-{mission_num}.md`
-
----
-
-## Phase 6 — Save plan.md
+## Phase 5 — Save plan.md
 
 Save the complete plan as `{output_folder}/plan.md`:
 
@@ -192,13 +140,11 @@ status: validated
 - **Tasks:** {count}
 - **Key files:** {list}
 - **Dependencies:** None
-- **Brief:** `missions/mission-1-1.md`
 
 ### Mission 1.2 — {title}
 - **Tasks:** {count}
 - **Key files:** {list}
 - **Dependencies:** Mission 1.1
-- **Brief:** `missions/mission-1-2.md`
 
 ## Quest 2: {quest_name}
 
@@ -222,8 +168,8 @@ status: validated
 
 ## Reflection modes menu
 
-```
-Plan ready. Want to stress-test before generating the briefs?
+<output-format>
+Plan ready. Want to stress-test before saving?
 
   REFLECTION MODES
   1. Table Ronde  — Debate priorities and sequencing with Zero
@@ -231,7 +177,7 @@ Plan ready. Want to stress-test before generating the briefs?
 
   ─────────────────────────────────────────
   S. Save and generate hk-up-status.yaml (step-04)
-```
+</output-format>
 
 **Before executing any mode above, LOAD its data file:**
 - Table Ronde → LOAD `data/modes/table-ronde.md`
@@ -241,18 +187,20 @@ Plan ready. Want to stress-test before generating the briefs?
 
 ## Transition
 
-```
+<output-format>
 Step 03 complete.
 
 plan.md saved.
 Quests: {N}
 Missions: {M} ({T} total tasks)
-Mission briefs generated: {M}
-Parallel execution opportunities: {count}
+
+Mission briefs are NOT generated yet — they will be created one by one
+using /hkup-create-mission before each dev session.
+This keeps context fresh and briefs enriched with the latest state.
 
 → Step 04 — I'll now generate hk-up-status.yaml
   and define the git strategy.
-```
+</output-format>
 
 Update `hk-up-status.yaml`: `6-2-plan-missions → step-03: done`
 Proceed to **step-04-status.md**

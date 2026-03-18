@@ -24,16 +24,56 @@ unfixed. Mark `done` only when both passes clear.
 Le Gardien does not start a new conversation per mission — it accumulates context within
 a phase and processes missions sequentially until the Quest/phase is complete.
 
-**Receives per mission:**
-- `{output_folder}/missions/mission-{N}.md` — brief + completion report from Le Chirurgien
-- `git diff {first_commit}^..HEAD` — all code changes for this mission
-- Test suite results (from step-03-verify.md)
-- `{output_folder}/architecture.md` — to verify ADR compliance
-- `{output_folder}/plan.md` — to check mission scope was respected
+### Pre-flight — input file confirmation
+
+⛔ STOP — Do NOT read file contents yet. List filenames only.
+
+Search for the expected input files in `{output_folder}/`:
+- `hk-up-status.yaml` — check `{output_folder}/hk-up-status.yaml`
+- `missions/` directory — check `{output_folder}/missions/mission-*.md` (list all briefs found)
+- If the subdirectory structure is not found, glob fallback: `*mission-*`, `*hk-up-status*`
+
+Present what was found:
+
+<output-format>
+Le Gardien — Pre-flight check
+
+  Files found:
+  ✓/✗ hk-up-status.yaml — required
+  ✓/✗ missions/ directory — required
+    Briefs available: mission-{X}-{Y}.md, ...
+
+  ⚠ No mission at review status. Le Chirurgien must mark a mission [review] first.
+
+  Do you have any additional files or context to provide?
+
+  1. Load everything and start
+  2. Add a file or context first
+</output-format>
+
+⛔ STOP CONDITION: Do NOT proceed until the user confirms with option 1.
+If the user picks 2: accept the file path or context, add it to the input list, then re-present.
+
+### Mission selection
+
+Determine the mission to review:
+- If a mission ID was provided (e.g., "1.1"): use it directly
+- If no ID provided: read `hk-up-status.yaml`, find the FIRST mission with status `review`
+- If no review missions: inform the user that no missions are ready for review
+
+Load the mission brief: `{output_folder}/missions/mission-{X}-{Y}.md`
 
 **Before starting each mission review:**
-Check `hk-up-status.yaml` — the mission must be at `review` status.
-If it is not `review`, do not start the review — something is wrong in the sequence.
+Confirm `hk-up-status.yaml` shows the selected mission at `review` status.
+If it is not `review`, do not start — something is wrong in the sequence.
+
+### Cross-check with git
+
+After loading the brief, compare what the dev CLAIMED to do vs what ACTUALLY changed:
+1. Run `git diff --name-only` to see changed files
+2. Compare against the "Files to create / modify" table in the brief
+3. Verify each task marked `[x]` has evidence in the changed files
+4. Flag discrepancies: files changed but not in brief, or brief claims but no git evidence
 
 ---
 
@@ -97,3 +137,5 @@ A phase (Quest) is complete when:
 - [ ] Phase checkup confirms missions cover all planned Quest objectives
 - [ ] No architectural inconsistency detected across missions
 - [ ] `hk-up-status.yaml` phase/Quest updated to `done`
+
+**Rule 14:** Launch the next workflow in a NEW session. Run `/clear` or start a new conversation.

@@ -26,17 +26,14 @@ be traceable to at least one Mission. Get user confirmation. Hand off to Le Chir
 
 Give the user a full picture of what was built in this workflow:
 
-```
+<output-format>
 ARCHITECTURE WORKFLOW COMPLETE — {project_name}
 
 DELIVERABLES PRODUCED
   ├── architecture.md       — {N} Architecture Decision Records
   ├── plan.md               — {N} Quests, {M} Missions, {T} tasks
-  ├── hk-up-status.yaml     — Execution registry ({M} missions at backlog)
-  └── missions/
-      ├── mission-1-1.md
-      ├── mission-1-2.md
-      └── ... ({M} briefs total)
+  ├── hk-up-status.yaml     — Execution registry ({M} missions at pending)
+  └── missions/              ← briefs created later via /hkup-create-mission
 
 ARCHITECTURE APPROACH CHOSEN
   {Name of the selected approach from step-02}
@@ -54,7 +51,7 @@ EXECUTION PLAN SUMMARY
 GIT STRATEGY
   {path}: {strategy summary}
   First branch: {branch_name} (from {base_branch})
-```
+</output-format>
 
 ---
 
@@ -65,7 +62,7 @@ GIT STRATEGY
 
 Use this exact format:
 
-```
+<output-format>
 Final Checkup — PRD Must Have features vs Execution Plan
 
   Feature                          Quest → Mission
@@ -79,7 +76,7 @@ Final Checkup — PRD Must Have features vs Execution Plan
 
   → {If 100%}: All Must Have features are mapped. Plan is complete.
   → {If <100%}: F4 is not covered. Adding Mission {N.M} before proceeding.
-```
+</output-format>
 
 If any Must Have is unmapped:
 1. Create the missing Mission immediately (brief + plan.md + hk-up-status.yaml update)
@@ -92,7 +89,7 @@ If any Must Have is unmapped:
 
 Once the checkup passes 100%:
 
-```
+<output-format>
 Checkup passed. All {N} Must Have features are mapped to Missions.
 
 Here is the complete plan. Is this what you want to execute?
@@ -103,7 +100,7 @@ Any final adjustments? Or ready to hand off to Le Chirurgien?
 
   1. Adjust something (specify what)
   2. Let's go — start execution
-```
+</output-format>
 
 Wait for explicit confirmation. Do not proceed until the user says so.
 
@@ -119,7 +116,7 @@ Once the user confirms:
 
 **Announce the handoff:**
 
-```
+<output-format>
 Plan validated. Handing off to execution.
 
   PLAN VALIDATED
@@ -128,11 +125,9 @@ Plan validated. Handing off to execution.
   Total tasks: {T}
   Git strategy: {strategy}
 
-  WHAT LE CHIRURGIEN RECEIVES
-  - Mission brief: {output_folder}/missions/mission-1-1.md
-  - Architecture context: {output_folder}/architecture.md
-  - Full plan: {output_folder}/plan.md
-  - Status registry: {output_folder}/hk-up-status.yaml
+  NEXT STEP
+  Next step: Run /hkup-create-mission to create enriched mission briefs
+  before starting development with /hkup-dev-and-review.
 
   WHAT LE GARDIEN RECEIVES
   - Plan for phase checkups: {output_folder}/plan.md
@@ -142,10 +137,11 @@ Plan validated. Handing off to execution.
   FIRST MISSION: {mission_id} — {title}
     Branch to create: {branch_name}
 
-  → Dev Workflow — Le Chirurgien
-    Load: workflows/dev/workflow.md
-    Start: Mission {mission_id}
-```
+  → Create Mission Briefs — /hkup-create-mission
+    Load: workflows/create-mission/workflow.md
+    Next step: Run /hkup-create-mission to create enriched mission briefs
+    before starting development with /hkup-dev-and-review.
+</output-format>
 
 ---
 
@@ -153,7 +149,7 @@ Plan validated. Handing off to execution.
 
 This menu is offered before the user gives final confirmation (Phase 3).
 
-```
+<output-format>
 Everything is ready. One last review before we start building?
 
   REFLECTION MODES
@@ -162,23 +158,23 @@ Everything is ready. One last review before we start building?
 
   ─────────────────────────────────────────
   S. Confirm and hand off to Le Chirurgien
-```
+</output-format>
 
 ---
 
 ## Transition
 
-```
+<output-format>
 Step 05 complete. Architecture workflow done.
 
 architecture.md:     {N} ADRs
 plan.md:             {N} Quests, {M} Missions
 hk-up-status.yaml:  {M} missions registered (Mission 1.1: in-progress)
-Mission briefs:      {M} files in missions/
+Mission briefs:      to be created via /hkup-create-mission
 
 → Dev Workflow — Le Chirurgien
   First mission: {mission_id} — {title}
   Branch: {branch_name} (to create from {base_branch})
-```
+</output-format>
 
 Update `hk-up-status.yaml` (H.K-UP build status): `6-2-plan-missions → done`, `phase-6-architecture → done`

@@ -32,7 +32,7 @@ For the Express path, pull UI objectives from `project-context.md`.
 
 Use this exact format:
 
-```
+<output-format>
 Design Checkup — PRD UI Features vs Mockups
 
   UI Feature                             Mockup                    Covered?
@@ -47,7 +47,7 @@ Design Checkup — PRD UI Features vs Mockups
   UI features: {N}/{total features} have UI components
   Covered:     {M}/{N} UI features have a mockup
   Missing:     {count}
-```
+</output-format>
 
 **If anything is MISSING:**
 1. Build the missing mockup (or add the feature to an existing screen)
@@ -66,7 +66,7 @@ them as missing — they are not Le Designer's responsibility.
 
 For each mockup, verify these 5 points:
 
-```
+<output-format>
 Accessibility Audit — {screen_name}
 
   1. Color contrast
@@ -97,7 +97,7 @@ Accessibility Audit — {screen_name}
      [ ] Loading states are announced (aria-live or aria-busy)
      [ ] Error messages are associated with the input that triggered them
      [ ] Toast/notification uses role="alert" or aria-live="polite"
-```
+</output-format>
 
 **Blocking accessibility failures** (must fix before handoff):
 - Contrast ratio below 4.5:1 for normal text
@@ -144,7 +144,7 @@ Known limitations (to address in implementation):
 
 Present the final state before handoff:
 
-```
+<output-format>
 Design workflow complete.
 
 CHECKUP RESULTS
@@ -165,7 +165,7 @@ Ready to hand off. Is this the design you want Le Chirurgien to implement?
 
   1. Yes — proceed to implementation
   2. Adjust {specific element} first
-```
+</output-format>
 
 Wait for the user's confirmation.
 
@@ -182,7 +182,7 @@ Wait for the user's confirmation.
 
 **Announce the handoff:**
 
-```
+<output-format>
 Design validated. Handing off to {Le Chirurgien | L'Architecte}.
 
   spec-design.md saved (final).
@@ -203,7 +203,7 @@ Design validated. Handing off to {Le Chirurgien | L'Architecte}.
   3. Implement screens in this order: {order based on dependencies from plan.md}
 
   → {Dev Workflow — Le Chirurgien | Architecture Workflow — L'Architecte}
-```
+</output-format>
 
 ---
 
@@ -211,7 +211,7 @@ Design validated. Handing off to {Le Chirurgien | L'Architecte}.
 
 This menu is offered after Phase 3 (finalized spec) but before user confirmation in Phase 4.
 
-```
+<output-format>
 Spec finalized. One last look?
 
   REFLECTION MODES
@@ -220,13 +220,13 @@ Spec finalized. One last look?
 
   ─────────────────────────────────────────
   S. Confirm and hand off
-```
+</output-format>
 
 ---
 
 ## Transition
 
-```
+<output-format>
 Step 04 complete. Design workflow done.
 
 spec-design.md:  finalized
@@ -236,7 +236,7 @@ Accessibility:   WCAG 2.1 AA ✓
 
 → {Dev Workflow — Le Chirurgien | Architecture Workflow — L'Architecte}
   Implementation starts with: CSS token setup → shared components → screens
-```
+</output-format>
 
 Update `hk-up-status.yaml`:
 - `7-2-mockups-specs → done`

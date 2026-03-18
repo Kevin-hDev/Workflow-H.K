@@ -96,7 +96,7 @@ This prevents writing requirements that contradict existing, working code.
 
 Organize all gathered inputs into a structured brief:
 
-```
+<output-format>
 PRD INPUT BRIEF — {project_name}
 
 FROM YOUR BRAINSTORM
@@ -130,7 +130,7 @@ USER TYPES (from project-context.md)
 TECHNICAL CONSTRAINTS
   - {constraint_1}
   - {constraint_2}
-```
+</output-format>
 
 ---
 
@@ -138,13 +138,16 @@ TECHNICAL CONSTRAINTS
 
 Present the brief to the user:
 
-```
+<output-format>
 Before I draft the PRD, here's everything I'll base it on:
 
 {brief content above}
 
-Anything to add or correct before I start writing?
-```
+  ─────────────────────────────────────────
+  1. Start writing the PRD
+  2. Add something first
+  3. Correct an item
+</output-format>
 
 Wait for the user's response. They may:
 - Confirm as-is
@@ -158,7 +161,7 @@ Make adjustments. Re-present if changes are significant.
 
 ## Reflection modes menu
 
-```
+<output-format>
 Brief confirmed. Would you like to explore before writing?
 
   REFLECTION MODES
@@ -167,7 +170,7 @@ Brief confirmed. Would you like to explore before writing?
 
   ─────────────────────────────────────────
   S. Save and draft the PRD (step-02)
-```
+</output-format>
 
 **Before executing any mode above, LOAD its data file:**
 - Prisme → `data/modes/prisme.md` + `data/prisme-facettes.csv`
@@ -177,7 +180,7 @@ Brief confirmed. Would you like to explore before writing?
 
 ## Transition
 
-```
+<output-format>
 Step 01 complete.
 
 Brief confirmed. Ready to write the PRD.
@@ -187,7 +190,7 @@ User types identified: {count}
 
 → Step 02 — I'll now write the PRD section by section.
   You'll review and validate each section before we move to the next.
-```
+</output-format>
 
 Update `hk-up-status.yaml`: `5-1-prd-draft → step-01: done`
 Proceed to **step-02-draft.md**

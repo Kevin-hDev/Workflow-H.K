@@ -37,7 +37,7 @@ Search for known vulnerabilities relevant to this project's stack. Use precise q
 
 **Record findings in this format:**
 
-```
+<output-format>
 CVE/Advisory Search Results
 
   Query: "{exact_query_used}"
@@ -51,13 +51,13 @@ CVE/Advisory Search Results
   Applicable to this project:
     - {CVE/advisory}: {why it applies — which component, which version}
     - {CVE/advisory}: {why it does NOT apply — version not used, feature disabled, etc.}
-```
+</output-format>
 
 ---
 
 ## Phase 2 — Load Security Data (INDEX_THEN_SELECTIVE)
 
-```
+<output-format>
 Security Data Loading
 
   1. Read: data/security/index.md
@@ -67,7 +67,7 @@ Security Data Loading
      - data/security/{file-2}.md — Reason: {why this file is relevant}
      - data/security/{file-3}.md — Reason: {why this file is relevant}
   4. Files NOT loaded: {remaining files} — Not relevant to this stack
-```
+</output-format>
 
 ---
 
@@ -97,7 +97,7 @@ Apply STRIDE to each critical component identified in `project-context.md` and `
 
 **Format — one block per component:**
 
-```
+<output-format>
 STRIDE — {component_name}
 
   S — Spoofing:
@@ -123,7 +123,7 @@ STRIDE — {component_name}
   E — Elevation of Privilege:
       Can a user gain access beyond their authorization level?
       Finding: {description, or "✓ authorization enforced at {layer}"}
-```
+</output-format>
 
 Repeat this block for each critical component. Minimum 3 components. Do not skip a component because it "seems safe."
 
@@ -135,7 +135,7 @@ Score every finding produced by STRIDE. Every unmitigated finding needs a score 
 
 **Format — one block per finding:**
 
-```
+<output-format>
 DREAD — {finding_title} ({component_name} / {STRIDE_category})
 
   Damage:           {1–10} — How severe is the impact if exploited?
@@ -156,11 +156,11 @@ DREAD — {finding_title} ({component_name} / {STRIDE_category})
   Total: {sum}/50
   Severity: {Critical (40+) | High (30–39) | Medium (20–29) | Low (<20)}
   Priority: {1 = fix immediately | 2 = fix before next release | 3 = fix in backlog | 4 = accept risk}
-```
+</output-format>
 
 **DREAD Summary (after all findings):**
 
-```
+<output-format>
 DREAD Summary
 
   Critical (40+):  {count} findings
@@ -172,7 +172,7 @@ DREAD Summary
     1. {finding_title} — {score}/50 — {component}
     2. {finding_title} — {score}/50 — {component}
     3. {finding_title} — {score}/50 — {component}
-```
+</output-format>
 
 ---
 
@@ -180,7 +180,7 @@ DREAD Summary
 
 Non-negotiable checks. A BLOCK finding cannot be deferred or accepted — it must be fixed.
 
-```
+<output-format>
 CRITICAL CONTROL POINTS
 
   1. Secret comparisons with ==
@@ -205,7 +205,7 @@ CRITICAL CONTROL POINTS
   BLOCKING findings: {count}
   → {If count > 0}: These must be included in the remediation plan at highest priority.
   → {If count = 0}: No critical blockers detected.
-```
+</output-format>
 
 ---
 
@@ -213,7 +213,7 @@ CRITICAL CONTROL POINTS
 
 After presenting all findings to the user:
 
-```
+<output-format>
 Step 01 complete. Security scan results are ready.
 
   REFLECTION MODES
@@ -224,7 +224,7 @@ Step 01 complete. Security scan results are ready.
 
   ─────────────────────────────────
   S. Save and continue to step 02 → Table Ronde Duel: The Mask vs Nyx
-```
+</output-format>
 
 **Before executing any mode above, LOAD its data file:**
 - Table Ronde → LOAD `data/modes/table-ronde.md`
@@ -235,7 +235,7 @@ Step 01 complete. Security scan results are ready.
 
 ## Transition
 
-```
+<output-format>
 Step 01 done.
 
   STRIDE components analyzed: {count}
@@ -246,6 +246,6 @@ Step 01 done.
   Agent: The Mask (enters) + Nyx (defends)
   The Mask will build attack chains targeting the highest DREAD findings and any BLOCK control points.
   Transmitting: STRIDE findings + DREAD scores + BLOCK control points + CVE search results
-```
+</output-format>
 
 Update `hk-up-status.yaml`: step-01-scan → done

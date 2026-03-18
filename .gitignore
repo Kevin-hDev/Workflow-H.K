@@ -1,6 +1,9 @@
 # BMAD-HARDENED is a separate project — do not include in this repo
 BMAD-HARDENED/
 
+# Private context — not shipped
+CONTEXTE/
+
 # Node
 node_modules/
 npm-debug.log*

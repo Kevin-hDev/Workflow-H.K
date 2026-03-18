@@ -28,7 +28,7 @@ record decisions. At the end, enrich with a Benchmark Vivant web search.
 - One phase at a time. Ask questions, wait for answers.
 - Propose options at each phase — never a single direction.
 - Record everything the user says. Summarize at the end of each phase.
-- If the user is stuck, offer examples or use a technique from step-03.
+- If the user is stuck, offer 2-3 prompt suggestions to unblock them.
 - Keep the confirmed objective from L'Éclaireur visible throughout.
 
 ---
@@ -68,8 +68,6 @@ Record: confirmed problem statement.
 
 Ask: "If anything were possible, what would this look like?"
 Propose 5-7 solution directions. User reacts, adds, or removes.
-Note: step-03 techniques can be used here for deeper exploration.
-
 Record: list of candidate solutions.
 
 **Phase 4 — Prototype**
@@ -281,8 +279,6 @@ Narrow to 1-2 problem statements. User confirms.
 *Develop (diverge):*
 > "How might we solve this? What are all the possible approaches?"
 Generate 5-8 solution directions. No filtering yet.
-Note: step-03 techniques can be used here for deeper generation.
-
 *Deliver (converge):*
 > "Which approach is most promising? What will we actually build?"
 Narrow to 1-2 preferred solutions. User confirms.
@@ -348,7 +344,7 @@ Highlight anything that changes or validates a decision made during the session.
 
 After completing all phases:
 
-```
+<output-format>
 Session complete — {method_name}
 
 Key decisions:
@@ -359,13 +355,17 @@ Key decisions:
 State of the art findings:
 - {finding_1}
 - {finding_2}
-```
+
+  ─────────────────────────────────────────
+  1. Confirm this summary
+  2. Adjust before continuing
+</output-format>
 
 ---
 
 ## Reflection modes menu
 
-```
+<output-format>
 Step 02 complete. Would you like to explore further before continuing?
 
   REFLECTION MODES
@@ -375,7 +375,7 @@ Step 02 complete. Would you like to explore further before continuing?
 
   ─────────────────────────────────────────
   S. Save and continue to techniques (step-03)
-```
+</output-format>
 
 **Before executing any mode above, LOAD its data file:**
 - Table Ronde → `data/modes/table-ronde.md`
@@ -386,7 +386,7 @@ Step 02 complete. Would you like to explore further before continuing?
 
 ## Transition
 
-```
+<output-format>
 Step 02 complete.
 
 Method used: {method_name}
@@ -395,7 +395,7 @@ State of the art: {benchmark_summary}
 
 → Step 03 — I'll now offer 20 brainstorming techniques to deepen
   specific areas where you want more exploration.
-```
+</output-format>
 
 Update `hk-up-status.yaml`: `4-1-methode-directrice → step-02: done`
 Proceed to **step-03-techniques.md**

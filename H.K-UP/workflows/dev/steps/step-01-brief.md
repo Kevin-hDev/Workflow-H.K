@@ -36,7 +36,7 @@ Extract and record:
 **Task count check:**
 If the brief has more than 3 tasks → do NOT start.
 
-```
+<output-format>
 This mission brief contains {N} tasks, which exceeds the 2-3 task maximum (Rule 6).
 
 Before I start, L'Architecte needs to split this mission into:
@@ -44,49 +44,29 @@ Before I start, L'Architecte needs to split this mission into:
   Mission {N.Xb} — {remaining tasks}
 
 Please update the brief before we proceed.
-```
+</output-format>
 
 ---
 
-## Phase 2 — Read context files
+## Phase 2 — Read the mission brief
 
-Read in this order. Do not skip any — they contain decisions Le Chirurgien must respect.
+Read ONLY the mission brief file. The brief is AUTO-SUFFICIENT — it contains
+all the context you need in the Dev Notes section:
+- Architecture patterns and constraints
+- Coding conventions
+- Library guidance
+- Security constraints
+- Testing expectations
+- References to specific source files
 
-**1. architecture.md**
-Identify the ADRs that apply to this mission:
-- Which architectural decisions affect the files being changed?
-- What patterns must be followed (service layer, module structure, etc.)?
-- What migration strategy applies (strangler fig variant)?
-
-**2. plan.md**
-Understand the mission's position in the sequence:
-- What missions came before this one? (What can be assumed as done)
-- What missions come after? (What interfaces must stay stable to avoid blocking them)
-- Does this mission produce output that another mission depends on?
-
-**3. spec-design.md** *(only if the mission involves UI)*
-Identify the design constraints:
-- Which CSS tokens apply to the components being built?
-- Which component patterns from the spec must be followed?
-- What ARIA patterns are required for the elements being implemented?
-
-**4. Source files to be modified** *(listed in the brief's "Files to create/modify" table)*
-Read each file before touching it:
-- Understand the current implementation
-- Note the existing patterns (naming, error handling, structure)
-- Identify what changes are needed vs. what must stay the same
-- Flag any inconsistency between what the brief expects and what actually exists
-
-If what actually exists differs significantly from what the brief assumes → document it in
-the announcement (Phase 4). Do not proceed silently with a mismatch.
+If the brief's References section lists specific source files to read before coding,
+read those. Do NOT load architecture.md, prd.md, or project-context.md directly.
 
 ---
 
 ⛔ STOP CHECK
 - Mission brief READ (not just listed)? [YES/NO]
-- {output_folder}/architecture.md READ (ADRs identified)? [YES/NO]
-- {output_folder}/plan.md READ (dependencies understood)? [YES/NO]
-- Source files to be modified READ? [YES/NO]
+- Brief's References section checked and listed source files READ? [YES/NO]
 - Ready to run baseline tests? [YES/NO]
 
 ⛔ STOP CONDITION: If any check = NO → Go back and READ the file contents before continuing.
@@ -122,7 +102,7 @@ the mission. Document them explicitly — they belong to a prior state of the co
 
 No interactive confirmation needed. This is EXECUTION mode — announce and proceed.
 
-```
+<output-format>
 Mission {quest_num}.{mission_num} — {title}
 
   TASKS
@@ -149,7 +129,7 @@ Mission {quest_num}.{mission_num} — {title}
   - Component: {component pattern to follow}
 
   Starting with Task 1.
-```
+</output-format>
 
 Proceed directly to **step-02-implement.md**.
 
@@ -159,14 +139,14 @@ Proceed directly to **step-02-implement.md**.
 
 No reflection modes menu — EXECUTION mode does not pause between steps.
 
-```
+<output-format>
 Brief loaded.
 Tasks: {count}
 Baseline: {pass_count}/{total_count} passing
 {if mismatch between brief and actual state: "⚠ Brief mismatch noted: {description}"}
 
 → Step 02 — Implementing tasks.
-```
+</output-format>
 
 Update `hk-up-status.yaml`: no change at this step (mission is already `in-progress`).
 Proceed directly to **step-02-implement.md**

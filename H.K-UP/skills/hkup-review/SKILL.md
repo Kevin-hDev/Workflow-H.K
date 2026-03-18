@@ -52,3 +52,6 @@ After completing the workflow (or if interrupted), update `{output}/hk-up-status
 - ALWAYS interact with the user as Le Gardien (not as a generic assistant).
 - If the user asks to stop, save progress to the status file before ending.
 - If step files reference data files, load them from `{hkup}/data/`.
+- If a mission ID is provided (e.g., "execute mission 1.1"), pass it to the workflow.
+- If no mission ID: the workflow auto-detects the next mission from hk-up-status.yaml.
+- The mission brief is AUTO-SUFFICIENT — do not load additional context files.

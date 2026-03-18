@@ -9,16 +9,19 @@ agent: architecte
 
 > **CRITICAL — Rule 9:** These first 10 lines are your priority.
 > **CRITICAL — Rule 7:** hk-up-status.yaml is the single source of truth. All missions must appear in it.
-> **CRITICAL:** All missions start at `backlog` status. Only L'Architecte sets the first Mission to `in-progress`.
+> **CRITICAL:** All missions start at `pending` status. Only /create-mission promotes them to `ready`.
 > **CRITICAL:** Git strategy must match the confirmed path (Express/Standard/Full) from `project-context.md`.
 > **CRITICAL — Rule 1:** Present both the status file and the git strategy to the user before saving.
+
+# Mission status cycle:
+# pending → ready (after /create-mission) → in-progress (during dev) → review (dev done) → done (review passed)
 
 ---
 
 ## Goal
 
 Generate the execution registry (`hk-up-status.yaml`) with every Mission from step-03 initialized
-at `backlog`. Define the git strategy adapted to the confirmed path. Present both to the user
+at `pending`. Define the git strategy adapted to the confirmed path. Present both to the user
 for confirmation. Save.
 
 ---
@@ -27,7 +30,7 @@ for confirmation. Save.
 
 Create the complete status file with all Missions from `plan.md`.
 
-Every Mission appears exactly once. Status starts at `backlog` — no exceptions.
+Every Mission appears exactly once. Status starts at `pending` — no exceptions.
 The structure reflects the Quest/Mission hierarchy from step-03.
 
 ```yaml
@@ -39,17 +42,17 @@ current_phase: 1
 phases:
   phase-1-{quest_1_slug}:
     name: "{Quest 1 name}"
-    status: backlog
+    status: pending
     missions:
-      1-1-{mission_1_1_slug}: backlog
-      1-2-{mission_1_2_slug}: backlog
+      1-1-{mission_1_1_slug}: pending
+      1-2-{mission_1_2_slug}: pending
 
   phase-2-{quest_2_slug}:
     name: "{Quest 2 name}"
-    status: backlog
+    status: pending
     missions:
-      2-1-{mission_2_1_slug}: backlog
-      2-2-{mission_2_2_slug}: backlog
+      2-1-{mission_2_1_slug}: pending
+      2-2-{mission_2_2_slug}: pending
 
   {... one entry per Quest, one line per Mission}
 ```
@@ -110,12 +113,12 @@ Based on the confirmed path from `project-context.md`:
 
 Show the user both outputs:
 
-```
+<output-format>
 Here is what I've prepared for the execution phase:
 
 STATUS REGISTRY (hk-up-status.yaml)
   Missions registered: {count}
-  Starting status: all backlog
+  Starting status: all pending
 
   {condensed view of the status file — Quest by Quest, mission list}
 
@@ -127,7 +130,10 @@ GIT STRATEGY
   Merge points: {list}
 
 Any adjustments before I save?
-```
+
+  1. Confirm
+  2. Adjust
+</output-format>
 
 Wait for confirmation. Adjust branch naming or merge points if the user has preferences.
 
@@ -144,7 +150,7 @@ It is the execution registry — Le Chirurgien and Le Gardien will update it dir
 
 ## Reflection modes menu
 
-```
+<output-format>
 Status registry ready. Any last checks?
 
   REFLECTION MODES
@@ -152,23 +158,23 @@ Status registry ready. Any last checks?
 
   ─────────────────────────────────────────
   S. Save and proceed to final validation (step-05)
-```
+</output-format>
 
 ---
 
 ## Transition
 
-```
+<output-format>
 Step 04 complete.
 
 hk-up-status.yaml saved.
-Missions registered: {count} (all: backlog)
+Missions registered: {count} (all: pending)
 Git strategy: {strategy name}
 First branch: {branch_name}
 
 → Step 05 — Final validation.
   You'll review the complete plan before we hand off to Le Chirurgien.
-```
+</output-format>
 
 Update `hk-up-status.yaml` (the H.K-UP build status, not the project one):
 `6-2-plan-missions → step-04: done`

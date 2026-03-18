@@ -63,7 +63,7 @@ Any agent can trigger an escalation proposal when they observe these signals:
 
 Present the escalation proposal with specific evidence:
 
-```
+<output-format>
 ⚠ ESCALATION SIGNAL — {what was detected}
 
 The project appears more complex than initially assessed.
@@ -86,7 +86,7 @@ The project appears more complex than initially assessed.
      → Understood: {what won't be covered} won't be addressed this session
   3. Let's discuss first (Table Ronde)
      → Open a brief Table Ronde with L'Architecte + Le Stratège + Zero
-```
+</output-format>
 
 Wait for the user's explicit choice. Never proceed without confirmation.
 
@@ -115,7 +115,7 @@ Valid escalation paths:
 
 ### Step 1 — Confirm the new path
 
-```
+<output-format>
 Escalating from {current_path} to {new_path}.
 
   New scope includes:
@@ -126,15 +126,17 @@ Escalating from {current_path} to {new_path}.
   Already completed work is preserved — we don't restart.
   We continue from the current point with the expanded plan.
 
-Confirm escalation?
-```
+  ────────────────────────────────────────────────────────────
+  1. Confirm — escalate to {new_path}
+  2. Cancel — stay on {current_path}
+</output-format>
 
 ### Step 2 — Update the plan
 
 **L'Architecte** (or the current agent) updates:
 
 1. **plan.md** — add new Quests or missions for the expanded scope
-2. **hk-up-status.yaml** — add new missions as `backlog` under the appropriate phases
+2. **hk-up-status.yaml** — add new missions as `pending` under the appropriate phases
 3. If a new workflow is added (e.g., Security): add the workflow's phase to `hk-up-status.yaml`
 
 **hk-up-status.yaml update format after escalation:**
@@ -149,9 +151,9 @@ escalated_at: {date}
 
 phases:
   # Existing phases remain unchanged with their current statuses
-  # New phases are added with status: backlog
+  # New phases are added with status: pending
   phase-brainstorming:
-    status: backlog
+    status: pending
     missions:
       ...
 ```
@@ -191,7 +193,19 @@ Understood. Staying on {current_path}.
   Continuing with the current plan.
 ```
 
-Add a `known_limitations` section to `hk-up-status.yaml`:
+Before writing, present for confirmation:
+
+<output-format>
+I'm adding these known limitations to the status file:
+  - {limitation_1}
+  - {limitation_2}
+
+  ────────────────────────────────────────────────────────────
+  1. Confirm — add to hk-up-status.yaml
+  2. Edit before adding
+</output-format>
+
+Then add a `known_limitations` section to `hk-up-status.yaml`:
 ```yaml
 known_limitations:
   - "{limitation_1} — user confirmed, date: {date}"

@@ -51,7 +51,17 @@ Typical themes (examples — adapt to the actual project):
 Group every idea under the most fitting theme.
 Present the grouped list to the user for validation:
 
-> "Here's how I grouped the ideas. Do you want to rename a theme, move an idea, or merge groups?"
+<output-format>
+Here's how I grouped the ideas:
+
+{grouped ideas by theme}
+
+  ─────────────────────────────────────────
+  1. Confirm these groups
+  2. Rename a theme
+  3. Move an idea to a different group
+  4. Merge two groups
+</output-format>
 
 ---
 
@@ -71,7 +81,7 @@ User validates or overrides each one.
 
 Present the result:
 
-```
+<output-format>
 SYNTHESIS — {project_name}
 
 Theme: {theme_name}
@@ -83,7 +93,11 @@ Theme: {theme_name}
 Theme: {theme_name}
   ✓  {idea}  —  Must Have
   ...
-```
+
+  ─────────────────────────────────────────
+  1. Confirm priorities as proposed
+  2. Change a priority
+</output-format>
 
 ---
 
@@ -92,7 +106,7 @@ Theme: {theme_name}
 Compare the synthesis against the confirmed objective(s) from L'Éclaireur.
 This is a BLOCKING gate — proceed only when all objectives show "OK".
 
-```
+<output-format>
 Checkup — Synthesis vs. Confirmed Objective
 
   Objective                     Covered by                  Status
@@ -100,7 +114,7 @@ Checkup — Synthesis vs. Confirmed Objective
   {objective_1}                 {theme + idea references}    ✓ OK
   {objective_2}                 {theme + idea references}    ✓ OK
   {objective_3}                 —                            ✗ MISSING
-```
+</output-format>
 
 **If anything is MISSING:**
 > "Your objective '{objective}' isn't covered yet.
@@ -159,7 +173,7 @@ File structure:
 
 ## Reflection modes menu
 
-```
+<output-format>
 Step 04 complete. Would you like to explore further before deciding?
 
   REFLECTION MODES
@@ -170,7 +184,7 @@ Step 04 complete. Would you like to explore further before deciding?
 
   ─────────────────────────────────────────
   S. Save and continue to decision (step-05)
-```
+</output-format>
 
 **Before executing any mode above, LOAD its data file:**
 - Table Ronde → `data/modes/table-ronde.md`
@@ -182,7 +196,7 @@ Step 04 complete. Would you like to explore further before deciding?
 
 ## Transition
 
-```
+<output-format>
 Step 04 complete.
 
 brainstorm-session.md saved.
@@ -195,7 +209,7 @@ Ideas summary:
   Won't Have: {count}
 
 → Step 05 — You'll now confirm the direction we'll take into the PRD.
-```
+</output-format>
 
 Update `hk-up-status.yaml`: `4-2-creation-synthese → step-04: done`
 Proceed to **step-05-decision.md**

@@ -7,6 +7,9 @@ agent: chirurgien
 
 # Step 02 — Implement
 
+> **CRITICAL:** The mission brief is AUTO-SUFFICIENT. Read ONLY the brief file.
+> Do NOT load architecture.md, prd.md, or project-context.md separately.
+> All context you need is crystallized in the Dev Notes section of the brief.
 > **CRITICAL — Rule 9:** These first 10 lines are your priority.
 > **CRITICAL — Rule 5:** Tests WITH the code. A task without a passing test is NOT done.
 > **CRITICAL:** If a baseline test breaks → STOP. Fix the regression before the next task.
@@ -101,16 +104,16 @@ After writing the code and tests for this task, run the full test suite.
 ```
 
 **Expected result:**
-```
+<output-format>
 Baseline:  {baseline_pass_count}/{baseline_total} passing (from step-01)
 After:     {new_pass_count}/{new_total} passing
 New tests: +{count}
 Result:    ✓ All passing
-```
+</output-format>
 
 **If any baseline test breaks:**
 
-```
+<output-format>
 ⚠ REGRESSION DETECTED — Task {N} is blocked.
 
 Test that broke: {test_name}
@@ -119,7 +122,7 @@ Result now: {failing}
 Likely cause: {what this task changed that could affect it}
 
 Fixing regression before proceeding.
-```
+</output-format>
 
 Do NOT proceed to commit. Do NOT proceed to the next task.
 Fix the regression first. Re-run the suite. Confirm everything is green before continuing.
@@ -171,13 +174,13 @@ After committing, mark the task as `[x]` in the mission brief file.
 
 ### Phase E — Log the task completion
 
-```
+<output-format>
 Task {N} complete.
   Files modified: {list}
   Tests added: {count} ({test names or descriptions})
   Test suite: {pass_count}/{total_count} — all passing ✓
   Commit: {short_hash} — {message}
-```
+</output-format>
 
 ---
 
@@ -185,7 +188,7 @@ Task {N} complete.
 
 When every task in the brief is marked `[x]` and the test suite is fully green:
 
-```
+<output-format>
 All {N} tasks complete.
 
   Task 1: [x] {title} — {commit_hash}
@@ -197,7 +200,7 @@ All {N} tasks complete.
   Regressions: 0
 
 → Step 03 — Final verification and handoff to Le Gardien.
-```
+</output-format>
 
 Proceed to **step-03-verify.md**
 
@@ -207,7 +210,7 @@ Proceed to **step-03-verify.md**
 
 **If a task is blocked by something outside the brief:**
 
-```
+<output-format>
 ⚠ Task {N} is blocked.
 
 Blocker: {what is preventing execution — missing dependency, unexpected state, etc.}
@@ -217,13 +220,13 @@ Options:
   1. Unblock by adding a minimal prerequisite (describe what — get user confirmation)
   2. Escalate to L'Architecte (this requires a plan change)
   3. Skip this task and mark it as blocked in the brief
-```
+</output-format>
 
 Do not silently work around a blocker. Surface it.
 
 **If the brief and the actual code diverge significantly:**
 
-```
+<output-format>
 ⚠ Brief mismatch for Task {N}.
 
 The brief expects: {what the brief says}
@@ -231,13 +234,13 @@ The actual state:  {what the code actually is}
 
 Proceeding with the actual state as the starting point.
 Adjusting the implementation accordingly: {what changes from the original plan}
-```
+</output-format>
 
 Document the deviation. Do not pretend the brief was correct.
 
 **If implementing a task would break a downstream mission:**
 
-```
+<output-format>
 ⚠ Potential downstream impact detected.
 
 This task changes: {interface / module / schema}
@@ -245,6 +248,6 @@ Mission {N.X} depends on: {what it expects}
 Conflict: {how the change might break the downstream mission}
 
 Adjusting approach to preserve the interface: {what will be done differently}
-```
+</output-format>
 
 Surface the conflict rather than ignoring it.

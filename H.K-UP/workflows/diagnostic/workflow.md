@@ -75,3 +75,5 @@ This workflow is complete when:
 - [ ] `project-context.md` has been written (step-05)
 - [ ] `hk-up-status.yaml` has been updated with the confirmed path and missions
 - [ ] Explicit handoff to the next agent has been announced (Rule 10)
+
+**Rule 14:** Launch the next workflow in a NEW session. Run `/clear` or start a new conversation.

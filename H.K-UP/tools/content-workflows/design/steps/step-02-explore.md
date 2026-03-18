@@ -108,7 +108,7 @@ Ensure meaningful contrast between directions.
 
 ## Phase 3 — Present directions and get feedback
 
-```
+<output-format>
 Here are {N} visual directions for {project_name}:
 
 ─────────────────────────────────────────────
@@ -132,7 +132,7 @@ Which direction speaks to you?
   C — Go with Direction C
   Mix — Combine elements (tell me what to take from each)
   Explore more — I'll add a Direction D or adjust one
-```
+</output-format>
 
 **If the user wants a mix:**
 Record every element they want from each direction:
@@ -191,7 +191,7 @@ For each wireframe, note:
 
 ## Phase 5 — Present wireframes and confirm
 
-```
+<output-format>
 Here are wireframes for the 3 key screens:
 
 WIREFRAME 1 — {screen_name}
@@ -208,7 +208,10 @@ Layout rationale: {why this structure}
 
 Any changes to layout or structure before I build the full mockups?
 (This is the right moment — changing structure after mockups is expensive.)
-```
+
+  1. Confirm wireframes
+  2. Adjust before mockups
+</output-format>
 
 Wait for confirmation. Adjust wireframes if needed. Do not proceed to step-03 until
 the user explicitly confirms the wireframe structure.
@@ -217,7 +220,7 @@ the user explicitly confirms the wireframe structure.
 
 ## Reflection modes menu
 
-```
+<output-format>
 Direction confirmed, wireframes validated. Want to check before building mockups?
 
   REFLECTION MODES
@@ -227,7 +230,7 @@ Direction confirmed, wireframes validated. Want to check before building mockups
 
   ─────────────────────────────────────────
   S. Save and build mockups (step-03)
-```
+</output-format>
 
 **Before executing any mode above, LOAD its data file:**
 - Prisme → LOAD `data/modes/prisme.md` + `data/prisme-facettes.csv`
@@ -237,7 +240,7 @@ Direction confirmed, wireframes validated. Want to check before building mockups
 
 ## Transition
 
-```
+<output-format>
 Step 02 complete.
 
 Visual direction confirmed: {direction_name}
@@ -253,7 +256,7 @@ Wireframes confirmed:
 → Step 03 — I'll now build the full HTML mockups.
   One standalone HTML file per key screen.
   Design tokens as CSS variables — no hardcoded values.
-```
+</output-format>
 
 Update `hk-up-status.yaml`: `7-1-audit-exploration → step-02: done`
 Proceed to **step-03-mockup.md**

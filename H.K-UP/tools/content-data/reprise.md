@@ -35,7 +35,7 @@ Every workflow's INITIALIZATION section checks for `hk-up-status.yaml` before st
 1. Look for `{output_folder}/hk-up-status.yaml` (the user specifies the output folder, or it defaults to `{project_name}-hkup-output/`)
 2. If **not found** → fresh start, proceed to step-01 of the diagnostic
 3. If **found and all missions are `done`** → the parcours is complete, offer finalization or a new session
-4. If **found with missions in `in-progress`, `review`, or `backlog`** → resume scenario, show the resume menu
+4. If **found with missions in `in-progress`, `review`, or `pending`** → resume scenario, show the resume menu
 
 ---
 
@@ -43,7 +43,7 @@ Every workflow's INITIALIZATION section checks for `hk-up-status.yaml` before st
 
 When `hk-up-status.yaml` is found with active work:
 
-```
+<output-format>
 I found an existing H.K-UP workflow in progress.
 
   Project:         {project_name}
@@ -68,7 +68,7 @@ I found an existing H.K-UP workflow in progress.
   3. Restart from scratch
      → Delete hk-up-status.yaml and run a new diagnostic
      ⚠ Output files already created will NOT be deleted automatically
-```
+</output-format>
 
 Wait for the user's choice. Never auto-continue.
 
@@ -78,7 +78,7 @@ Wait for the user's choice. Never auto-continue.
 |--------------------------------------------|-------------|
 | A mission is `in-progress` | Continue that mission (load the mission brief) |
 | A mission is `review` | Le Gardien validates it before proceeding |
-| All missions in current phase are `done`, next phase `backlog` | Start first mission of next phase |
+| All missions in current phase are `done`, next phase `pending` | Start first mission of next phase |
 | Current workflow step in-progress (non-dev workflow) | Resume that step |
 | A checkup was pending | Re-run the checkup before continuing |
 
@@ -144,14 +144,14 @@ This is different from a user returning after days — it can happen mid-session
    - Current step's output document (prd.md, architecture.md, etc.)
    - Current mission brief (if in dev phase)
 3. Acknowledge the reload to the user:
-   ```
+   <output-format>
    Context was compacted. I've reloaded:
    - hk-up-status.yaml (current state: {position})
    - {document_1}
    - {document_2}
 
    Continuing from: {current_step_or_mission}
-   ```
+   </output-format>
 
 ### What each output document contains (quick reference)
 
@@ -187,9 +187,9 @@ known_limitations:                   # only if user chose to stay on lower path
 
 phases:
   {phase_id}:
-    status: {backlog | in-progress | done}
+    status: {pending | in-progress | done}
     missions:
-      {mission_id}: {backlog | in-progress | review | done}
+      {mission_id}: {pending | in-progress | review | done}
 ```
 
 **Resume reads:**
@@ -197,7 +197,7 @@ phases:
 2. Within that phase, find the mission that is `in-progress` or `review`
 3. That is the resume point
 
-**If nothing is `in-progress`:** Find the first `backlog` mission in the first `backlog` or `in-progress` phase.
+**If nothing is `in-progress`:** Find the first `pending` mission in the first `pending` or `in-progress` phase.
 
 ---
 
@@ -205,16 +205,21 @@ phases:
 
 If the user chooses to restart:
 
-```
-Restarting the diagnostic from scratch.
+<output-format>
+⚠ This will delete hk-up-status.yaml and all progress tracking.
+This action cannot be undone.
 
   What will be reset:
   ✗ hk-up-status.yaml — will be deleted
   ✓ Output files (project-context.md, prd.md, etc.) — NOT deleted automatically
     You can keep them as reference or delete them manually.
 
-  Proceeding to step-01 of the diagnostic.
-```
+  ─────────────────────────────────────────────────────────────
+  1. Confirm — delete and restart fresh
+  2. Cancel — go back to the resume menu
 
-Delete `hk-up-status.yaml`. Do not delete any other files without explicit confirmation.
+  Close keywords: "done" / "terminé"
+</output-format>
+
+Only after user confirms option 1: delete `hk-up-status.yaml`. Do not delete any other files.
 Proceed to `workflows/diagnostic/steps/step-01-scan.md`.

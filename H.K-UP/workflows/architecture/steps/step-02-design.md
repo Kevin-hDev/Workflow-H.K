@@ -30,7 +30,7 @@ Always propose 2-3 options. Never present a single approach.
 
 For each approach, use this format:
 
-```
+<output-format>
 APPROACH {N} — {Name}
 
 Description:
@@ -52,7 +52,7 @@ Effort: Low | Medium | High
 
 Risk: Low | Medium | High
   {Justification: what could go wrong, how reversible is this}
-```
+</output-format>
 
 **Migration strategy guidance:**
 - **Strangler Fig** (default) — new code wraps or replaces old code piece by piece.
@@ -81,7 +81,7 @@ Tailor to the actual project. Do not use generic options — reference the speci
 
 Present the options and ask:
 
-```
+<output-format>
 Here are {N} approaches for this architecture:
 
 {Approach 1 summary}
@@ -91,8 +91,12 @@ Here are {N} approaches for this architecture:
 My recommendation: Approach {N} — {brief reason tied to the project's specific context}
 
 Which approach do you want to go with?
-(or: "Let's discuss before deciding" → Table Ronde mode)
-```
+
+  1. Approach 1
+  2. Approach 2
+  3. Approach 3
+  4. Discuss first (Table Ronde)
+</output-format>
 
 Wait for user choice before proceeding to Phase 3.
 
@@ -180,7 +184,7 @@ coverage reaches 100% of Must Have features.
 
 Use this format:
 
-```
+<output-format>
 Checkup Architecture vs PRD
 
   Feature                          Covered by Architecture?
@@ -193,7 +197,7 @@ Checkup Architecture vs PRD
 
   → {If 100%}: All Must Have features are covered. Proceeding to step-03.
   → {If <100%}: F3 must be addressed before continuing. Adding ADR-{N}.
-```
+</output-format>
 
 If anything is missing, write the missing ADR(s) before proceeding.
 Do not move to step-03 with uncovered Must Have features.
@@ -232,7 +236,7 @@ All {N} Must Have features covered. ✓
 
 ## Reflection modes menu
 
-```
+<output-format>
 Architecture designed and checked. Want to stress-test before breaking it down?
 
   REFLECTION MODES
@@ -242,7 +246,7 @@ Architecture designed and checked. Want to stress-test before breaking it down?
 
   ─────────────────────────────────────────
   S. Save and move to mission breakdown (step-03)
-```
+</output-format>
 
 **Before executing any mode above, LOAD its data file:**
 - Table Ronde → `data/modes/table-ronde.md`
@@ -252,7 +256,7 @@ Architecture designed and checked. Want to stress-test before breaking it down?
 
 ## Transition
 
-```
+<output-format>
 Step 02 complete.
 
 architecture.md saved.
@@ -263,7 +267,7 @@ Migration strategy: {strategy name}
 
 → Step 03 — I'll now break down the work into Quests and Missions.
   Each Mission will have 2-3 tasks max, with explicit dependencies.
-```
+</output-format>
 
 Update `hk-up-status.yaml`: `6-1-conception → step-02: done`
 Proceed to **step-03-plan.md**

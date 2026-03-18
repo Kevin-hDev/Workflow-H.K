@@ -106,7 +106,7 @@ function copyDirRecursive(src, dest) {
  * Copy skill SKILL.md files into the project's .claude/skills/ directory.
  * This is where Claude Code discovers skills.
  *
- * @param {string} packageRoot - Root of the npm package (where skills/ lives).
+ * @param {string} packageRoot - Root of the npm package lib/ directory.
  * @param {string} targetDir   - Project root.
  */
 function installSkills(packageRoot, targetDir) {
@@ -126,6 +126,31 @@ function installSkills(packageRoot, targetDir) {
 }
 
 /**
+ * Copy custom agent files into the project's .claude/agents/ directory.
+ * These are sub-agent definitions that Claude Code discovers automatically.
+ *
+ * @param {string} packageRoot - Root of the npm package lib/ directory.
+ * @param {string} targetDir   - Project root.
+ */
+function installCustomAgents(packageRoot, targetDir) {
+  const agentsSrc = path.join(packageRoot, '..', 'content-agents-custom');
+  const agentsDest = path.join(targetDir, '.claude', 'agents');
+
+  if (!fs.existsSync(agentsSrc)) return;
+
+  ensureDir(agentsDest);
+  const files = fs.readdirSync(agentsSrc, { withFileTypes: true });
+  for (const file of files) {
+    if (file.isFile() && file.name.endsWith('.md')) {
+      fs.copyFileSync(
+        path.join(agentsSrc, file.name),
+        path.join(agentsDest, file.name)
+      );
+    }
+  }
+}
+
+/**
  * Create per-workflow output sub-directories inside the output folder.
  *
  * @param {string}   outputRoot - Absolute path to the output folder.
@@ -133,7 +158,7 @@ function installSkills(packageRoot, targetDir) {
  */
 function createOutputDirs(outputRoot, workflows) {
   ensureDir(outputRoot);
-  const standardDirs = ['diagnostic', 'brainstorming', 'prd', 'architecture', 'design', 'dev', 'review', 'security', 'finalisation'];
+  const standardDirs = ['diagnostic', 'brainstorming', 'prd', 'architecture', 'design', 'dev', 'review', 'security', 'finalisation', 'missions'];
   for (const dir of standardDirs) {
     ensureDir(path.join(outputRoot, dir));
   }
@@ -195,7 +220,10 @@ async function collectAndSave(answers, targetDir) {
   // ── 4. Install skills into .claude/skills/ ──────────────────────────────
   installSkills(__dirname, targetDir);
 
-  // ── 4. Write .hkup-config.json ────────────────────────────────────────────
+  // ── 5. Install custom agents into .claude/agents/ ─────────────────────
+  installCustomAgents(__dirname, targetDir);
+
+  // ── 6. Write .hkup-config.json ────────────────────────────────────────────
   const config = buildConfig(answers);
   writeJsonFile(configPath, config);
 }

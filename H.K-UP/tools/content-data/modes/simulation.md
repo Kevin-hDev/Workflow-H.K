@@ -14,11 +14,9 @@ loaded_by: agents, step files
 
 ## What it is
 
-A Simulation runs a specific real-world scenario to stress-test a decision before it is made.
-Unlike the Prisme (analytical lenses) or the Table Ronde (debate), a Simulation plays out a
-concrete sequence of events and reports what breaks, what holds, and what is missing.
-
-6 simulation types are available. Each has dedicated agents, a method, and a specific output.
+A Simulation runs a concrete real-world scenario to stress-test a decision before it is made.
+Unlike the Prisme (analytical lenses) or the Table Ronde (debate), a Simulation plays out
+a sequence of events and reports what breaks, what holds, and what is missing.
 
 ---
 
@@ -26,70 +24,41 @@ concrete sequence of events and reports what breaks, what holds, and what is mis
 
 ### Type 1 — Stress Test
 
-**Scenario:** "What if the load is 10x or 100x the current users?"
+**Agents:** L'Architecte + Zero | **When:** After architecture design, before committing to infra choices.
 
-**Agents:** L'Architecte + Zero
+**Method:** Identify bottleneck components → estimate breaking thresholds → Zero challenges with benchmarks → map cascade failures.
 
-**When to use:**
-- After architecture design
-- When a scalability decision is being debated
-- Before committing to a technology or infrastructure choice
-
-**Method:**
-1. Identify the system's current bottleneck components (database, API layer, file storage, etc.)
-2. For each component, estimate at what scale it breaks (concurrent users, requests/sec, data volume)
-3. Zero challenges L'Architecte's estimates with benchmarks or alternative approaches
-4. Map the sequence of failures: which component breaks first, what cascades
-
-**Running the simulation:**
-```
+<output-format>
 STRESS TEST SIMULATION
-Scenario: {specific load scenario — e.g., "10,000 concurrent users at checkout"}
+Scenario: {specific load scenario}
 
   Component analysis:
-  {component_1}: breaks at {estimated_threshold} — reason: {why}
-  {component_2}: breaks at {estimated_threshold} — reason: {why}
-  [...]
+  {component_1}: breaks at {threshold} — reason: {why}
+  {component_2}: breaks at {threshold} — reason: {why}
 
   First failure: {component} at {threshold}
   Cascade: {component_1} → {component_2} → {impact}
 
-  Zero's challenge: {alternative approach or benchmark that changes the estimate}
+  Zero's challenge: {alternative approach or benchmark}
 
   Verdict: {holds | breaks at X | requires architectural change}
-```
-
-**Output:** Components ranked by fragility, breaking point per component, recommended mitigations.
+</output-format>
 
 ---
 
 ### Type 2 — Migration Dry Run
 
-**Scenario:** "Simulate switching to a different stack, framework, or architectural pattern."
+**Agents:** L'Architecte + Le Chirurgien | **When:** Before a major tech migration or multi-file refactor.
 
-**Agents:** L'Architecte + Le Chirurgien
+**Method:** Map dependencies → trace breaking changes → estimate cost per component → define safest migration sequence → list unmitigable risks.
 
-**When to use:**
-- When a major technology migration is being evaluated
-- Before committing to a refactoring that affects many files
-- When comparing two architectural approaches
-
-**Method:**
-1. Identify all files and components that depend on the current approach
-2. Trace breaking changes: what would need to be rewritten vs adapted vs left as-is
-3. Estimate migration cost in hours/days per component
-4. Identify the safest migration sequence (strangler fig vs big bang)
-5. List the risks that cannot be mitigated
-
-**Running the simulation:**
-```
+<output-format>
 MIGRATION DRY RUN SIMULATION
 Scenario: Migrate from {current} to {target}
 
   Dependency map:
   {component_1}: {rewrite | adapt | keep} — {estimated_effort}
   {component_2}: {rewrite | adapt | keep} — {estimated_effort}
-  [...]
 
   Total estimate: {total_effort}
   Breaking changes: {count}
@@ -98,35 +67,19 @@ Scenario: Migrate from {current} to {target}
   Recommended sequence:
   1. {step_1} — {why first}
   2. {step_2}
-  [...]
 
   Highest risk: {what could go wrong and when}
-```
-
-**Output:** Migration cost estimate, risk assessment, recommended sequence.
+</output-format>
 
 ---
 
 ### Type 3 — User Journey
 
-**Scenario:** "Walk through the app as a real user and report every friction point."
+**Agents:** Le Designer + L'Éclaireur | **When:** After UI audit, before finalizing mockups.
 
-**Agents:** Le Designer + L'Éclaireur
+**Method:** Pick a key flow → trace every screen/interaction → note friction points → rate severity → L'Éclaireur provides historical context.
 
-**When to use:**
-- After a UI audit or design direction
-- When UX quality is being evaluated
-- Before finalizing mockups
-
-**Method:**
-1. Pick a key flow (onboarding, checkout, account setup, core feature)
-2. Trace every screen, interaction, and state transition in sequence
-3. For each step: note friction points (confusion, latency, errors, dead ends)
-4. Rate severity of each friction point (Critical / Major / Minor)
-5. L'Éclaireur provides historical context (e.g., "this was redesigned twice before")
-
-**Running the simulation:**
-```
+<output-format>
 USER JOURNEY SIMULATION
 Flow: {flow_name} — {target_user_type}
 
@@ -138,49 +91,31 @@ Flow: {flow_name} — {target_user_type}
     State: {what the user sees}
     Friction: {none | {description} — {Critical | Major | Minor}}
 
-  [...]
-
   Friction summary:
   Critical: {count} — {brief list}
   Major:    {count} — {brief list}
   Minor:    {count} — {brief list}
 
   Highest priority fix: {most critical friction and why}
-```
-
-**Output:** Friction map with severity ratings per step, prioritized fix list.
+</output-format>
 
 ---
 
 ### Type 4 — Incident Response
 
-**Scenario:** "A critical system failure has occurred. What happens?"
+**Agents:** Nyx + The Mask | **When:** After security audit, when evaluating detection/recovery capabilities.
 
-**Agents:** Nyx + The Mask
+**Method:** Define incident → trace alerting → The Mask simulates attacker actions during detection gap → Nyx traces containment/recovery → evaluate the plan.
 
-**When to use:**
-- After a security audit
-- When evaluating incident detection and recovery capabilities
-- Before accepting a risk in the security duel
-
-**Method:**
-1. Define the incident (database corruption, API down, credentials leaked, DDoS)
-2. Trace what alerting exists — is the incident detected, and how fast?
-3. The Mask simulates the attacker's actions during the incident window
-4. Nyx traces the detection → containment → recovery sequence
-5. Identify the detection gap (time between incident and awareness)
-6. Evaluate the recovery plan: is it documented? Tested? Realistic?
-
-**Running the simulation:**
-```
+<output-format>
 INCIDENT RESPONSE SIMULATION
-Incident: {specific incident — e.g., "Attacker exfiltrated the user database"}
+Incident: {specific incident}
 
   Timeline:
   T+0:  Incident occurs — {what happened}
   T+{X}: First detection — {how, or "NOT DETECTED"}
-  T+{Y}: Containment — {action taken, or "NO CONTAINMENT PROCEDURE"}
-  T+{Z}: Recovery — {action taken, or "NO RECOVERY PLAN"}
+  T+{Y}: Containment — {action, or "NO CONTAINMENT PROCEDURE"}
+  T+{Z}: Recovery — {action, or "NO RECOVERY PLAN"}
 
   The Mask (attacker window):
   During the {X}-minute detection gap: {what the attacker can do}
@@ -192,38 +127,19 @@ Incident: {specific incident — e.g., "Attacker exfiltrated the user database"}
   Recovery: {documented | undocumented | untested}
 
   Critical gap: {most dangerous unaddressed gap}
-```
-
-**Output:** Incident timeline, detection gap, recovery plan assessment.
+</output-format>
 
 ---
 
 ### Type 5 — Onboarding Dev
 
-**Scenario:** "A new developer joins the project. Can they understand the codebase without help?"
+**Agent:** L'Éclaireur (fresh perspective) | **When:** During code review, when evaluating documentation quality.
 
-**Agent:** L'Éclaireur (fresh perspective mode)
+**Method:** Approach the codebase with no context → answer 5 standard questions → rate findability → identify missing docs.
 
-**When to use:**
-- During code review
-- When evaluating documentation quality
-- When the team is growing
+**The 5 questions:** 1. How do I run this locally? 2. Where is the entry point? 3. How is the code organized? 4. How do I add a feature? 5. How do I run the tests?
 
-**Method:**
-1. L'Éclaireur simulates approaching the codebase with no prior context
-2. Try to answer 5 standard questions a new dev would have (from scratch)
-3. For each: rate how easy it is to find the answer (Easy / Hard / Impossible)
-4. Identify missing documentation, confusing naming, and implicit knowledge
-
-**The 5 standard questions:**
-1. "How do I run this project locally?" → README, setup instructions
-2. "Where is the entry point?" → main file, routing, bootstrap
-3. "How is the code organized?" → folder structure, module boundaries
-4. "How do I add a feature?" → conventions, patterns, where to start
-5. "How do I run the tests?" → test command, test structure
-
-**Running the simulation:**
-```
+<output-format>
 ONBOARDING DEV SIMULATION
 
   Q1 — How do I run this locally?
@@ -245,35 +161,20 @@ ONBOARDING DEV SIMULATION
 
   Readability score: {count}/5 Easy
   Missing documentation: {list}
-  Confusing areas: {list}
   Recommendation: {what to write first to unblock a new dev}
-```
-
-**Output:** Readability score, missing documentation list, confusing areas, recommended first doc.
+</output-format>
 
 ---
 
 ### Type 6 — Rollback
 
-**Scenario:** "We deployed and it broke. How do we revert?"
+**Agents:** Le Chirurgien + L'Architecte | **When:** After architecture plan, before accepting irreversible decisions.
 
-**Agents:** Le Chirurgien + L'Architecte
+**Method:** For each change, evaluate reversibility → identify irreversible changes → define rollback procedures → estimate time and risk.
 
-**When to use:**
-- After an architecture plan
-- When evaluating deployment safety
-- Before accepting an irreversible architectural decision
-
-**Method:**
-1. For each recent mission or planned change, evaluate: can it be reverted cleanly?
-2. Identify irreversible changes (database migrations, API contract breaks, data loss)
-3. Define the rollback procedure for each reversible change
-4. Estimate rollback time and risk per change
-
-**Running the simulation:**
-```
+<output-format>
 ROLLBACK SIMULATION
-Scope: {recent missions or planned changes being evaluated}
+Scope: {recent missions or planned changes}
 
   {change_1}: {reversible | partially reversible | irreversible}
     Rollback procedure: {steps, or "NONE — irreversible"}
@@ -281,23 +182,21 @@ Scope: {recent missions or planned changes being evaluated}
     Risk: {what could go wrong during rollback}
 
   {change_2}: [same format]
-  [...]
 
   Irreversible changes: {count}
     {list with why each is irreversible}
 
   Safest rollback sequence: {ordered list}
   Critical decision point: {the change after which rollback becomes impossible}
-```
-
-**Output:** Rollback plan per change, list of irreversible decisions, critical decision point.
+</output-format>
 
 ---
 
 ## How to run a Simulation
 
-1. Present the 6 types with a one-line description each:
-```
+### Step 1 — Type selection
+
+<output-format>
 Which simulation would you like to run?
 
   1. Stress Test        — Test load limits of each component
@@ -306,22 +205,33 @@ Which simulation would you like to run?
   4. Incident Response  — Simulate a critical system failure
   5. Onboarding Dev     — Can a new dev understand the codebase?
   6. Rollback           — Can we safely revert if something breaks?
-```
+</output-format>
 
-2. Once the user selects: confirm the specific scenario
-   - "Which flow?" (for User Journey)
-   - "Which incident?" (for Incident Response)
-   - "Which migration?" (for Migration Dry Run)
+### Step 2 — Scenario selection
 
-3. Run the simulation using the format for that type
+After user picks a type, present numbered scenarios relevant to that type:
 
-4. After the simulation ends: present findings, then re-show the reflection modes menu with ✓
+<output-format>
+{Simulation type} — Choose a scenario:
+
+  Stress Test:       1. 10x users  2. 100x data volume  3. Other
+  Migration Dry Run: 1. Upgrade framework  2. Switch library  3. Other
+  User Journey:      1. New user  2. Returning user  3. Admin  4. Other
+  Incident Response: 1. Data loss  2. Credentials leaked  3. DDoS  4. Other
+  Onboarding Dev:    (runs 5 standard questions — no sub-choice)
+  Rollback:          1. Last mission  2. Entire phase  3. Other
+</output-format>
+
+### Step 3 — Run and close
+
+Run the simulation using the format for the selected type. After completion, present findings.
+Close keywords: "done" / "terminé", "close" / "on ferme". Re-show reflection modes menu with check.
 
 ---
 
 ## Saving output
 
-```markdown
+<output-format>
 ### Simulation — {type_name} (validated)
 
 - Type: {Stress Test | Migration Dry Run | User Journey | Incident Response | Onboarding Dev | Rollback}
@@ -333,6 +243,5 @@ Which simulation would you like to run?
 - {finding_2}
 
 **Critical gap / highest risk:** {one-sentence summary}
-
 **Recommended action:** {most important next step}
-```
+</output-format>

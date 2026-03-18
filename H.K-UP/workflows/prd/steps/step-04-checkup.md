@@ -30,7 +30,7 @@ Read prd.md. Map each direction item to a feature in the PRD.
 
 Present the checkup table:
 
-```
+<output-format>
 PRD CHECKUP — direction.md vs prd.md
 
   Direction Item                          PRD Feature   Status
@@ -46,7 +46,7 @@ PRD CHECKUP — direction.md vs prd.md
   Must Have coverage:   {n}/{total} — {percent}%
   Should Have coverage: {n}/{total} — {percent}%
   Could Have coverage:  {n}/{total} — {percent}%
-```
+</output-format>
 
 Status legend:
 - ✓ Covered — fully addressed by a PRD feature
@@ -81,7 +81,9 @@ Here's a draft feature to cover it:
   Source: direction.md
 
 ──────────────────────────────────────────
-Does this cover the gap? Adjust as needed, then I'll add it to the PRD.
+  1. Add as-is to the PRD
+  2. Modify before adding
+  3. Skip this item
 ```
 
 Add the confirmed feature to prd.md Section 3.
@@ -113,7 +115,9 @@ Suggested additions:
   - [ ] {missing_criterion_1}
   - [ ] {missing_criterion_2}
 
-Add these?
+  1. Add all partial items
+  2. Review each one individually
+  3. Skip partial items
 ```
 
 ---
@@ -144,7 +148,7 @@ Save the final prd.md.
 
 ## Handoff — Architecture Workflow
 
-```
+<output-format>
 PRD complete and validated.
 
 prd.md saved — status: final.
@@ -154,16 +158,16 @@ Summary:
   Must Have coverage: {n}/{n} — 100% ✓
   Sections validated by user: 11/11
 
-What L'Architecte will receive:
+What 🏗️ L'Architecte will receive:
   - project-context.md — full project diagnosis
   - prd.md — complete, validated PRD
 
-→ Architecture Workflow — L'Architecte
+→ Architecture Workflow — 🏗️ L'Architecte
 
   L'Architecte will design the technical architecture to support
   every feature in the PRD, then create the mission plan for
   Le Chirurgien's implementation.
-```
+</output-format>
 
 ---
 

@@ -69,7 +69,7 @@ For each Must Have feature or objective:
 
 Use the format from `data/checkup-system.md` (Level 3 — Final Checkup):
 
-```
+<output-format>
 FINAL PRD CHECKUP — {project_name}
 Reference: {reference_document} | Path: {parcours}
 
@@ -86,7 +86,7 @@ Reference: {reference_document} | Path: {parcours}
   Must Have:   {n}/{total} — {percent}%   → {✓ PASS if 100% | ⛔ BLOCK if <100%}
   Should Have: {n}/{total} — {percent}%   → reported, non-blocking
   Could Have:  {n}/{total} — {percent}%   → reported, non-blocking
-```
+</output-format>
 
 **Column guide:**
 - **Mission(s):** the mission brief(s) that should cover this feature
@@ -101,7 +101,7 @@ Reference: {reference_document} | Path: {parcours}
 
 ### If Must Have features are MISSING → BLOCK
 
-```
+<output-format>
 ⛔ BLOCKING — {count} Must Have feature(s) not implemented.
 
   {feature_name}:
@@ -115,16 +115,16 @@ Reference: {reference_document} | Path: {parcours}
      ⚠ This requires your explicit confirmation and will be documented
 
   The parcours cannot close until all Must Have features are resolved.
-```
+</output-format>
 
 Wait for user decision for each missing Must Have. If the user creates new missions:
 - Add them to `plan.md`
-- Add them to `hk-up-status.yaml` as `backlog`
+- Add them to `hk-up-status.yaml` as `pending`
 - Execute them (return to dev workflow) before re-running this checkup
 
 ### If Must Have features are PARTIAL → FIX or ACCEPT
 
-```
+<output-format>
 ⚠ "{feature_name}" passes partially.
 
   Criteria met:     {list of passing criteria}
@@ -133,11 +133,11 @@ Wait for user decision for each missing Must Have. If the user creates new missi
   Options:
   1. Fix — create a targeted mission to complete the criteria
   2. Accept as-is — document as partially implemented
-```
+</output-format>
 
 ### If Should Have features are NOT DONE → USER DECISION
 
-```
+<output-format>
 ⚠ {count} Should Have feature(s) not implemented:
   - {feature_1}
   - {feature_2}
@@ -145,7 +145,7 @@ Wait for user decision for each missing Must Have. If the user creates new missi
   These are not blocking. For each:
   1. Create missions now — implement before closing
   2. Defer to a future version — document in the closing summary
-```
+</output-format>
 
 ---
 
@@ -154,9 +154,9 @@ Wait for user decision for each missing Must Have. If the user creates new missi
 After fixing any Must Have gaps, re-run the full coverage table.
 Present the updated report. Continue until:
 
-```
+<output-format>
 Must Have: {n}/{n} — 100% ✓
-```
+</output-format>
 
 Only then proceed to step-02.
 
@@ -166,7 +166,7 @@ Only then proceed to step-02.
 
 Before proceeding to step-02:
 
-```
+<output-format>
 Final checkup passed. Before we close, anything you want to explore?
 
   REFLECTION MODES
@@ -175,7 +175,7 @@ Final checkup passed. Before we close, anything you want to explore?
 
   ─────────────────────────────────────────
   S. Proceed to closing summary
-```
+</output-format>
 
 **Before executing any mode above, LOAD its data file:**
 - Table Ronde → LOAD `data/modes/table-ronde.md`
@@ -185,7 +185,7 @@ Final checkup passed. Before we close, anything you want to explore?
 
 ## Transition
 
-```
+<output-format>
 Step 01 complete. Final checkup passed.
 
   Must Have: {n}/{n} — 100% ✓
@@ -193,6 +193,6 @@ Step 01 complete. Final checkup passed.
   Deferred items: {list if any}
 
 → Step 02 — Closing summary and formal handoff
-```
+</output-format>
 
 Update `hk-up-status.yaml`: `11-2-finalisation-handoff → step-01: done`

@@ -27,7 +27,7 @@ Hand off explicitly to the PRD workflow.
 
 Summarize `brainstorm-session.md` in a compact, decision-ready format:
 
-```
+<output-format>
 Here's what we built during this brainstorm:
 
   MUST BUILD
@@ -48,7 +48,7 @@ Here's what we built during this brainstorm:
 
   OBJECTIVE COVERAGE
   All {N} confirmed objectives are addressed.
-```
+</output-format>
 
 ---
 
@@ -56,14 +56,16 @@ Here's what we built during this brainstorm:
 
 Ask the user to validate or adjust:
 
-```
+<output-format>
 Based on everything we explored, here's the direction I'd recommend:
 
   Focus on: {top 2-3 Must Have ideas that form a coherent core}
   Leave out for now: {Could Have + Won't Have}
 
-Does this feel right? Would you change anything?
-```
+  ─────────────────────────────────────────
+  1. Confirm — this direction is right
+  2. Adjust — I want to change something
+</output-format>
 
 Wait for the user's response. They may:
 - Confirm as-is
@@ -79,7 +81,7 @@ Record all adjustments.
 
 Once confirmed, write the direction statement in plain language:
 
-```
+<output-format>
 Confirmed direction for {project_name}:
 
   "{one or two sentences describing what we're going to build and why}"
@@ -92,10 +94,13 @@ Confirmed direction for {project_name}:
   Out of scope (this version):
   - {deferred_1}
   - {deferred_2}
-```
 
-Read it back to the user and ask for final confirmation:
-> "Is this the direction you want to commit to? This is what the PRD will be built on."
+  ─────────────────────────────────────────
+  This is what the PRD will be built on.
+
+  1. Commit — this is the direction for the PRD
+  2. Revise — go back and adjust
+</output-format>
 
 ---
 
@@ -155,7 +160,7 @@ Save as `{output_folder}/direction.md`:
 
 After direction is confirmed but before handoff:
 
-```
+<output-format>
 Direction confirmed. Would you like one final exploration before we move to the PRD?
 
   REFLECTION MODES
@@ -165,7 +170,7 @@ Direction confirmed. Would you like one final exploration before we move to the 
 
   ─────────────────────────────────────────
   S. Save and proceed to PRD
-```
+</output-format>
 
 **Before executing any mode above, LOAD its data file:**
 - Table Ronde → `data/modes/table-ronde.md`
@@ -176,7 +181,7 @@ Direction confirmed. Would you like one final exploration before we move to the 
 
 ## Handoff — PRD Workflow
 
-```
+<output-format>
 Brainstorming complete.
 
 direction.md saved.
@@ -188,7 +193,7 @@ What was decided:
   Must Have items: {count}
   Deferred items: {count}
 
-→ PRD Workflow — Le Stratège
+→ PRD Workflow — ♟️ Le Stratège
 
   I'll now write the Product Requirements Document based on everything
   we decided in this session. Each feature from the confirmed direction
@@ -196,7 +201,7 @@ What was decided:
 
   The PRD is the contract between what you want and what gets built.
   Nothing implicit — everything written.
-```
+</output-format>
 
 ---
 

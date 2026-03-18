@@ -26,7 +26,7 @@ Update state. Hand off to the next agent.
 
 Present a recap of all decisions made during the diagnostic:
 
-```
+<output-format>
 Here's a summary of everything we've established:
 
   PROJECT
@@ -46,8 +46,10 @@ Here's a summary of everything we've established:
   Path:          {confirmed_path}
   Estimate:      ~{mission_count} missions
 
-Does everything look correct? Any corrections before we proceed?
-```
+  ─────────────────────────────────────────
+  1. Confirm — everything is correct
+  2. Correct something before proceeding
+</output-format>
 
 Wait for user confirmation. If corrections needed → apply and re-present.
 
@@ -102,6 +104,26 @@ H.K-UP Path: {confirmed_path}
 
 {dependencies_summary}
 
+## Existing Features
+
+### Screens / Pages
+| Feature | Screen | Status |
+|---------|--------|--------|
+| {feature_1} | {screen} | {active / partial / stub} |
+| ... | ... | ... |
+
+### Integrations
+| Service | Purpose | Connection |
+|---------|---------|------------|
+| {service_1} | {purpose} | {REST / CLI / SDK / sidecar} |
+| ... | ... | ... |
+
+### Data Model
+| Table | Purpose | Key fields |
+|-------|---------|------------|
+| {table_1} | {purpose} | {fields} |
+| ... | ... | ... |
+
 ## Objective and Vision
 
 - **Objective(s):** {objectives_list}
@@ -133,12 +155,16 @@ H.K-UP Path: {confirmed_path}
 
 Before handing off, verify:
 
-| Point | Status |
-|-------|--------|
-| project-context.md created and confirmed by user | ✓ / ✗ |
-| Objective(s) explicitly confirmed | ✓ / ✗ |
-| Path explicitly confirmed | ✓ / ✗ |
-| hk-up-status.yaml updated | ✓ / ✗ |
+<output-format>
+BLOCKING CHECKUP — Diagnostic handoff
+
+  | Point | Status |
+  |-------|--------|
+  | project-context.md created and confirmed by user | ✓ / ✗ |
+  | Objective(s) explicitly confirmed | ✓ / ✗ |
+  | Path explicitly confirmed | ✓ / ✗ |
+  | hk-up-status.yaml updated | ✓ / ✗ |
+</output-format>
 
 If any point is ✗ → resolve before continuing. Do not hand off.
 
@@ -159,36 +185,40 @@ Update the following fields:
 Select the correct handoff based on confirmed path:
 
 **Express:**
-```
-Diagnostic complete. Handing off to L'Architecte.
+
+<output-format>
+Diagnostic complete. Handing off to 🏗️ L'Architecte.
 
 They will receive: project-context.md + your confirmed objective.
 Next: architecture design and mission planning (no formal PRD).
-```
+</output-format>
 
 **Standard / Full:**
-```
-Diagnostic complete. Handing off to Le Stratège.
+
+<output-format>
+Diagnostic complete. Handing off to ♟️ Le Stratège.
 
 They will receive: project-context.md + your confirmed objective + your vision.
 Next: brainstorming session — choosing a method and defining the PRD.
-```
+</output-format>
 
 **Design:**
-```
-Diagnostic complete. Handing off to Le Designer.
+
+<output-format>
+Diagnostic complete. Handing off to 🎨 Le Designer.
 
 They will receive: project-context.md + UI audit data.
 Next: UI/UX audit and exploration of visual directions.
-```
+</output-format>
 
 **Audit / Light Audit / Full Audit:**
-```
-Diagnostic complete. Handing off to Nyx.
+
+<output-format>
+Diagnostic complete. Handing off to 🛡️ Nyx.
 
 They will receive: project-context.md.
 Next: security audit using STRIDE/DREAD methodology.
-```
+</output-format>
 
 ---
 

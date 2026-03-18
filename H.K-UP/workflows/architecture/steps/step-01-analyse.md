@@ -124,7 +124,7 @@ Categorize each gap as:
 
 Present in this exact format:
 
-```
+<output-format>
 ARCHITECTURE ANALYSIS — {project_name}
 
 STRUCTURE
@@ -160,7 +160,10 @@ TECHNICAL DEBT (architecture level only — flagged by L'Éclaireur)
   - {debt item}: {impact on the PRD implementation plan}
 
 Do you confirm these findings? Anything I missed or misread?
-```
+
+  1. Confirm
+  2. Adjust — tell me what to correct
+</output-format>
 
 Wait for user confirmation. Adjust if they correct anything.
 
@@ -168,7 +171,7 @@ Wait for user confirmation. Adjust if they correct anything.
 
 ## Reflection modes menu
 
-```
+<output-format>
 Step 01 complete. Want to go deeper before designing?
 
   REFLECTION MODES
@@ -179,7 +182,7 @@ Step 01 complete. Want to go deeper before designing?
 
   ─────────────────────────────────────────
   S. Save and move to architecture design (step-02)
-```
+</output-format>
 
 **Before executing any mode above, LOAD its data file:**
 - Prisme → `data/modes/prisme.md` + `data/prisme-facettes.csv`
@@ -190,7 +193,7 @@ Step 01 complete. Want to go deeper before designing?
 
 ## Transition
 
-```
+<output-format>
 Step 01 complete.
 
 Analysis confirmed.
@@ -201,7 +204,7 @@ Strengths preserved: {count}
 
 → Step 02 — I'll now propose architectural approaches.
   You'll choose one direction before I write the Architecture Decision Records.
-```
+</output-format>
 
 Update `hk-up-status.yaml`: `6-1-conception → step-01: done`
 Proceed to **step-02-design.md**

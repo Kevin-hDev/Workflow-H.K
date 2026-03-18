@@ -60,7 +60,7 @@ Before starting any round, The Mask must:
 
 Each round follows this exact structure. The user does NOT skip the verdict.
 
-```
+<output-format>
 TABLE RONDE DUEL — Round {N}
 
   ────────────────────────────────────────────────────────────────
@@ -95,19 +95,10 @@ TABLE RONDE DUEL — Round {N}
   ⚖️ USER — Verdict
   ────────────────────────────────────────────────────────────────
 
-  {FIX | ACCEPT RISK | DEFER}
-
-  If FIX:
-    → Added to remediation plan in step-03 with priority {Critical/High/Medium}
-
-  If ACCEPT RISK:
-    → Reason: {user's stated reason}
-    → Documented in security-audit.md as accepted risk
-
-  If DEFER:
-    → Target milestone: {version or sprint}
-    → Documented in security-audit.md as deferred risk
-```
+  1. FIX         → Added to remediation plan in step-03 with priority {Critical/High/Medium}
+  2. ACCEPT RISK → Reason: {user's stated reason} — Documented in security-audit.md as accepted risk
+  3. DEFER       → Target milestone: {version or sprint} — Documented in security-audit.md as deferred risk
+</output-format>
 
 ---
 
@@ -138,7 +129,7 @@ Zero may intervene between rounds if The Mask's attack reveals a defensive assum
 
 If Zero intervenes:
 
-```
+<output-format>
   ⚡ ZERO — Challenge
 
   "Actually… {the defensive assumption being challenged}
@@ -147,7 +138,7 @@ If Zero intervenes:
    Alternative: {what a stronger defense would look like}"
 
   Nyx may revise their assessment before the user votes.
-```
+</output-format>
 
 Zero only intervenes when there is evidence (reference, benchmark, incident) — not speculation.
 
@@ -157,7 +148,7 @@ Zero only intervenes when there is evidence (reference, benchmark, incident) —
 
 After all rounds are complete:
 
-```
+<output-format>
 DUEL SUMMARY — The Mask vs Nyx
 
   Rounds completed:        {count}
@@ -175,7 +166,7 @@ DUEL SUMMARY — The Mask vs Nyx
     Round {N}: {brief description} — DREAD {score}/50
 
   Zero interventions: {count | "None"}
-```
+</output-format>
 
 ---
 
@@ -183,7 +174,7 @@ DUEL SUMMARY — The Mask vs Nyx
 
 After the duel summary:
 
-```
+<output-format>
 Step 02 complete. The duel is over.
 
   REFLECTION MODES
@@ -195,7 +186,7 @@ Step 02 complete. The duel is over.
 
   ─────────────────────────────────
   S. Save and continue to step 03 → Security Audit Report
-```
+</output-format>
 
 **Before executing any mode above, LOAD its data file:**
 - Table Ronde → LOAD `data/modes/table-ronde.md`
@@ -207,7 +198,7 @@ Step 02 complete. The duel is over.
 
 ## Transition
 
-```
+<output-format>
 Step 02 done.
 
   Rounds completed: {count}
@@ -219,6 +210,6 @@ Step 02 done.
   Agent: Nyx
   Nyx consolidates all step-01 findings and step-02 verdicts into security-audit.md.
   Transmitting: DREAD scores + duel verdicts + remediation priorities + accepted/deferred risks
-```
+</output-format>
 
 Update `hk-up-status.yaml`: step-02-challenge → done

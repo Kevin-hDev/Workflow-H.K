@@ -25,7 +25,7 @@ This document defines the master rules. Step files implement the menu for their 
 
 ## Core rules
 
-1. **Always present at end of step** — every step file ends with this menu (except execution-mode steps in dev workflow where speed is the priority)
+1. **Always present at end of step** — every step file ends with this menu. Exception: `workflows/dev/steps/step-02-implement.md` and `workflows/review/steps/step-01-check.md` — Le Chirurgien and Le Gardien do not show reflection menus during active coding/review.
 2. **Only relevant modes** — not all 7 modes appear every time; the table below defines which modes appear where
 3. **User-selected, user-paced** — the user picks one or more modes in any order
 4. **Chaining** — after each mode completes, re-show the menu with ✓ on the completed mode
@@ -36,7 +36,7 @@ This document defines the master rules. Step files implement the menu for their 
 
 ## Menu format
 
-```
+<output-format>
 {step_name} complete. Would you like to explore further?
 
   REFLECTION MODES
@@ -46,7 +46,7 @@ This document defines the master rules. Step files implement the menu for their 
 
   ─────────────────────────────────────────
   S. Save and continue to {next_step_name}
-```
+</output-format>
 
 **Rules for the menu block:**
 - Mode names are left-aligned
@@ -57,7 +57,7 @@ This document defines the master rules. Step files implement the menu for their 
 
 ### Example — after brainstorm synthesis
 
-```
+<output-format>
 Synthesis complete. Would you like to explore further?
 
   REFLECTION MODES
@@ -67,7 +67,7 @@ Synthesis complete. Would you like to explore further?
 
   ─────────────────────────────────────────
   S. Save and proceed to Direction Decision
-```
+</output-format>
 
 ---
 
@@ -78,7 +78,7 @@ Only show the modes listed for each step. Do not show all 7 modes every time.
 | Workflow | Step | Relevant modes |
 |----------|------|----------------|
 | **Diagnostic** | After report (step-02) | Prisme (technique, echec), Archéologie |
-| **Diagnostic** | After objective (step-03) | Prisme (user, business), Table Ronde |
+| **Diagnostic** | After objective (step-03) | Prisme (user, business) |
 | **Diagnostic** | After path selection (step-04) | Table Ronde, Conformité, Benchmark Vivant |
 | **Brainstorming** | After method selection (step-01) | Table Ronde, Prisme (user) |
 | **Brainstorming** | After session (step-02) | Table Ronde, Prisme, Benchmark Vivant |
@@ -131,7 +131,7 @@ When a mode is suggested with a specific focus, add it in parentheses:
 2. Re-show the full menu with ✓ on the completed mode
 3. Wait for user to pick another mode or type S
 
-```
+<output-format>
 {mode_name} complete.
 
 [mode output block]
@@ -146,7 +146,7 @@ Back to the menu:
 
   ─────────────────────────────────────────
   S. Save and continue to {next_step_name}
-```
+</output-format>
 
 ---
 
@@ -186,8 +186,9 @@ All sections are placed under a `## Reflection Modes` heading at the bottom of t
 
 ## When NOT to show the menu
 
-The interactive menu is skipped in one case only:
-- **Execution-mode steps in the dev workflow** — when Le Chirurgien is mid-mission and the step is "implement this specific function", the menu interrupts flow and is not shown. The menu returns after the Gardien validation step.
+The interactive menu is skipped for exactly 2 step files:
+- `workflows/dev/steps/step-02-implement.md` — Le Chirurgien is mid-mission
+- `workflows/review/steps/step-01-check.md` — Le Gardien is validating
 
 In all other cases, the menu is mandatory.
 

@@ -90,7 +90,7 @@ branches that were never merged. These create cognitive overhead for anyone read
 ### Step 1 — Scope selection
 
 Ask which areas to excavate:
-```
+<output-format>
 Archéologie — What would you like to explore?
 
   1. Full timeline    — Project phases from day one to today
@@ -100,7 +100,7 @@ Archéologie — What would you like to explore?
   5. All of the above
 
 Choose an area (or type a specific file/folder path):
-```
+</output-format>
 
 ### Step 2 — Excavation
 
@@ -108,7 +108,8 @@ Run the git analysis for the selected scope.
 Present findings as a narrative, not raw log output.
 
 **Full timeline format:**
-```
+
+<output-format>
 ARCHÉOLOGIE — Project Timeline
 
   Phase 1 ({date_range}): {name}
@@ -122,10 +123,11 @@ ARCHÉOLOGIE — Project Timeline
 
   Current state: {where the project is now, relative to its history}
   Observation: {one insight about the project's evolution}
-```
+</output-format>
 
 **Hotspot files format:**
-```
+
+<output-format>
 ARCHÉOLOGIE — Hotspot Files (Top 10 most modified)
 
   Rank | File | Modifications | Main authors | Last touched
@@ -139,10 +141,11 @@ ARCHÉOLOGIE — Hotspot Files (Top 10 most modified)
   - {file_2}: [...]
 
   Highest-risk file for refactoring: {file} — reason: {why}
-```
+</output-format>
 
 **Specific file format:**
-```
+
+<output-format>
 ARCHÉOLOGIE — {file_path}
 
   Created: {date} by {author}
@@ -156,10 +159,11 @@ ARCHÉOLOGIE — {file_path}
 
   Geological layers: {describe if the file contains code from different eras}
   Observation: {one insight about this file}
-```
+</output-format>
 
 **Contributors format:**
-```
+
+<output-format>
 ARCHÉOLOGIE — Contributors
 
   Author          | Commits | Main areas         | Still active?
@@ -172,19 +176,23 @@ ARCHÉOLOGIE — Contributors
   - [...]
 
   Bus factor: {count} contributors own > 50% of the codebase
-```
+</output-format>
 
 ### Step 3 — Discussion
 
 Present findings, then invite the user to explore further:
-```
-Any of these areas you'd like to dig deeper into?
-(Or type 'done' to close the Archéologie)
-```
+
+<output-format>
+  ─────────────────────────────────────────
+  1. Dig deeper into a specific area
+  2. Close the Archéologie and see the summary
+
+  Close keywords: "done" / "terminé"
+</output-format>
 
 ### Step 4 — Summary
 
-```
+<output-format>
 ARCHÉOLOGIE SUMMARY
 
   Phases identified: {count}
@@ -194,13 +202,13 @@ ARCHÉOLOGIE SUMMARY
 
   Key insight: {one sentence — the most important historical finding}
   Implication for this session: {how this history should inform the current work}
-```
+</output-format>
 
 ---
 
 ## Saving output
 
-```markdown
+<output-format>
 ### Archéologie (validated)
 
 - Scope: {what was excavated}
@@ -214,7 +222,7 @@ ARCHÉOLOGIE SUMMARY
 
 **Key insight:** {one-sentence historical finding}
 **Implication:** {how it should inform current decisions}
-```
+</output-format>
 
 The full Archéologie narrative is also saved as a section in `project-context.md`
 if that file exists in the output folder.

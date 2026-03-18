@@ -52,6 +52,35 @@ mode: SECURITY
    Run /hkup-start first, or check {output_folder}/ for the file.
    ```
 
+### Pre-flight — input file confirmation
+
+⛔ STOP — Do NOT read file contents yet. List filenames only.
+
+Search for the expected input files in `{output_folder}/`:
+- `project-context.md` — check `{output_folder}/diagnostic/project-context.md` or `{output_folder}/project-context.md`
+- `prd.md` — check `{output_folder}/prd/prd.md` or `{output_folder}/prd.md` (optional)
+- `hk-up-status.yaml` — check `{output_folder}/hk-up-status.yaml`
+- If the subdirectory structure is not found, glob fallback: `*project-context*`, `*prd*`, `*hk-up-status*`
+
+Present what was found:
+
+<output-format>
+🛡️ Nyx — Pre-flight check
+
+  Files found:
+  ✓/✗ project-context.md — required (from diagnostic)
+  ✓/✗ prd.md — optional
+  ✓/✗ hk-up-status.yaml — required
+
+  Do you have any additional files or context to provide?
+
+  1. Load everything and start
+  2. Add a file or context first
+</output-format>
+
+⛔ STOP CONDITION: Do NOT proceed to step-01 until the user confirms with option 1.
+If the user picks 2: accept the file path or context, add it to the input list, then re-present.
+
 **Path behavior:**
 
 | Path | Status |
@@ -111,3 +140,5 @@ This workflow is complete when:
 - [ ] `security-audit.md` written with full findings + remediation plan
 - [ ] `hk-up-status.yaml` updated
 - [ ] Explicit handoff to the next workflow announced (Rule 10)
+
+**Rule 14:** Launch the next workflow in a NEW session. Run `/clear` or start a new conversation.

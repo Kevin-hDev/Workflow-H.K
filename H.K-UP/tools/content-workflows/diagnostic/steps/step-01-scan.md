@@ -90,6 +90,72 @@ Read 3-5 representative source files and extract:
 - **Formatting**: indentation (2/4 spaces, tabs), semicolons, quotes style
 - **CLAUDE.md/AGENTS.md conventions**: if present, extract the coding rules already defined
 
+### 9. Functional inventory (existing features)
+
+> This section maps WHAT the project does — not just how it's built.
+> Without this inventory, no one can assess gaps or plan evolution.
+
+**9a. Screens and pages:**
+- Read the main routing/navigation component (App.tsx, router, sidebar)
+- List every screen/page/tab the user can access
+- For each: name, what it does (1 sentence), main components it uses
+
+**9b. User actions:**
+- List the key actions a user can perform (create, delete, configure, scan, export...)
+- For each: where it happens, what backend command it calls
+
+**9c. Integrations and external services:**
+- List all external APIs, services, or tools the project connects to
+- For each: what it's used for, how it's called (REST, CLI, sidecar, SDK)
+
+**9d. Data model:**
+- Read the database schema or models file
+- List the main tables/collections and their purpose
+- Note relationships between them
+
+**9e. Store for step-02 and project-context.md:**
+- `features_list`: table with columns [Feature | Screen | Status (active/partial/stub)]
+- `integrations_list`: table with columns [Service | Purpose | Connection method]
+- `data_tables`: table with columns [Table | Purpose | Key fields]
+
+### 10. AI standards files (CLAUDE.md health)
+
+> This section evaluates the project's AI instruction files.
+> An oversized CLAUDE.md is a silent performance killer — it loads at EVERY request,
+> creates noise, and causes Claude to ignore critical rules buried in the text.
+
+**10a. CLAUDE.md analysis:**
+- Check if `CLAUDE.md` (or `.claude/CLAUDE.md`) exists at project root
+- Count lines: `wc -l CLAUDE.md`
+- Classify health:
+  - **OPTIMAL** (green): < 60 lines — lean, focused instructions
+  - **ACCEPTABLE** (yellow): 60–200 lines — functional but could be trimmed
+  - **OVERSIZED** (red): > 200 lines — active problem, causes instruction drift
+- If the file exists, READ it and identify what it contains:
+  - Project identity and type
+  - Build/test commands
+  - Coding conventions
+  - Security rules
+  - Architecture description
+  - Dependency versions
+  - Workflow instructions
+  - Other content
+- For each category, note: "should stay in CLAUDE.md" vs "should move elsewhere"
+
+**10b. Modular rules check:**
+- Check `.claude/rules/` — count files, list them
+- Check `.claude/skills/` — count skills
+- Check auto-memory (`~/.claude/projects/*/memory/`) — exists? MEMORY.md present?
+
+**10c. Store classification for step-02:**
+- `claudemd_exists`: yes/no
+- `claudemd_lines`: number
+- `claudemd_health`: optimal / acceptable / oversized
+- `claudemd_content_categories`: list of what the file contains
+- `rules_count`: number of .claude/rules/ files
+- `skills_count`: number of .claude/skills/ directories
+- `memory_exists`: yes/no
+
 ---
 
 ## End of step
