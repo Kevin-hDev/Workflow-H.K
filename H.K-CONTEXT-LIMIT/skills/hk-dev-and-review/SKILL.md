@@ -393,15 +393,17 @@ Remaining missions: {N}
   1. Move to the next mission ({X.Y+1} — {title})
   2. Test on the UI side / verify manually
   3. View report details
-  4. Stop for today
+  4. Push to remote
+  5. Stop for today
 
 Pick a number:
 </message>
 
 If the creator picks 1 → repeat the loop (step A)
 If the creator picks 2 → wait for the creator to come back with "ok" or "continue"
-If the creator picks 3 → display full reports, then offer 1, 2, and 4 again
-If the creator picks 4 → save state and end
+If the creator picks 3 → display full reports, then offer choices again
+If the creator picks 4 → `git push` and confirm
+If the creator picks 5 → save state and end
 
 *Step 2.3 — Orchestration loop (AUTO MODE)*
 
@@ -521,9 +523,10 @@ The bug on mission {X.Y} has been fixed.
 
 I recommend refreshing the context to maintain optimal quality:
 
-  1. /clear and relaunch /hk-dev-and-review (recommended)
-  2. Open a new conversation (recommended)
-  3. Continue in this conversation (not recommended)
+  1. Push to remote, then /clear and relaunch (recommended)
+  2. Push to remote, then open a new conversation (recommended)
+  3. /clear without pushing
+  4. Continue in this conversation (not recommended)
 
 Remaining missions: {N}
 
@@ -540,9 +543,10 @@ Summary:
   Missions completed: {N}/{N}
   Total tasks executed: {N}
 
-  1. Look for another plan in the codebase
-  2. Launch a brainstorming session for new features
-  3. Done — we're finished!
+  1. Push to remote
+  2. Look for another plan in the codebase
+  3. Launch a brainstorming session for new features
+  4. Done — we're finished!
 
 Pick a number:
 </message>
