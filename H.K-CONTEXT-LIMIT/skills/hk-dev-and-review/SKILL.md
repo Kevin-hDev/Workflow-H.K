@@ -368,10 +368,17 @@ If the report is a **debug-failure** (Mike failed after 3 attempts):
 → Go to step 2.5 (Debug escalation) — same process as for Iris,
   but after correction Jackson marks [done] instead of [review]
 
-**F. Offer next steps (normal mode only)**
+**F. Commit the mission (normal mode)**
+
+After Mike validates and before offering next steps, commit all changes:
+```
+git add -A && git commit -m "feat(mission-{X.Y}): {brief mission title}"
+```
+
+**G. Offer next steps (normal mode only)**
 
 <message>
-Mission {X.Y} — DONE
+Mission {X.Y} — DONE (committed)
 
 Iris report:
   Tasks: {N}/{N} | Tests: {N} | Files: {N}
@@ -429,6 +436,12 @@ If the creator resolves the issue, Jackson can offer to switch back to auto mode
 for the remaining missions or continue in normal mode.
 
 After 5 missions (or when there are no more pending missions):
+
+**Commit all auto mode work** before proceeding:
+```
+git add -A && git commit -m "feat(auto): missions {first_X.Y} to {last_X.Y} — {N} missions completed"
+```
+
 → Go to Step 2.6
 
 *Step 2.5 — Debug escalation*

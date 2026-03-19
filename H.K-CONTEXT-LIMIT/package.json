@@ -1,6 +1,6 @@
 {
   "name": "hk-context-limit",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Token-efficient dev & review workflow for Claude Code — orchestrates sub-agents to implement projects mission by mission",
   "author": "Kevin Huynh (https://github.com/Kevin-hDev)",
   "license": "MIT",
