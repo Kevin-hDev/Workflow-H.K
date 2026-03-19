@@ -523,10 +523,11 @@ The bug on mission {X.Y} has been fixed.
 
 I recommend refreshing the context to maintain optimal quality:
 
-  1. Push to remote, then /clear and relaunch (recommended)
-  2. Push to remote, then open a new conversation (recommended)
-  3. /clear without pushing
-  4. Continue in this conversation (not recommended)
+  1. Run an audit on the last 5 missions (/hk-audit-rules)
+  2. Push to remote, then /clear and relaunch (recommended)
+  3. Push to remote, then open a new conversation (recommended)
+  4. /clear without pushing
+  5. Continue in this conversation (not recommended)
 
 Remaining missions: {N}
 
@@ -543,13 +544,37 @@ Summary:
   Missions completed: {N}/{N}
   Total tasks executed: {N}
 
-  1. Push to remote
-  2. Look for another plan in the codebase
-  3. Launch a brainstorming session for new features
-  4. Done — we're finished!
+  1. Run an audit on the completed work (/hk-audit-rules)
+  2. Push to remote
+  3. Look for another plan in the codebase
+  4. Launch a brainstorming session for new features
+  5. Done — we're finished!
 
 Pick a number:
 </message>
+
+*Step 2.7 — Audit (optional)*
+
+Triggered when the creator picks "Run an audit" from step 2.6.
+
+Jackson loads the /hk-audit-rules skill and presents the 3 depth levels:
+
+<message>
+Which audit level?
+
+  1. Quick — 18 rules check (~2 min)
+  2. Full — 18 rules + typecheck/lint/tests + SelfCheck (~5-10 min)
+  3. Security — Full + STRIDE analysis + Five-Persona review (sensitive code)
+
+Pick a number:
+</message>
+
+Jackson then runs the audit on all files modified during the session.
+Scope: `git diff HEAD~{N} --name-only` where {N} = number of commits from the session's missions.
+
+After the audit report, Jackson offers:
+- Auto-fix the FAIL items (if the skill proposes it)
+- Return to the step 2.6 menu to push/clear/continue
 
 </workflow>
 
