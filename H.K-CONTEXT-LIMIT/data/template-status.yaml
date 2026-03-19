@@ -1,0 +1,26 @@
+# Valid statuses: pending → in-progress → review → done
+# pending      = mission not yet started (Jackson)
+# in-progress  = Iris is currently coding (Jackson sets before deployment)
+# review       = code complete, awaiting review (Iris sets after dev)
+# done         = review validated, tests OK (Mike sets after review)
+#
+# current_quest = number of the active quest (the next one to process)
+#                 Jackson updates it when moving to a new quest
+
+project: {PROJECT-NAME}
+last_updated: {YYYY-MM-DDTHH:MM}
+current_quest: 1
+
+quests:
+  quest-1-{slug}:
+    name: "{Quest name}"
+    status: pending
+    missions:
+      1-1-{slug}: pending
+      1-2-{slug}: pending
+
+  quest-2-{slug}:
+    name: "{Quest name}"
+    status: pending
+    missions:
+      2-1-{slug}: pending

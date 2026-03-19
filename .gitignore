@@ -29,3 +29,9 @@ build/
 
 # npm
 *.tgz
+
+# H.K-CONTEXT-LIMIT — dev files not needed for execution
+H.K-CONTEXT-LIMIT/WORKFLOW.md
+H.K-CONTEXT-LIMIT/roadmap.md
+H.K-CONTEXT-LIMIT/(projects)-status.yaml
+H.K-CONTEXT-LIMIT/H.K-CONTEXT-LIMIT-status.yaml

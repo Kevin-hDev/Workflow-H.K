@@ -1,0 +1,35 @@
+{
+  "name": "hk-context-limit",
+  "version": "1.0.0",
+  "description": "Token-efficient dev & review workflow for Claude Code — orchestrates sub-agents to implement projects mission by mission",
+  "author": "Kevin Huynh (https://github.com/Kevin-hDev)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kevin-hDev/Workflow-H.K"
+  },
+  "homepage": "https://github.com/Kevin-hDev/Workflow-H.K/tree/main/H.K-CONTEXT-LIMIT",
+  "keywords": [
+    "claude-code",
+    "workflow",
+    "ai-agents",
+    "dev-review",
+    "orchestration",
+    "subagents",
+    "claude",
+    "anthropic"
+  ],
+  "bin": {
+    "hk-context-limit": "bin/cli.js"
+  },
+  "files": [
+    "bin/",
+    "skills/",
+    "agents/",
+    "data/",
+    "CLAUDE.md",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ]
+}
