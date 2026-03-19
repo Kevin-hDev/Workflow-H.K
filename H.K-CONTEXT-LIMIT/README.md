@@ -3,7 +3,22 @@
 > **Original creator: [Kevin Huynh](https://github.com/Kevin-hDev)**
 > If you fork and publish this workflow, you must credit the original creator at the top of your README.
 
-A token-efficient dev & review workflow for [Claude Code](https://claude.ai/claude-code). Orchestrates sub-agents to implement projects mission by mission while keeping the main conversation context clean.
+## Why This Exists
+
+In Claude Code, the more work you do in a single conversation, the faster the context window fills up. When it gets too heavy, the conversation compacts — and compaction means lost context, degraded quality, and the need to `/clear` and start over.
+
+**H.K Context-Limit solves this.** Instead of having the main agent do everything (read, plan, code, test, review, fix), it delegates the heavy work to **fresh sub-agents** that execute outside the main conversation. The orchestrator (Jackson) only handles coordination: finding files, creating the plan, deploying agents, and verifying reports. He never codes, never reviews.
+
+The result: **you can execute significantly more tasks in a single conversation** before hitting context limits. Each sub-agent starts with a clean context, does its job, returns a short report, and is discarded. The main conversation stays light — it only accumulates the reports, not the full implementation work.
+
+```
+Without H.K Context-Limit:
+  Agent reads → plans → codes → tests → reviews → fixes → context explodes after 2-3 features
+
+With H.K Context-Limit:
+  Jackson orchestrates → Iris codes (fresh context) → Mike reviews (fresh context)
+  → Jackson gets a 5-line report → repeats 5 times → context still clean
+```
 
 ## How It Works
 
