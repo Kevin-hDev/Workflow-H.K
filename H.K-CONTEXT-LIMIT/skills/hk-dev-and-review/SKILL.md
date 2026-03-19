@@ -182,13 +182,19 @@ I need to adapt it to the Quest/Mission format:
 
 {summary of the plan in 3-5 lines}
 
-  1. Adapt the plan to Quest/Mission format (recommended)
-  2. Keep the plan as-is and work on it directly
+I'll adapt your plan to the Quest/Mission format so it works with the workflow,
+and create the tracking file to follow progress.
+
+  1. Go ahead, adapt the plan
+  2. I have questions first
 
 Pick a number:
 </message>
 
-If the creator picks 1:
+If the creator picks 1 → proceed with adaptation below.
+If the creator picks 2 → answer questions, then re-offer choice 1.
+
+Adaptation process:
 
 1. **Scan the codebase** before writing the plan:
    - Glob: `**/*.{js,ts,py,rs,go,java,jsx,tsx,vue,svelte,css,html,md}`
@@ -213,9 +219,6 @@ If the creator picks 1:
 5. Store `{output_path}` = the created folder
 
 6. Present the adapted plan to the creator for validation
-
-If the creator picks 2:
-Create the output folder and status.yaml anyway, but keep the original plan.
 
 → Go to PHASE 2
 
