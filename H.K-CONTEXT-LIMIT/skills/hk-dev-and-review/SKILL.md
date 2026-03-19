@@ -557,7 +557,18 @@ Pick a number:
 
 Triggered when the creator picks "Run an audit" from step 2.6.
 
-Jackson loads the /hk-audit-rules skill and presents the 3 depth levels:
+**A. Choose scope**
+
+<message>
+What do you want to audit?
+
+  1. Last 5 missions only (files changed in this session)
+  2. Full codebase (everything)
+
+Pick a number:
+</message>
+
+**B. Choose depth level**
 
 <message>
 Which audit level?
@@ -569,12 +580,36 @@ Which audit level?
 Pick a number:
 </message>
 
-Jackson then runs the audit on all files modified during the session.
-Scope: `git diff HEAD~{N} --name-only` where {N} = number of commits from the session's missions.
+**C. Run the audit**
 
-After the audit report, Jackson offers:
-- Auto-fix the FAIL items (if the skill proposes it)
-- Return to the step 2.6 menu to push/clear/continue
+Jackson loads the /hk-audit-rules skill and runs it.
+
+- If scope = "Last 5 missions": Jackson runs the audit HIMSELF on the changed files.
+  Scope argument: files from `git diff HEAD~{N} --name-only` where {N} = commits from this session.
+
+- If scope = "Full codebase": Jackson deploys Sonnet subagents to audit in parallel.
+  Split the codebase by top-level folders (e.g., src/, lib/, components/).
+  Each subagent receives: the /hk-audit-rules instructions + its assigned folder + the depth level.
+  Jackson collects all reports and merges them into a single consolidated audit report.
+
+**D. After the audit**
+
+Jackson presents the consolidated report, then offers:
+
+<message>
+Audit complete.
+
+  PASS: {N} | FAIL: {N} | WARN: {N}
+
+  1. Auto-fix the {N} FAIL items
+  2. View full report
+  3. Back to menu (push/clear/continue)
+
+Pick a number:
+</message>
+
+If auto-fix: Jackson deploys a Sonnet subagent with the correction plan from the audit.
+After fix: return to step 2.6 menu.
 
 </workflow>
 
