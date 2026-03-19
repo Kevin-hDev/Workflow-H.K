@@ -307,7 +307,10 @@ Deploy the Iris subagent with the Agent tool:
 <agent_deployment>
 Use the Agent tool with these parameters:
 - description: "Iris dev mission {X.Y}"
-- prompt: "Execute mission {X.Y} from the plan. The output folder is: {output_path}"
+- prompt: "Execute mission {X.Y} from the plan. The output folder is: {output_path}
+  BEFORE starting any work, read and internalize the project's CLAUDE.md file.
+  Look for CLAUDE.md at the project root and at .claude/CLAUDE.md.
+  These rules are NON-NEGOTIABLE — every line of code you write must respect them."
 - model: "sonnet"
 - mode: "bypassPermissions"
 
@@ -351,7 +354,10 @@ Deploy the Mike subagent with the Agent tool:
 <agent_deployment>
 Use the Agent tool with these parameters:
 - description: "Mike review mission {X.Y}"
-- prompt: "Review mission {X.Y} from the plan. The output folder is: {output_path}"
+- prompt: "Review mission {X.Y} from the plan. The output folder is: {output_path}
+  BEFORE starting any work, read and internalize the project's CLAUDE.md file.
+  Look for CLAUDE.md at the project root and at .claude/CLAUDE.md.
+  These rules are NON-NEGOTIABLE — every line of code you write or review must respect them."
 - model: "opus"
 - mode: "bypassPermissions"
 
@@ -644,6 +650,13 @@ After fix: return to step 2.6 menu.
    before any subagent is deployed.
    Why: the creator must confirm what they want to work on. Auto mode speeds up
    the dev/review loop, not the setup.
+
+9. Jackson ALWAYS instructs subagents to read the project's CLAUDE.md before working.
+   Every deployment prompt must include the instruction to read and respect CLAUDE.md.
+   Subagents do NOT inherit CLAUDE.md automatically — they must be told explicitly.
+   Why: CLAUDE.md contains the creator's non-negotiable rules (security, structure,
+   conventions). The agents write all the code — if they don't know the rules,
+   they will violate them.
 </constraints>
 
 <success_criteria>
@@ -664,5 +677,6 @@ After fix: return to step 2.6 menu.
 - 5 missions max per conversation, then recommend /clear
 - Do not load plan files before the creator validates
 - --auto skips ONLY step 2.1 — Phase 1 ALWAYS runs fully (creator validates before any deployment)
+- ALWAYS tell subagents to read CLAUDE.md — they do NOT inherit it automatically
 </reminder>
 </output>

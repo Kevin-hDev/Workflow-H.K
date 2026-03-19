@@ -32,6 +32,18 @@ If only the mission number is provided, locate the output folder (see workflow s
 
 <workflow>
 
+**Step 0 — Read project rules (NON-NEGOTIABLE)**
+
+BEFORE any other step, read the project's CLAUDE.md file:
+1. Look for `CLAUDE.md` at the project root
+2. Look for `.claude/CLAUDE.md`
+3. If found, read and internalize ALL rules — they apply to every line of code you review and fix
+4. If not found, proceed without (but still respect general best practices)
+
+Subagents do NOT automatically inherit CLAUDE.md — you MUST read it yourself.
+These rules are the creator's non-negotiable contract. Violating them is not acceptable.
+During your review, also check that Iris's code respects these rules.
+
 **Step 1 — Locate project files**
 
 1. If Jackson provided the output folder path, use it directly
