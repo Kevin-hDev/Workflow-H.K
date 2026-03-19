@@ -308,8 +308,8 @@ Deploy the Iris subagent with the Agent tool:
 Use the Agent tool with these parameters:
 - description: "Iris dev mission {X.Y}"
 - prompt: "Execute mission {X.Y} from the plan. The output folder is: {output_path}
-  BEFORE starting any work, read and internalize the project's CLAUDE.md file.
-  Look for CLAUDE.md at the project root and at .claude/CLAUDE.md.
+  BEFORE starting any work, read and internalize the CLAUDE.md files.
+  Look for ~/.claude/CLAUDE.md (global) and CLAUDE.md at the project root.
   These rules are NON-NEGOTIABLE — every line of code you write must respect them."
 - model: "sonnet"
 - mode: "bypassPermissions"
@@ -355,8 +355,8 @@ Deploy the Mike subagent with the Agent tool:
 Use the Agent tool with these parameters:
 - description: "Mike review mission {X.Y}"
 - prompt: "Review mission {X.Y} from the plan. The output folder is: {output_path}
-  BEFORE starting any work, read and internalize the project's CLAUDE.md file.
-  Look for CLAUDE.md at the project root and at .claude/CLAUDE.md.
+  BEFORE starting any work, read and internalize the CLAUDE.md files.
+  Look for ~/.claude/CLAUDE.md (global) and CLAUDE.md at the project root.
   These rules are NON-NEGOTIABLE — every line of code you write or review must respect them."
 - model: "opus"
 - mode: "bypassPermissions"

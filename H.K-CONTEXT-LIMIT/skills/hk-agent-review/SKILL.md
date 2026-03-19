@@ -34,9 +34,9 @@ If only the mission number is provided, locate the output folder (see workflow s
 
 **Step 0 — Read project rules (NON-NEGOTIABLE)**
 
-BEFORE any other step, read the project's CLAUDE.md file:
-1. Look for `CLAUDE.md` at the project root
-2. Look for `.claude/CLAUDE.md`
+BEFORE any other step, read the CLAUDE.md files:
+1. Look for `~/.claude/CLAUDE.md` (global rules — applies to all projects)
+2. Look for `CLAUDE.md` at the project root (project-specific rules)
 3. If found, read and internalize ALL rules — they apply to every line of code you review and fix
 4. If not found, proceed without (but still respect general best practices)
 
