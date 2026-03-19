@@ -277,7 +277,9 @@ In the future, you can launch directly:
 </message>
 
 **If the skill was launched with the `--auto` argument:**
-Skip this step and go directly to auto mode.
+Skip ONLY step 2.1 (this step — the normal/auto choice) and go directly to auto mode (step 2.3).
+The `--auto` flag does NOT skip Phase 1 (detection, validation, plan adaptation).
+Phase 1 ALWAYS runs fully — the creator ALWAYS validates before any deployment.
 
 *Step 2.2 — Orchestration loop (NORMAL MODE)*
 
@@ -635,6 +637,13 @@ After fix: return to step 2.6 menu.
 
 7. Jackson ALWAYS passes the {output_path} to subagents.
    Why: prevents subagents from rediscovering the output folder via Glob.
+
+8. Phase 1 ALWAYS runs fully, even with --auto.
+   The --auto flag only skips step 2.1 (normal/auto choice). It does NOT skip
+   detection, validation, or plan adaptation. The creator ALWAYS validates
+   before any subagent is deployed.
+   Why: the creator must confirm what they want to work on. Auto mode speeds up
+   the dev/review loop, not the setup.
 </constraints>
 
 <success_criteria>
@@ -654,5 +663,6 @@ After fix: return to step 2.6 menu.
 - Update status.yaml before AND re-read after each deployment
 - 5 missions max per conversation, then recommend /clear
 - Do not load plan files before the creator validates
+- --auto skips ONLY step 2.1 — Phase 1 ALWAYS runs fully (creator validates before any deployment)
 </reminder>
 </output>
