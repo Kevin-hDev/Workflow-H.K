@@ -79,6 +79,13 @@ Read the `*-status.yaml` file and analyze:
 
 1. Count missions by status: [done], [in-progress], [review], [pending]
 2. Identify the next mission to process
+3. Check recent workflow commits for context on what was done previously:
+   ```
+   git log --oneline -10 --grep="feat(mission\|feat(auto"
+   ```
+   This shows only commits from the H.K Context-Limit workflow (not other commits).
+   Read the messages only (not the full diffs) to understand what was completed
+   in previous sessions without loading heavy context.
 
 **If a mission is stuck in [review]** (Iris finished but Mike has not reviewed):
 
