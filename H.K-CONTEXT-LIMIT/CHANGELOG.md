@@ -2,6 +2,15 @@
 
 All notable changes to H.K Context-Limit will be documented in this file.
 
+## [1.1.0] - 2026-03-20
+
+### Added
+- **RTK integration** — Installer now offers optional [RTK (Rust Token Killer)](https://github.com/rtk-ai/rtk) setup during `npx hk-context-limit install`
+- Auto-detection of OS (Linux, macOS, Windows) for RTK binary download
+- Auto-detection of existing RTK installation (skips if already present)
+- RTK hook auto-configuration for Claude Code via `rtk init --global`
+- Non-interactive mode detection (CI/piped stdin) — skips RTK prompt automatically
+
 ## [1.0.0] - 2026-03-19
 
 ### Added

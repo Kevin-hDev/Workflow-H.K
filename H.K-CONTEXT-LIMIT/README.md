@@ -50,6 +50,8 @@ This copies the skills and agents to your global Claude Code configuration:
 - Skills → `~/.claude/skills/`
 - Agents → `~/.claude/agents/`
 
+The installer also offers to install **[RTK (Rust Token Killer)](https://github.com/rtk-ai/rtk)** — an optional CLI proxy that reduces token consumption by 60-90% on common dev commands. RTK compresses outputs from `git`, `cargo`, `npm`, `docker`, and 30+ other tools before they reach the AI context window, making sessions last longer and reducing costs. Auto-detected OS, fully optional. Learn more at [rtk-ai.app](https://www.rtk-ai.app).
+
 ### Manual Installation
 
 If you prefer manual setup, copy the files yourself:

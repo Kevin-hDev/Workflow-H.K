@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const { promptRtkInstall } = require('./rtk-installer');
 
 const CLAUDE_DIR = path.join(os.homedir(), '.claude');
 const SKILLS_DIR = path.join(CLAUDE_DIR, 'skills');
@@ -37,7 +38,7 @@ function copyRecursive(src, dest) {
   }
 }
 
-function install() {
+async function install() {
   console.log('\n  H.K Context-Limit — Install\n');
   console.log('  Original creator: Kevin Huynh (https://github.com/Kevin-hDev)\n');
 
@@ -71,7 +72,12 @@ function install() {
     fs.copyFileSync(src, dest);
   }
 
-  console.log('\n  Done! Skills and agents installed to ~/.claude/\n');
+  console.log('\n  Skills and agents installed to ~/.claude/\n');
+
+  // Optional RTK integration
+  await promptRtkInstall();
+
+  console.log('  ── Ready! ──\n');
   console.log('  Available commands:');
   console.log('    /hk-dev-and-review          Normal mode (mission by mission)');
   console.log('    /hk-dev-and-review --auto    Auto mode (5 missions in a row)');
@@ -110,24 +116,31 @@ function help() {
   console.log('  Original creator: Kevin Huynh (https://github.com/Kevin-hDev)\n');
 }
 
-const command = process.argv[2];
+async function main() {
+  const command = process.argv[2];
 
-switch (command) {
-  case 'install':
-    install();
-    break;
-  case 'uninstall':
-    uninstall();
-    break;
-  case 'help':
-  case '--help':
-  case '-h':
-    help();
-    break;
-  default:
-    if (command) {
-      console.log(`\n  Unknown command: ${command}\n`);
-    }
-    help();
-    break;
+  switch (command) {
+    case 'install':
+      await install();
+      break;
+    case 'uninstall':
+      uninstall();
+      break;
+    case 'help':
+    case '--help':
+    case '-h':
+      help();
+      break;
+    default:
+      if (command) {
+        console.log(`\n  Unknown command: ${command}\n`);
+      }
+      help();
+      break;
+  }
 }
+
+main().catch((err) => {
+  console.error(`\n  Installation error. Please try again.\n`);
+  process.exit(1);
+});
