@@ -77,7 +77,7 @@ async function install() {
   // Optional RTK integration
   await promptRtkInstall();
 
-  console.log('  ── Ready! ──\n');
+  console.log('  -- Ready! --\n');
   console.log('  Available commands:');
   console.log('    /hk-dev-and-review          Normal mode (mission by mission)');
   console.log('    /hk-dev-and-review --auto    Auto mode (5 missions in a row)');
@@ -140,7 +140,7 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error(`\n  Installation error. Please try again.\n`);
+main().catch((_err) => {
+  console.error('\n  Installation error. Please try again.\n');
   process.exit(1);
 });

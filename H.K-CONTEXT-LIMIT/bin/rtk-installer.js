@@ -11,15 +11,75 @@ const WIN_ZIP_URL = 'https://github.com/rtk-ai/rtk/releases/latest/download/rtk-
 
 const RTK_LOCAL_BIN = path.join(os.homedir(), '.local', 'bin');
 const RTK_LOCAL_PATH = path.join(RTK_LOCAL_BIN, 'rtk');
+const PATH_EXPORT_LINE = 'export PATH="$HOME/.local/bin:$PATH"';
+const PATH_COMMENT = '# Added by hk-context-limit (RTK)';
+
+function getShellProfile() {
+  const shell = path.basename(process.env.SHELL || '');
+  const home = os.homedir();
+
+  if (shell === 'zsh') return path.join(home, '.zshrc');
+  if (shell === 'bash') {
+    const bashProfile = path.join(home, '.bash_profile');
+    if (fs.existsSync(bashProfile)) return bashProfile;
+    return path.join(home, '.bashrc');
+  }
+  if (shell === 'fish') return path.join(home, '.config', 'fish', 'config.fish');
+
+  return path.join(home, '.profile');
+}
+
+function isLocalBinInPath() {
+  const dirs = (process.env.PATH || '').split(path.delimiter);
+  return dirs.some((d) => {
+    const resolved = d.replace(/^~/, os.homedir());
+    return resolved === RTK_LOCAL_BIN;
+  });
+}
+
+function profileContainsLocalBin(profilePath) {
+  if (!fs.existsSync(profilePath)) return false;
+  const content = fs.readFileSync(profilePath, 'utf8');
+  return content.includes('.local/bin');
+}
+
+function ensurePathSetup() {
+  if (isLocalBinInPath()) return true;
+
+  const profile = getShellProfile();
+
+  if (profileContainsLocalBin(profile)) {
+    return false;
+  }
+
+  const shortProfile = profile.replace(os.homedir(), '~');
+
+  try {
+    const existing = fs.existsSync(profile)
+      ? fs.readFileSync(profile, 'utf8')
+      : '';
+
+    const separator = existing.length > 0 && !existing.endsWith('\n') ? '\n' : '';
+    const addition = `${separator}\n${PATH_COMMENT}\n${PATH_EXPORT_LINE}\n`;
+
+    fs.appendFileSync(profile, addition);
+    console.log(`  + PATH updated in ${shortProfile}`);
+
+    process.env.PATH = `${RTK_LOCAL_BIN}${path.delimiter}${process.env.PATH}`;
+    return true;
+  } catch (_err) {
+    console.log(`  ! Could not update ${shortProfile}`);
+    console.log(`  Add manually: ${PATH_EXPORT_LINE}\n`);
+    return false;
+  }
+}
 
 function resolveRtkBinary() {
-  // 1. Check PATH first
   try {
     execSync('rtk --version', { stdio: 'pipe' });
     return 'rtk';
   } catch (_e) { /* not in PATH */ }
 
-  // 2. Check common install location (~/.local/bin/rtk)
   if (fs.existsSync(RTK_LOCAL_PATH)) {
     return RTK_LOCAL_PATH;
   }
@@ -52,7 +112,6 @@ function ask(question) {
 
 function installUnix() {
   console.log('\n  Downloading and installing RTK...');
-  // All values are hardcoded constants — no user input in command
   execSync(`curl -fsSL "${INSTALL_SCRIPT}" | sh`, { stdio: 'inherit', shell: true });
 }
 
@@ -63,7 +122,6 @@ function installWindows() {
   fs.mkdirSync(localBin, { recursive: true });
 
   console.log('\n  Downloading RTK...');
-  // execFileSync avoids shell interpretation — args passed directly to powershell
   execFileSync('powershell', [
     '-Command',
     `Invoke-WebRequest -Uri '${WIN_ZIP_URL}' -OutFile '${zipPath}'`
@@ -82,7 +140,6 @@ function installWindows() {
   }
 
   console.log(`  Installed to: ${localBin}`);
-  console.log(`  Ensure ${localBin} is in your PATH.\n`);
 }
 
 function configureHook(rtkBin) {
@@ -91,17 +148,23 @@ function configureHook(rtkBin) {
 }
 
 async function promptRtkInstall() {
-  console.log('\n  ── RTK Token Optimizer (optional) ──\n');
+  console.log('\n  -- RTK Token Optimizer (optional) --\n');
 
-  // Skip in non-interactive mode (CI, piped stdin)
   if (!process.stdin.isTTY) {
-    console.log('  Non-interactive mode — skipping RTK prompt.\n');
+    console.log('  Non-interactive mode -- skipping RTK prompt.\n');
     return;
   }
 
   const version = getInstalledVersion();
   if (version) {
-    console.log(`  ✓ RTK already installed (${version})\n`);
+    console.log(`  + RTK already installed (${version})`);
+
+    const bin = resolveRtkBinary();
+    if (bin && bin !== 'rtk') {
+      ensurePathSetup();
+    }
+
+    console.log('');
     return;
   }
 
@@ -116,7 +179,6 @@ async function promptRtkInstall() {
     return;
   }
 
-  // RTK is optional — install failure must NOT block H.K install
   try {
     const platform = process.platform;
 
@@ -130,23 +192,18 @@ async function promptRtkInstall() {
       return;
     }
 
-    // Resolve binary path (may not be in PATH yet on macOS)
     const rtkBin = resolveRtkBinary();
     if (!rtkBin) {
       console.log(`\n  Binary not found after install. Install manually: ${RTK_SITE}/#install\n`);
       return;
     }
 
-    // Warn if not in PATH (user needs to add it for future shell sessions)
-    const needsPathSetup = rtkBin !== 'rtk';
-    if (needsPathSetup) {
-      console.log(`\n  [NOTE] RTK installed at: ${rtkBin}`);
-      console.log('  Add this to your shell profile (.zshrc, .bashrc, .profile):');
-      console.log(`  export PATH="${RTK_LOCAL_BIN}:$PATH"\n`);
+    if (rtkBin !== 'rtk') {
+      ensurePathSetup();
     }
 
     configureHook(rtkBin);
-    console.log('\n  ✓ RTK installed! Track token savings with: rtk gain\n');
+    console.log('\n  + RTK installed and ready!\n');
   } catch (_err) {
     console.log(`\n  RTK installation failed. Install manually: ${RTK_SITE}/#install\n`);
   }
