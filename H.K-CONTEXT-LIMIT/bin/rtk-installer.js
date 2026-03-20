@@ -111,8 +111,30 @@ function ask(question) {
 }
 
 function installUnix() {
-  console.log('\n  Downloading and installing RTK...');
-  execSync(`curl -fsSL "${INSTALL_SCRIPT}" | sh`, { stdio: 'inherit', shell: true });
+  console.log('\n  Installing RTK...');
+  try {
+    const output = execSync(`curl -fsSL "${INSTALL_SCRIPT}" | sh`, {
+      stdio: 'pipe',
+      encoding: 'utf8',
+      shell: true,
+    });
+
+    // Show only INFO lines, skip WARN (we handle PATH setup ourselves)
+    const lines = output.split('\n');
+    for (const line of lines) {
+      // Strip ANSI color codes for matching
+      const clean = line.replace(/\x1b\[[0-9;]*m/g, '');
+      if (clean.includes('[INFO]') && !clean.includes('Add to your')) {
+        const msg = clean.replace(/\[INFO\]\s*/, '').trim();
+        if (msg) console.log(`    ${msg}`);
+      }
+    }
+  } catch (err) {
+    // Show full output on failure for debugging
+    if (err.stdout) console.error(err.stdout);
+    if (err.stderr) console.error(err.stderr);
+    throw err;
+  }
 }
 
 function installWindows() {
