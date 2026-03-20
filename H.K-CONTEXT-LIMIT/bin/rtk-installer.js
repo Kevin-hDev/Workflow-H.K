@@ -13,16 +13,15 @@ const RTK_LOCAL_BIN = path.join(os.homedir(), '.local', 'bin');
 const RTK_LOCAL_PATH = path.join(RTK_LOCAL_BIN, 'rtk');
 
 /**
- * Create a symlink to rtk in a directory already in PATH.
- * This makes `rtk` available immediately — no shell restart needed.
+ * Make rtk accessible in PATH via symlink.
+ * Never writes to shell profiles (.zshrc, .bashrc, etc).
  *
  * Strategy:
- *   1. Try /usr/local/bin (universal, but may need sudo)
- *   2. Try any writable directory already in PATH
- *   3. Fallback: append PATH export to shell profile
+ *   1. Already in PATH? Done.
+ *   2. Symlink into a writable PATH directory (/usr/local/bin, /opt/homebrew/bin, etc)
+ *   3. If no writable dir found, show a one-line hint — nothing more.
  */
 function ensureRtkAccessible() {
-  // Already accessible?
   try {
     execSync('rtk --version', { stdio: 'pipe' });
     return;
@@ -30,18 +29,7 @@ function ensureRtkAccessible() {
 
   if (!fs.existsSync(RTK_LOCAL_PATH)) return;
 
-  // Try symlinking into a writable PATH directory
-  if (trySymlink()) return;
-
-  // Fallback: update shell profile
-  appendPathToProfile();
-  console.log('  ! Open a new terminal to use rtk');
-}
-
-function trySymlink() {
   const pathDirs = (process.env.PATH || '').split(path.delimiter);
-
-  // Preferred targets first, then any writable PATH dir
   const preferred = ['/usr/local/bin', '/opt/homebrew/bin'];
   const candidates = [
     ...preferred.filter((d) => pathDirs.includes(d)),
@@ -55,7 +43,6 @@ function trySymlink() {
 
       const target = path.join(dir, 'rtk');
 
-      // Don't overwrite an existing non-symlink binary
       if (fs.existsSync(target)) {
         const stat = fs.lstatSync(target);
         if (stat.isSymbolicLink()) {
@@ -67,46 +54,13 @@ function trySymlink() {
 
       fs.symlinkSync(RTK_LOCAL_PATH, target);
       console.log(`  + rtk linked in ${dir}`);
-      return true;
+      return;
     } catch (_e) {
       continue;
     }
   }
 
-  return false;
-}
-
-function appendPathToProfile() {
-  const shell = path.basename(process.env.SHELL || '');
-  const home = os.homedir();
-
-  let profile;
-  if (shell === 'zsh') profile = path.join(home, '.zshrc');
-  else if (shell === 'bash') {
-    profile = fs.existsSync(path.join(home, '.bash_profile'))
-      ? path.join(home, '.bash_profile')
-      : path.join(home, '.bashrc');
-  } else {
-    profile = path.join(home, '.profile');
-  }
-
-  // Already configured?
-  if (fs.existsSync(profile)) {
-    const content = fs.readFileSync(profile, 'utf8');
-    if (content.includes('.local/bin')) return;
-  }
-
-  const shortProfile = profile.replace(home, '~');
-
-  try {
-    const existing = fs.existsSync(profile) ? fs.readFileSync(profile, 'utf8') : '';
-    const sep = existing.length > 0 && !existing.endsWith('\n') ? '\n' : '';
-    const line = 'export PATH="$HOME/.local/bin:$PATH"';
-    fs.appendFileSync(profile, `${sep}\n# Added by hk-context-limit (RTK)\n${line}\n`);
-    console.log(`  + PATH added to ${shortProfile}`);
-  } catch (_err) {
-    console.log(`  ! Could not update ${shortProfile}`);
-  }
+  console.log(`  ! Add ~/.local/bin to your PATH to use rtk`);
 }
 
 function resolveRtkBinary() {
