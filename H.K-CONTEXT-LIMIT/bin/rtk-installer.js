@@ -11,66 +11,101 @@ const WIN_ZIP_URL = 'https://github.com/rtk-ai/rtk/releases/latest/download/rtk-
 
 const RTK_LOCAL_BIN = path.join(os.homedir(), '.local', 'bin');
 const RTK_LOCAL_PATH = path.join(RTK_LOCAL_BIN, 'rtk');
-const PATH_EXPORT_LINE = 'export PATH="$HOME/.local/bin:$PATH"';
-const PATH_COMMENT = '# Added by hk-context-limit (RTK)';
 
-function getShellProfile() {
+/**
+ * Create a symlink to rtk in a directory already in PATH.
+ * This makes `rtk` available immediately — no shell restart needed.
+ *
+ * Strategy:
+ *   1. Try /usr/local/bin (universal, but may need sudo)
+ *   2. Try any writable directory already in PATH
+ *   3. Fallback: append PATH export to shell profile
+ */
+function ensureRtkAccessible() {
+  // Already accessible?
+  try {
+    execSync('rtk --version', { stdio: 'pipe' });
+    return;
+  } catch (_e) { /* not in PATH */ }
+
+  if (!fs.existsSync(RTK_LOCAL_PATH)) return;
+
+  // Try symlinking into a writable PATH directory
+  if (trySymlink()) return;
+
+  // Fallback: update shell profile
+  appendPathToProfile();
+  console.log('  ! Open a new terminal to use rtk');
+}
+
+function trySymlink() {
+  const pathDirs = (process.env.PATH || '').split(path.delimiter);
+
+  // Preferred targets first, then any writable PATH dir
+  const preferred = ['/usr/local/bin', '/opt/homebrew/bin'];
+  const candidates = [
+    ...preferred.filter((d) => pathDirs.includes(d)),
+    ...pathDirs.filter((d) => !preferred.includes(d)),
+  ];
+
+  for (const dir of candidates) {
+    try {
+      if (!fs.existsSync(dir)) continue;
+      fs.accessSync(dir, fs.constants.W_OK);
+
+      const target = path.join(dir, 'rtk');
+
+      // Don't overwrite an existing non-symlink binary
+      if (fs.existsSync(target)) {
+        const stat = fs.lstatSync(target);
+        if (stat.isSymbolicLink()) {
+          fs.unlinkSync(target);
+        } else {
+          continue;
+        }
+      }
+
+      fs.symlinkSync(RTK_LOCAL_PATH, target);
+      console.log(`  + rtk linked in ${dir}`);
+      return true;
+    } catch (_e) {
+      continue;
+    }
+  }
+
+  return false;
+}
+
+function appendPathToProfile() {
   const shell = path.basename(process.env.SHELL || '');
   const home = os.homedir();
 
-  if (shell === 'zsh') return path.join(home, '.zshrc');
-  if (shell === 'bash') {
-    const bashProfile = path.join(home, '.bash_profile');
-    if (fs.existsSync(bashProfile)) return bashProfile;
-    return path.join(home, '.bashrc');
-  }
-  if (shell === 'fish') return path.join(home, '.config', 'fish', 'config.fish');
-
-  return path.join(home, '.profile');
-}
-
-function isLocalBinInPath() {
-  const dirs = (process.env.PATH || '').split(path.delimiter);
-  return dirs.some((d) => {
-    const resolved = d.replace(/^~/, os.homedir());
-    return resolved === RTK_LOCAL_BIN;
-  });
-}
-
-function profileContainsLocalBin(profilePath) {
-  if (!fs.existsSync(profilePath)) return false;
-  const content = fs.readFileSync(profilePath, 'utf8');
-  return content.includes('.local/bin');
-}
-
-function ensurePathSetup() {
-  if (isLocalBinInPath()) return true;
-
-  const profile = getShellProfile();
-
-  if (profileContainsLocalBin(profile)) {
-    return false;
+  let profile;
+  if (shell === 'zsh') profile = path.join(home, '.zshrc');
+  else if (shell === 'bash') {
+    profile = fs.existsSync(path.join(home, '.bash_profile'))
+      ? path.join(home, '.bash_profile')
+      : path.join(home, '.bashrc');
+  } else {
+    profile = path.join(home, '.profile');
   }
 
-  const shortProfile = profile.replace(os.homedir(), '~');
+  // Already configured?
+  if (fs.existsSync(profile)) {
+    const content = fs.readFileSync(profile, 'utf8');
+    if (content.includes('.local/bin')) return;
+  }
+
+  const shortProfile = profile.replace(home, '~');
 
   try {
-    const existing = fs.existsSync(profile)
-      ? fs.readFileSync(profile, 'utf8')
-      : '';
-
-    const separator = existing.length > 0 && !existing.endsWith('\n') ? '\n' : '';
-    const addition = `${separator}\n${PATH_COMMENT}\n${PATH_EXPORT_LINE}\n`;
-
-    fs.appendFileSync(profile, addition);
-    console.log(`  + PATH updated in ${shortProfile}`);
-
-    process.env.PATH = `${RTK_LOCAL_BIN}${path.delimiter}${process.env.PATH}`;
-    return true;
+    const existing = fs.existsSync(profile) ? fs.readFileSync(profile, 'utf8') : '';
+    const sep = existing.length > 0 && !existing.endsWith('\n') ? '\n' : '';
+    const line = 'export PATH="$HOME/.local/bin:$PATH"';
+    fs.appendFileSync(profile, `${sep}\n# Added by hk-context-limit (RTK)\n${line}\n`);
+    console.log(`  + PATH added to ${shortProfile}`);
   } catch (_err) {
     console.log(`  ! Could not update ${shortProfile}`);
-    console.log(`  Add manually: ${PATH_EXPORT_LINE}\n`);
-    return false;
   }
 }
 
@@ -119,10 +154,8 @@ function installUnix() {
       shell: true,
     });
 
-    // Show only INFO lines, skip WARN (we handle PATH setup ourselves)
     const lines = output.split('\n');
     for (const line of lines) {
-      // Strip ANSI color codes for matching
       const clean = line.replace(/\x1b\[[0-9;]*m/g, '');
       if (clean.includes('[INFO]') && !clean.includes('Add to your')) {
         const msg = clean.replace(/\[INFO\]\s*/, '').trim();
@@ -130,7 +163,6 @@ function installUnix() {
       }
     }
   } catch (err) {
-    // Show full output on failure for debugging
     if (err.stdout) console.error(err.stdout);
     if (err.stderr) console.error(err.stderr);
     throw err;
@@ -158,7 +190,7 @@ function installWindows() {
   try {
     fs.unlinkSync(zipPath);
   } catch (_e) {
-    // Non-critical: temp file cleanup, OS will handle eventually
+    // Non-critical: temp file cleanup
   }
 
   console.log(`  Installed to: ${localBin}`);
@@ -180,12 +212,7 @@ async function promptRtkInstall() {
   const version = getInstalledVersion();
   if (version) {
     console.log(`  + RTK already installed (${version})`);
-
-    const bin = resolveRtkBinary();
-    if (bin && bin !== 'rtk') {
-      ensurePathSetup();
-    }
-
+    ensureRtkAccessible();
     console.log('');
     return;
   }
@@ -216,14 +243,11 @@ async function promptRtkInstall() {
 
     const rtkBin = resolveRtkBinary();
     if (!rtkBin) {
-      console.log(`\n  Binary not found after install. Install manually: ${RTK_SITE}/#install\n`);
+      console.log(`\n  Binary not found. Install manually: ${RTK_SITE}/#install\n`);
       return;
     }
 
-    if (rtkBin !== 'rtk') {
-      ensurePathSetup();
-    }
-
+    ensureRtkAccessible();
     configureHook(rtkBin);
     console.log('\n  + RTK installed and ready!\n');
   } catch (_err) {
