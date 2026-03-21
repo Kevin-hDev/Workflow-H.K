@@ -4,14 +4,27 @@ H.K is a complete development workflow that organizes every task into clear step
 
 ## Installation
 
+### One command (recommended)
+
 ```bash
-# Copy the workflow and all skills
+npx hk-workflow
+```
+
+Options:
+
+```bash
+npx hk-workflow --hooks      # Also install git hooks (pre-commit, security guard)
+npx hk-workflow --force       # Overwrite existing installation
+npx hk-workflow --uninstall   # Remove H.K workflow
+```
+
+### Manual
+
+```bash
 cp -r H.K/hk/ ~/.claude/skills/hk/
 cp -r H.K/skills/* ~/.claude/skills/
 cp -r H.K/rules/* ~/.claude/rules/
-
-# Optional: use the CLAUDE.md as a template
-cp H.K/CLAUDE.md ~/.claude/CLAUDE.md
+cp -r H.K/meta/* ~/.claude/skills/shared/meta/
 ```
 
 ## Quick Start

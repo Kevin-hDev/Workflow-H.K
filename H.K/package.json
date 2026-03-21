@@ -1,0 +1,37 @@
+{
+  "name": "hk-workflow",
+  "version": "1.1.2",
+  "description": "Structured development workflow for Claude Code — brainstorm, design, plan, code, validate, ship",
+  "bin": {
+    "hk-workflow": "bin/install.js"
+  },
+  "files": [
+    "bin/",
+    "hk/",
+    "skills/",
+    "rules/",
+    "hooks/",
+    "meta/",
+    "README.md",
+    "TUTORIAL.md",
+    "CHANGELOG.md"
+  ],
+  "keywords": [
+    "claude-code",
+    "workflow",
+    "ai",
+    "development",
+    "skills",
+    "claude",
+    "anthropic"
+  ],
+  "author": "Kevin Huynh",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kevin-hDev/Workflow-H.K.git"
+  },
+  "engines": {
+    "node": ">=16.7.0"
+  }
+}
