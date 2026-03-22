@@ -30,7 +30,7 @@
 
 > Without these rules, you create giant files, duplicate code, and structure poorly. No exceptions. NON-NEGOTIABLE.
 
-1. **NEVER a file > 250 lines** — beyond that, split into smaller single-responsibility files. Ideal = target 50-150 lines.
+1. **NEVER a file > 200 lines** — beyond that, split into smaller single-responsibility files. Ideal = target 50-150 lines.
 2. **NEVER duplicate code** — before writing a function, check if it already exists in the project. If yes, reuse.
 3. **NEVER hardcode values** — colors, URLs, sizes, texts, delays → centralized in a config/theme/constants file.
 4. **NEVER mix responsibilities** — UI, business logic, and data access in SEPARATE files.
@@ -40,13 +40,3 @@
 8. **NEVER put everything flat** — organize by domain/feature/component (auth/, payments/, profile/), not everything in one folder.
 
 ---
-
-## Token Management — Mandatory Economy
-
-> Every token counts. NEVER waste Sonnet/Opus on a task Haiku can handle.
-
-- **`haiku`** → read, search, summarize, explore, collect context (no complex reasoning)
-- **`sonnet`** → write code, debug, tests, security, code review, architecture
-- **NEVER `opus` as subagent** unless the user explicitly requests it — Opus for orchestrating teams, architecture, complexity, or main conversation only.
-- **Prefer direct tools** (Read, Grep, Glob) over subagents when < 3 operations
-- **1-3 files → direct tools** | **10+ files with analysis → haiku subagent** | **code in 5+ files → sonnet subagent**

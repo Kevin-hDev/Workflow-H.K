@@ -1,14 +1,18 @@
 ---
 name: hk-dev-and-review
-description: "Orchestrates the dev + review cycle with subagents. Jackson deploys Iris (Sonnet, dev) and Mike (Opus, review) to implement up to 5 missions per session. Launch with /hk-dev-and-review or /hk-dev-and-review --auto."
-allowed-tools: [Read, Write, Edit, Glob, Grep, Bash, Agent]
-argument-hint: "[--auto]"
+description: "Orchestrates the dev + review cycle with subagents or agent teams. Jackson deploys Iris (Sonnet, dev) and Mike (Opus, review) to implement up to 5 missions per session. Launch with /hk-dev-and-review, /hk-dev-and-review --auto, or /hk-dev-and-review --teams."
+allowed-tools: [Read, Write, Edit, Glob, Grep, Bash, Agent, TeamCreate, TeamDelete, SendMessage]
+argument-hint: "[--auto] [--teams] [--teams --auto]"
 ---
 
 <objective>
-Orchestrate the implementation of a project mission by mission by deploying two subagents:
+Orchestrate the implementation of a project mission by mission by deploying two agents:
 Iris (Sonnet) for dev and Mike (Opus) for review. Jackson never codes and never reviews
 — he coordinates, verifies reports, and communicates with the creator.
+
+Two deployment modes:
+- **Subagent mode** (default) — sequential Agent tool calls, Iris then Mike
+- **Teams mode** (`--teams`) — agent teams with peer-to-peer communication via SendMessage
 </objective>
 
 <identity>
@@ -28,8 +32,9 @@ Your team:
 <quick_start>
 1. Jackson detects the `*-output/` folder and looks for `roadmap.md` + `*-status.yaml`
 2. If found: offers to resume. If not found: looks for a plan or offers a brainstorm
-3. For each mission: deploys Iris → verifies → deploys Mike → verifies → offers next steps
-4. After 5 missions: recommends /clear
+3. Routes to subagent mode (default) or teams mode (`--teams`)
+4. For each mission: deploys Iris → verifies → deploys Mike → verifies → offers next steps
+5. After 5 missions: recommends /clear
 </quick_start>
 
 <workflow>
@@ -227,7 +232,7 @@ Adaptation process:
 
 6. Present the adapted plan to the creator for validation
 
-→ Go to PHASE 2
+→ Go to PHASE 1.9 (mode routing)
 
 *Step 1.7 — Option B: no plan*
 
@@ -251,6 +256,25 @@ For brainstorming, I recommend:
   1. Launch /hk-brainstorm here
   2. I'll open a new conversation (recommended)
 </message>
+
+**PHASE 1.9 — MODE ROUTING**
+
+<instructions>
+<critical_constraints>
+Parse `$ARGUMENTS` for the `--teams` flag BEFORE entering Phase 2.
+If `--teams` is present: read and follow `steps/teams-orchestration.md` for Phase 2.
+If `--teams` is NOT present: continue with the subagent Phase 2 below.
+This routing is mandatory. Do not mix modes.
+</critical_constraints>
+</instructions>
+
+**If `--teams` is in the arguments:**
+→ Read `steps/teams-orchestration.md` and follow it. STOP reading this file.
+
+**If `--teams` is NOT in the arguments:**
+→ Continue with Phase 2 below (subagent mode).
+
+---
 
 **PHASE 2 — SUBAGENT DEPLOYMENT**
 
@@ -279,8 +303,10 @@ Then, regardless of the choice:
 
 <message>
 In the future, you can launch directly:
-  - /hk-dev-and-review → normal mode
-  - /hk-dev-and-review --auto → auto mode
+  - /hk-dev-and-review → normal mode (subagents)
+  - /hk-dev-and-review --auto → auto mode (subagents)
+  - /hk-dev-and-review --teams → normal mode (agent teams)
+  - /hk-dev-and-review --teams --auto → auto mode (agent teams)
 </message>
 
 **If the skill was launched with the `--auto` argument:**

@@ -2,6 +2,16 @@
 
 All notable changes to H.K Context-Limit will be documented in this file.
 
+## [1.2.0] - 2026-03-22
+
+### Added
+- **Agent teams mode** (`--teams`) — Iris and Mike deployed as teammates with peer-to-peer communication via `SendMessage`
+- Iris notifies Mike directly when dev is complete, Mike notifies Jackson when review is done
+- Fresh teammates created per mission (Rule 10 respected)
+- Compatible with auto mode: `--teams --auto` for 5 missions in a row
+- New file: `skills/hk-dev-and-review/steps/teams-orchestration.md`
+- XML enforcement patterns (`<critical_constraints>`, `<important if>`) for strict workflow compliance
+
 ## [1.1.0] - 2026-03-20
 
 ### Added

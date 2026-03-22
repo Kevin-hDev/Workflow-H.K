@@ -79,10 +79,12 @@ async function install() {
 
   console.log('  -- Ready! --\n');
   console.log('  Available commands:');
-  console.log('    /hk-dev-and-review          Normal mode (mission by mission)');
-  console.log('    /hk-dev-and-review --auto    Auto mode (5 missions in a row)');
-  console.log('    /hk-brainstorm              Creative brainstorming');
-  console.log('    /hk-debug <description>     Systematic debugging\n');
+  console.log('    /hk-dev-and-review                Normal mode (subagents)');
+  console.log('    /hk-dev-and-review --auto         Auto mode (subagents)');
+  console.log('    /hk-dev-and-review --teams        Normal mode (agent teams)');
+  console.log('    /hk-dev-and-review --teams --auto Auto mode (agent teams)');
+  console.log('    /hk-brainstorm                    Creative brainstorming');
+  console.log('    /hk-debug <description>           Systematic debugging\n');
 }
 
 function uninstall() {

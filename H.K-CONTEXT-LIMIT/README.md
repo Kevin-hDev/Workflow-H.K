@@ -33,8 +33,9 @@ You (creator) → Jackson (Opus orchestrator)
 ### Key Features
 
 - **Quest/Mission structure** — Plans broken into Quests > Missions > Tasks (2-3 max per mission)
-- **Fresh context every time** — New sub-agents for each mission, no context accumulation
+- **Fresh context every time** — New agents for each mission, no context accumulation
 - **Auto mode** — `--auto` flag runs 5 missions in a row without stopping
+- **Agent teams mode** — `--teams` flag uses peer-to-peer communication (Iris notifies Mike directly)
 - **Debug escalation** — If Iris or Mike fails 3 times, Jackson investigates with `/hk-debug` and deploys a correction agent
 - **Codebase scan** — Jackson scans existing code before creating a plan to avoid duplication
 - **Interactive mode** — Numbered choices everywhere, the creator never has to think alone
@@ -74,8 +75,10 @@ cp agents/mike.md ~/.claude/agents/
 ### Dev & Review (main workflow)
 
 ```
-/hk-dev-and-review          # Normal mode — mission by mission
-/hk-dev-and-review --auto   # Auto mode — 5 missions in a row
+/hk-dev-and-review                # Normal mode — subagents (sequential)
+/hk-dev-and-review --auto         # Auto mode — subagents, 5 missions in a row
+/hk-dev-and-review --teams        # Normal mode — agent teams (peer-to-peer)
+/hk-dev-and-review --teams --auto # Auto mode — agent teams, 5 missions in a row
 ```
 
 Jackson will:
@@ -83,6 +86,22 @@ Jackson will:
 2. If found: offer to resume where you left off
 3. If not found: search for a plan in your codebase, or suggest brainstorming
 4. For each mission: deploy Iris (dev) → verify → deploy Mike (review) → verify → next
+
+#### Subagent mode (default)
+
+Jackson deploys Iris and Mike sequentially using the Agent tool. Each agent runs, returns a report, and is destroyed. Simple and stable.
+
+#### Agent teams mode (`--teams`)
+
+Jackson creates an agent team and spawns Iris and Mike as teammates. Iris codes, then notifies Mike AND Jackson via `SendMessage`. Mike reviews, then notifies Jackson. Fresh teammates are created for each mission.
+
+```
+Jackson creates team → spawns iris-1 + mike-1
+  iris-1 codes → SendMessage → mike-1 (report) + Jackson (report)
+  mike-1 reviews → SendMessage → Jackson (report)
+  Jackson shuts down iris-1 + mike-1
+  Jackson spawns iris-2 + mike-2 for next mission
+```
 
 ### Brainstorming
 
@@ -124,7 +143,9 @@ pending → in-progress → review → done
 ```
 H.K-CONTEXT-LIMIT/
 ├── skills/
-│   ├── hk-dev-and-review/SKILL.md   # Jackson orchestrator
+│   ├── hk-dev-and-review/            # Jackson orchestrator
+│   │   ├── SKILL.md                  # Main skill + subagent mode
+│   │   └── steps/teams-orchestration.md  # Agent teams mode
 │   ├── hk-agent-dev/SKILL.md        # Iris dev workflow
 │   ├── hk-agent-review/SKILL.md     # Mike review workflow
 │   ├── hk-brainstorm/               # Brainstorming (Iris, 15 techniques)
