@@ -40,19 +40,31 @@ Jackson looks for a `*-output/` folder containing `roadmap.md` and `*-status.yam
 
 **If no plan exists:** Jackson suggests brainstorming with `/hk-brainstorm` in a new conversation.
 
-## Step 4 — Normal mode vs Auto mode
+## Step 4 — Choose the mode
 
-Before launching the first mission, Jackson asks:
+### Deployment mode
+
+Jackson can deploy Iris and Mike in two ways:
+
+- **Subagents (default)** — Jackson deploys Iris then Mike sequentially. Simple and stable.
+- **Agent teams (`--teams`)** — Jackson creates a team. Iris notifies Mike directly when done. Peer-to-peer communication.
+
+### Execution mode
 
 - **Normal mode (1):** Mission by mission. You validate between each one and can test the UI.
 - **Auto mode (2):** 5 missions in a row without stopping. Faster, but you don't validate between missions. If an error occurs, Jackson automatically falls back to normal mode.
 
-You can also launch auto mode directly:
+All 4 combinations:
 ```
-/hk-dev-and-review --auto
+/hk-dev-and-review                # Normal + subagents
+/hk-dev-and-review --auto         # Auto + subagents
+/hk-dev-and-review --teams        # Normal + agent teams
+/hk-dev-and-review --teams --auto # Auto + agent teams
 ```
 
 ## Step 5 — The dev/review cycle
+
+### In subagent mode (default)
 
 For each mission, Jackson:
 
@@ -62,6 +74,16 @@ For each mission, Jackson:
 4. **Deploys Mike** (Opus) — he checks 3 points (plan followed, logic correct, integration OK), fixes any issues, runs adversarial review, marks `[done]`
 5. Verifies Mike's report (checkpoints OK, tests passing)
 6. Shows you a summary and offers next steps
+
+### In agent teams mode (`--teams`)
+
+The cycle is similar but with direct communication:
+
+1. Jackson creates a team and deploys iris-1 + mike-1 as teammates
+2. **Iris codes** — when done, she sends her report to Mike AND Jackson via SendMessage
+3. **Mike receives the report** and starts his review automatically (no need for Jackson to relay)
+4. Mike sends his report to Jackson
+5. Jackson shuts down both teammates and creates new ones for the next mission
 
 ## Step 6 — After 5 missions
 

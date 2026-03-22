@@ -40,19 +40,31 @@ Jackson cherche un dossier `*-output/` contenant `roadmap.md` et `*-status.yaml`
 
 **Si pas de plan :** Jackson propose un brainstorming avec `/hk-brainstorm` dans une nouvelle conversation.
 
-## Etape 4 — Mode normal vs mode auto
+## Etape 4 — Choisir le mode
 
-Avant de lancer la premiere mission, Jackson demande :
+### Mode de deploiement
+
+Jackson peut deployer Iris et Mike de deux facons :
+
+- **Subagents (defaut)** — Jackson deploie Iris puis Mike sequentiellement. Simple et stable.
+- **Agent teams (`--teams`)** — Jackson cree une equipe. Iris notifie Mike directement quand elle a fini. Communication peer-to-peer.
+
+### Mode d'execution
 
 - **Mode normal (1) :** Mission par mission. Vous validez entre chaque et pouvez tester l'UI.
 - **Mode auto (2) :** 5 missions d'affilee sans s'arreter. Plus rapide, mais pas de validation entre les missions. Si une erreur survient, Jackson repasse automatiquement en mode normal.
 
-Vous pouvez aussi lancer le mode auto directement :
+Les 4 combinaisons possibles :
 ```
-/hk-dev-and-review --auto
+/hk-dev-and-review                # Normal + subagents
+/hk-dev-and-review --auto         # Auto + subagents
+/hk-dev-and-review --teams        # Normal + agent teams
+/hk-dev-and-review --teams --auto # Auto + agent teams
 ```
 
 ## Etape 5 — Le cycle dev/review
+
+### En mode subagent (defaut)
 
 Pour chaque mission, Jackson :
 
@@ -62,6 +74,16 @@ Pour chaque mission, Jackson :
 4. **Deploie Mike** (Opus) — il verifie 3 points (plan suivi, logique correcte, integration OK), corrige les problemes, fait une revue adversariale, marque `[done]`
 5. Verifie le rapport de Mike (checkpoints OK, tests valides)
 6. Vous montre un resume et propose la suite
+
+### En mode agent teams (`--teams`)
+
+Le cycle est similaire mais avec communication directe :
+
+1. Jackson cree une equipe et deploie iris-1 + mike-1 comme teammates
+2. **Iris code** — quand elle a fini, elle envoie son rapport a Mike ET a Jackson via SendMessage
+3. **Mike recoit le rapport** et lance sa review automatiquement (pas besoin de Jackson)
+4. Mike envoie son rapport a Jackson
+5. Jackson shutdown les deux teammates et en cree de nouveaux pour la mission suivante
 
 ## Etape 6 — Apres 5 missions
 
