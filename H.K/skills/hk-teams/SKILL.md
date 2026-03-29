@@ -7,6 +7,27 @@ description: Use when deploying a team of agents, creating agent teams, multi-ag
 
 Deploy agent teams via TeamCreate, Agent(team_name), and SendMessage.
 
+<critical_constraints>
+This workflow has 6 steps (0-5). Execute IN ORDER.
+Step N+1 is impossible without completing Step N.
+TeamCreate MUST happen before any Agent spawn — no exceptions.
+Every teammate prompt MUST use the /agent-prompt 6-section structure.
+Every teammate MUST have SendMessage instructions in its prompt.
+Shutdown and TeamDelete are mandatory — do not leave zombie teammates.
+</critical_constraints>
+
+## Materialize this checklist with TaskCreate — one task per item
+
+- Step 0: Load /agent-prompt skill
+- Step 1: TeamCreate with descriptive name
+- Step 2: Design composition (roles, models, communication flow)
+- Step 3: Spawn all teammates with structured prompts
+- Step 3: VERIFY each prompt has: context, task, constraints, output_format, success_criteria, reflection, SendMessage
+- Step 4: Coordinate (collect reports, handle blocks)
+- Step 5: Shutdown all teammates + TeamDelete
+
+---
+
 ## Step 0 — Load /agent-prompt
 
 Before writing any spawn prompt:
@@ -77,6 +98,14 @@ Agent({
 | `name` | Unique ID for message routing. Other teammates use this name to send messages |
 | `run_in_background` | Set to `true`. Otherwise the lead blocks until this teammate finishes |
 | `prompt` | The full structured instructions (see template below) |
+
+<important if="spawning teammates in Step 3">
+Before spawning, verify EACH prompt contains all 6 sections from
+/agent-prompt: context, task, constraints, output_format,
+success_criteria, reflection. A prompt missing any section will
+produce a teammate that improvises — the #1 cause of team failure.
+Also verify each prompt ends with SendMessage instructions.
+</important>
 
 ### Spawn Prompt Template
 

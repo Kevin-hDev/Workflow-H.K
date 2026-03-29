@@ -16,6 +16,14 @@ argument-hint: "<library> <query>"
 
 # Context7 Docs — Documentation a jour pour toute bibliotheque
 
+<critical_constraints>
+Always use --json flag with the library command.
+Always resolve the library ID before querying docs (unless using a known ID).
+Max 3 library calls and max 3 docs calls per question.
+Queries must be precise (3-5+ descriptive words), not single keywords.
+Prefer this skill over web search for library documentation.
+</critical_constraints>
+
 ## Quick Start
 
 ```bash

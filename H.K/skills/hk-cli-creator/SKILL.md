@@ -8,6 +8,28 @@ description: Use when creating a CLI skill, wrapping a CLI tool, building a skil
 Create skills that teach Claude to use CLI tools and terminal commands.
 A CLI skill = a SKILL.md that gives Claude expertise on a specific tool.
 
+<critical_constraints>
+This workflow has 8 steps (0-7). Execute IN ORDER.
+Step 0 (understand target) determines the level — do not skip it.
+Step 3 (structure SKILL.md) has a checklist — every item must pass.
+Description = triggers ONLY. If the description explains HOW, Claude
+skips the body. This is the #1 cause of skill failure.
+Scripts must be stdlib-only — zero pip install.
+SKILL.md must stay under 500 lines. Move excess to references/.
+</critical_constraints>
+
+## Materialize this checklist with TaskCreate — one task per item
+
+- Step 0: Identify target tool (existing or custom)
+- Step 1: Choose level (1-5)
+- Step 2: Discover/define commands
+- Step 3: Write SKILL.md (description + Quick Start + commands + workflows)
+- Step 3: VERIFY description = triggers only, not explanatory
+- Step 4: Write scripts if Level 2+ (stdlib-only, validation first)
+- Step 5: Write runner if Level 3 (runtime executor)
+- Step 6: Add dynamic injection if Level 4
+- Step 7: Finalize structure + run checklist
+
 ## Step 0 — Understand the Target
 
 Before writing anything, identify what you're building a skill for:
@@ -413,7 +435,9 @@ Règle : si une section sert à moins de 30% des utilisations, elle va dans `ref
 
 ---
 
-### Checklist avant de livrer
+### STOP CHECK — Before delivering the skill
+
+Run this checklist. Every item must pass. If any fails, fix before delivering.
 
 - [ ] Description = conditions de déclenchement uniquement, pas d'instructions
 - [ ] Quick Start avec 3-5 commandes couvrant 80% des cas
